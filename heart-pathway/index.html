@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading the Story Before It Ends — ACS HEART Pathway for Bedside Nurses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f2747;
+    --ink-2:#1c3a5e;
+    --paper:#f4f7fb;
+    --card:#ffffff;
+    --line:#dbe4ef;
+    --muted:#5b6b80;
+    --low:#1f7a4d;     --low-bg:#e9f5ee;   --low-line:#bfe3cd;
+    --mid:#bf7a10;     --mid-bg:#fbf2e0;   --mid-line:#f0d9a8;
+    --high:#b3241f;    --high-bg:#fbe9e8;  --high-line:#f1c4c1;
+    --stop:#b3241f;
+    --teach:#0e5a8a;   --teach-bg:#e7f1f8; --teach-line:#bcd9ec;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --disp:'Archivo',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+  /* ---------- Header ---------- */
+  header.top{
+    background:linear-gradient(160deg,#0f2747 0%,#143661 60%,#10314f 100%);
+    color:#fff;padding:34px 0 0;position:relative;overflow:hidden;
+  }
+  header.top::after{
+    /* ECG trace signature */
+    content:"";position:absolute;left:0;right:0;bottom:0;height:54px;
+    background:
+      repeating-linear-gradient(90deg,transparent 0 38px,rgba(255,255,255,.05) 38px 39px),
+      repeating-linear-gradient(0deg,transparent 0 12px,rgba(255,255,255,.05) 12px 13px);
+    opacity:.5;pointer-events:none;
+  }
+  .ecg-line{display:block;width:100%;height:42px;margin-top:18px;opacity:.85}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#86b9e6;margin:0 0 10px}
+  header.top h1{
+    font-family:var(--disp);font-weight:800;font-size:clamp(26px,4.4vw,40px);
+    line-height:1.05;margin:0 0 8px;letter-spacing:-.01em;
+  }
+  header.top .sub{font-size:clamp(15px,2vw,18px);color:#cfe0f1;max-width:60ch;margin:0 0 18px;font-weight:400}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 10px;font-family:var(--mono);font-size:11.5px;color:#9fc3e3;padding-bottom:6px}
+  .meta span{border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:3px 10px}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{position:sticky;top:0;z-index:30;background:rgba(244,247,251,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .tabrow{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin;padding:6px 0}
+  .tabrow button{
+    flex:0 0 auto;border:0;background:transparent;color:var(--muted);
+    font-family:var(--disp);font-weight:600;font-size:13.5px;
+    padding:9px 13px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:.15s;
+  }
+  .tabrow button:hover{color:var(--ink);background:#e7eef7}
+  .tabrow button[aria-selected="true"]{background:var(--ink);color:#fff}
+  .tabrow button .n{font-family:var(--mono);font-size:11px;opacity:.6;margin-right:6px}
+  .tabrow button[aria-selected="true"] .n{opacity:.8}
+
+  /* ---------- Panels ---------- */
+  main{padding:30px 0 70px}
+  .panel{display:none;animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.sec{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3.2vw,30px);letter-spacing:-.01em;margin:0 0 4px;line-height:1.1}
+  .lede{font-size:17px;color:var(--ink-2);max-width:66ch;margin:0 0 22px;font-weight:500}
+  h3{font-family:var(--disp);font-weight:700;font-size:18px;margin:26px 0 8px;color:var(--ink)}
+  p{margin:0 0 13px}
+  .panel ul{margin:0 0 14px;padding-left:0;list-style:none}
+  .panel ul li{position:relative;padding-left:22px;margin-bottom:7px}
+  .panel ul li::before{content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--ink-2);transform:rotate(45deg)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:0 0 18px;box-shadow:0 1px 2px rgba(16,39,71,.04)}
+
+  /* callouts */
+  .pearl,.stop,.why{border-radius:12px;padding:15px 17px 15px 18px;margin:16px 0;border:1px solid;font-size:15px}
+  .pearl{background:var(--teach-bg);border-color:var(--teach-line)}
+  .stop{background:var(--high-bg);border-color:var(--high-line)}
+  .why{background:#eef3f9;border-color:#cfdcec}
+  .pearl .tag,.stop .tag,.why .tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:5px}
+  .pearl .tag{color:var(--teach)} .stop .tag{color:var(--stop)} .why .tag{color:var(--ink-2)}
+  .pearl p:last-child,.stop p:last-child,.why p:last-child,.card p:last-child{margin-bottom:0}
+  .pearl ul,.stop ul{margin-bottom:0}
+
+  code.val,.mono{font-family:var(--mono);font-weight:600}
+  code.val{background:#eef2f7;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.92em;color:var(--ink)}
+
+  /* risk tiles */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .tier{border-radius:14px;padding:16px 16px 18px;border:1px solid}
+  .tier.low{background:var(--low-bg);border-color:var(--low-line)}
+  .tier.mid{background:var(--mid-bg);border-color:var(--mid-line)}
+  .tier.high{background:var(--high-bg);border-color:var(--high-line)}
+  .tier .score{font-family:var(--mono);font-weight:600;font-size:13px;letter-spacing:.04em}
+  .tier h4{font-family:var(--disp);font-weight:800;font-size:17px;margin:2px 0 8px;text-transform:uppercase;letter-spacing:.02em}
+  .tier.low h4,.tier.low .score{color:var(--low)} .tier.mid h4,.tier.mid .score{color:var(--mid)} .tier.high h4,.tier.high .score{color:var(--high)}
+  .tier ul{margin:0;font-size:13.5px}
+  .tier ul li{padding-left:16px;margin-bottom:5px}
+  .tier ul li::before{width:5px;height:5px;top:8px}
+  .tier.low li::before{background:var(--low)} .tier.mid li::before{background:var(--mid)} .tier.high li::before{background:var(--high)}
+
+  /* troponin table */
+  table.trop{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  table.trop th,table.trop td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line)}
+  table.trop thead th{background:var(--ink);color:#fff;font-family:var(--disp);font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+  table.trop tbody tr:last-child td{border-bottom:0}
+  table.trop td.v{font-family:var(--mono);font-weight:600;white-space:nowrap}
+  .band{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px}
+  .band.n{background:var(--low-bg);color:var(--low);border:1px solid var(--low-line)}
+  .band.i{background:var(--mid-bg);color:var(--mid);border:1px solid var(--mid-line)}
+  .band.a{background:var(--high-bg);color:var(--high);border:1px solid var(--high-line)}
+
+  /* injury vs infarction decision tree */
+  .injury-tree{margin:18px 0}
+  .it-top{background:var(--ink);color:#fff;border-radius:12px 12px 0 0;padding:13px 16px;text-align:center;font-family:var(--disp);font-weight:700;font-size:14.5px;line-height:1.3}
+  .it-top .mono{font-weight:600;color:#cfe0f1}
+  .it-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;padding:14px;background:#fbfcfe}
+  .it-branch h5{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px;color:var(--muted)}
+  .it-card{border-radius:10px;padding:12px 14px;border:1px solid;margin-bottom:10px;font-size:13.5px}
+  .it-card:last-child{margin-bottom:0}
+  .it-card b{font-family:var(--disp);display:block;margin-bottom:3px;font-size:14px}
+  .it-card .who{font-family:var(--mono);font-size:11.5px;display:block;margin-top:5px;opacity:.85}
+  .it-card.mi{background:var(--high-bg);border-color:var(--high-line)} .it-card.mi b{color:var(--high)}
+  .it-card.acute{background:var(--mid-bg);border-color:var(--mid-line)} .it-card.acute b{color:var(--mid)}
+  .it-card.chronic{background:var(--teach-bg);border-color:var(--teach-line)} .it-card.chronic b{color:var(--teach)}
+
+  /* type highlight rows */
+  table.trop td .hl{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ink);background:#eef2f7;border:1px solid var(--line);border-radius:999px;padding:1px 7px;white-space:nowrap}
+  table.trop tr.you td{background:#fbf8ee}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+  .twocol .card{margin:0}
+  .twocol .card h4{font-family:var(--disp);font-size:14px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.03em;font-size:12.5px;color:var(--ink-2)}
+  .twocol .card ul{margin:0;font-size:13.5px}
+  @media (max-width:680px){.it-cols{grid-template-columns:1fr}.twocol{grid-template-columns:1fr}}
+
+  /* decoder / plain-English glossary */
+  .gloss-group{margin:26px 0 4px}
+  .gloss-group > h3:first-of-type{margin-top:6px}
+  .dterm{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teach);border-radius:10px;padding:14px 17px;margin-bottom:12px}
+  .dterm .term{font-family:var(--disp);font-weight:700;font-size:16px;color:var(--ink)}
+  .dterm .plain{font-size:15px;margin:6px 0 0;font-weight:500}
+  .dterm .ana{font-size:14px;color:var(--ink-2);background:#f1f5fa;border-radius:8px;padding:10px 13px;margin:10px 0 0;line-height:1.5}
+  .dterm .ana b{color:var(--ink)}
+  .dterm .sowhat{font-size:14px;margin:10px 0 0}
+  .tag-mono{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--teach);display:inline-block;margin-right:5px}
+  .ss{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  .ss-card{border-radius:13px;padding:17px 18px;border:1px solid}
+  .ss-card.sn{background:var(--low-bg);border-color:var(--low-line)}
+  .ss-card.sp{background:var(--teach-bg);border-color:var(--teach-line)}
+  .ss-card .big{font-family:var(--disp);font-weight:800;font-size:19px}
+  .ss-card.sn .big{color:var(--low)} .ss-card.sp .big{color:var(--teach)}
+  .ss-card .one{font-weight:600;font-size:14.5px;margin:2px 0 8px}
+  .ss-card .d{font-size:13.5px;margin:0 0 12px;color:var(--ink-2)}
+  .ss-card .mnem{font-size:13px;background:rgba(255,255,255,.72);border-radius:8px;padding:9px 11px}
+  .ss-card.sn .mnem{border:1px solid var(--low-line)} .ss-card.sp .mnem{border:1px solid var(--teach-line)}
+  .jump{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--teach);background:var(--teach-bg);border:1px solid var(--teach-line);border-radius:999px;padding:2px 10px;cursor:pointer}
+  .jump:hover{background:var(--teach);color:#fff}
+  .jump-note{font-size:13px;color:var(--muted);margin:-10px 0 18px}
+  @media (max-width:680px){.ss{grid-template-columns:1fr}}
+
+  /* triple rule-out */
+  .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+  .tri .card{margin:0}
+  .tri .card .lh{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .tri .card b.t{font-family:var(--disp);font-size:16px;color:var(--ink);display:block;margin-bottom:4px}
+  .tri .card p{font-size:13px;margin:0}
+  .tro-flow{margin:18px 0}
+  .tro-top{background:var(--ink);color:#fff;border-radius:12px 12px 0 0;padding:11px 16px;text-align:center;font-family:var(--disp);font-weight:600;font-size:13.5px}
+  .tro-cols{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:10px;border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;padding:12px;background:#fbfcfe;align-items:stretch}
+  .tro-cell{border-radius:10px;padding:12px 13px;border:1px solid var(--line);background:#fff;font-size:13px}
+  .tro-cell .lab{font-family:var(--disp);font-weight:700;font-size:12.5px;display:block;margin-bottom:4px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+  .tro-cell.hot{background:var(--teach-bg);border-color:var(--teach);border-width:2px}
+  .tro-cell.hot .lab{color:var(--teach)}
+  .outcomes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  .oc{border-radius:11px;padding:13px 15px;border:1px solid;border-left-width:4px;font-size:13.5px}
+  .oc b{font-family:var(--disp);display:block;font-size:14px;margin-bottom:4px}
+  .oc.neg{background:var(--low-bg);border-color:var(--low-line);border-left-color:var(--low)} .oc.neg b{color:var(--low)}
+  .oc.cor{background:var(--mid-bg);border-color:var(--mid-line);border-left-color:var(--mid)} .oc.cor b{color:var(--mid)}
+  .oc.pe{background:var(--mid-bg);border-color:var(--mid-line);border-left-color:var(--mid)} .oc.pe b{color:var(--mid)}
+  .oc.ao{background:var(--high-bg);border-color:var(--high-line);border-left-color:var(--high)} .oc.ao b{color:var(--high)}
+  @media (max-width:680px){.tri{grid-template-columns:1fr}.tro-cols{grid-template-columns:1fr}.outcomes{grid-template-columns:1fr}}
+
+  /* HEART breakdown */
+  .heart-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:16px 0}
+  .hrow{display:grid;grid-template-columns:88px 1fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
+  .hrow .letter{background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:26px}
+  .hrow .letter small{display:block;font-size:9px;font-weight:600;letter-spacing:.08em;opacity:.7;margin-top:2px;text-align:center;line-height:1.1}
+  .hrow .pts{padding:13px 15px}
+  .hrow .pts b{font-family:var(--disp);font-size:14.5px}
+  .hrow .pts .opt{font-family:var(--mono);font-size:12.5px;color:var(--muted);display:block;margin-top:3px}
+  .hrow .pts .opt strong{color:var(--ink)}
+
+  /* watch-out checklist */
+  .checklist{list-style:none;padding:0;margin:14px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+  .checklist li{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 15px 13px 40px;position:relative;font-size:14px;margin:0}
+  .checklist li::before{content:"";position:absolute;left:14px;top:14px;width:14px;height:14px;border:2px solid var(--ink-2);border-radius:4px}
+  .checklist li b{display:block;font-family:var(--disp);font-size:13.5px;margin-bottom:2px}
+
+  /* case timeline */
+  .tline{border-left:3px solid var(--ink);margin:18px 0 18px 8px;padding-left:0}
+  .tstep{position:relative;padding:0 0 22px 26px}
+  .tstep::before{content:"";position:absolute;left:-9px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--ink)}
+  .tstep .t{font-family:var(--mono);font-size:11.5px;color:var(--teach);font-weight:600;letter-spacing:.05em}
+  .tstep h4{font-family:var(--disp);font-size:15.5px;margin:2px 0 6px}
+  .tstep p{margin:0 0 6px;font-size:14.5px}
+  .tstep.flag::before{border-color:var(--high);background:var(--high-bg)}
+  .tstep.flag .t{color:var(--high)}
+
+  /* script */
+  .script{background:#0f2747;color:#e8f0f9;border-radius:16px;padding:24px 26px;margin:16px 0;font-size:15.5px;line-height:1.6}
+  .script h3{color:#fff;margin-top:0}
+  .script .beat{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#86b9e6;display:block;margin:18px 0 4px}
+  .script p{color:#dbe7f3;margin:0 0 8px}
+  .script em{color:#fff;font-style:normal;font-weight:600;border-bottom:2px solid rgba(134,185,230,.6)}
+
+  /* handout */
+  .handout-actions{display:flex;gap:10px;margin:0 0 18px;flex-wrap:wrap}
+  .btn{font-family:var(--disp);font-weight:600;font-size:14px;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:9px 16px;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .handout{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px}
+  .handout h3{margin-top:18px}
+  .ho-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .ho-block{border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .ho-block h4{font-family:var(--disp);font-size:13px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 8px;color:var(--ink)}
+  .ho-block ul{margin:0;font-size:13px}
+  .ho-block ul li{margin-bottom:4px;padding-left:16px}
+  .ho-block ul li::before{width:5px;height:5px;top:8px}
+
+  /* quiz */
+  .q{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin:0 0 14px}
+  .q .stem{font-weight:600;font-size:15.5px;margin-bottom:12px}
+  .q .opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fbfcfe;border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;font-family:var(--body);font-size:14.5px;color:var(--ink);transition:.12s}
+  .q .opt:hover{border-color:var(--ink-2)}
+  .q .opt.correct{background:var(--low-bg);border-color:var(--low);color:var(--low);font-weight:600}
+  .q .opt.wrong{background:var(--high-bg);border-color:var(--high);color:var(--high)}
+  .q .exp{display:none;margin-top:6px;font-size:14px;background:var(--teach-bg);border:1px solid var(--teach-line);border-radius:9px;padding:11px 13px}
+  .q .exp.show{display:block}
+
+  footer.foot{border-top:1px solid var(--line);padding:22px 0 60px;font-size:12.5px;color:var(--muted)}
+  footer.foot .wrap{max-width:980px}
+  footer.foot strong{color:var(--ink)}
+
+  @media (max-width:680px){
+    .tiers{grid-template-columns:1fr}
+    .ho-grid{grid-template-columns:1fr}
+  }
+
+  /* ---------- Print: handout only ---------- */
+  @media print{
+    nav.tabs,header.top,.tabrow,.handout-actions,footer.foot,.no-print{display:none!important}
+    body{background:#fff}
+    .panel{display:none!important}
+    #print-target{display:block!important}
+    .handout{border:0;padding:0}
+    h2.sec{font-size:20px}
+    @page{margin:14mm}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Bedside Teaching Series · Cardiovascular Nursing</p>
+    <h1>Reading the Story Before It Ends</h1>
+    <p class="sub">The <em>why</em> behind the ACS HEART Pathway — built for the nurses who triage it, watch it, escalate it, and find the bed for it.</p>
+    <div class="meta">
+      <span>ED · Tele/PCU · Charge · House Sup · New CV RNs</span>
+      <span>5-min huddle / in-service ready</span>
+      <span>hs-Troponin T · HEART · Disposition</span>
+    </div>
+    <svg class="ecg-line" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,30 L120,30 L150,30 L160,22 L172,30 L300,30 L318,30 L326,8 L336,52 L346,18 L356,30 L520,30 L548,30 L558,24 L570,30 L720,30 L735,30 L744,9 L754,51 L764,20 L774,30 L1000,30"
+            fill="none" stroke="#86b9e6" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="wrap">
+    <div class="tabrow" role="tablist" id="tabrow">
+      <button role="tab" aria-selected="true" data-t="why"><span class="n">01</span>Why this exists</button>
+      <button role="tab" aria-selected="false" data-t="science"><span class="n">02</span>The science</button>
+      <button role="tab" aria-selected="false" data-t="ecg"><span class="n">03</span>ECG</button>
+      <button role="tab" aria-selected="false" data-t="history"><span class="n">04</span>History</button>
+      <button role="tab" aria-selected="false" data-t="trop"><span class="n">05</span>Troponin</button>
+      <button role="tab" aria-selected="false" data-t="beyond"><span class="n">06</span>Beyond ACS</button>
+      <button role="tab" aria-selected="false" data-t="pe"><span class="n">07</span>PE &amp; PERC</button>
+      <button role="tab" aria-selected="false" data-t="tro"><span class="n">08</span>Triple Rule-Out</button>
+      <button role="tab" aria-selected="false" data-t="decoder"><span class="n">09</span>Plain English</button>
+      <button role="tab" aria-selected="false" data-t="heart"><span class="n">10</span>HEART score</button>
+      <button role="tab" aria-selected="false" data-t="watch"><span class="n">11</span>Watch-outs</button>
+      <button role="tab" aria-selected="false" data-t="wrong"><span class="n">12</span>What goes wrong</button>
+      <button role="tab" aria-selected="false" data-t="case"><span class="n">13</span>Case</button>
+      <button role="tab" aria-selected="false" data-t="script"><span class="n">14</span>Teaching script</button>
+      <button role="tab" aria-selected="false" data-t="handout"><span class="n">15</span>Handout</button>
+      <button role="tab" aria-selected="false" data-t="check"><span class="n">16</span>Quick check</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+  <!-- 01 WHY -->
+  <section class="panel active" id="why" role="tabpanel">
+    <h2 class="sec">Why this pathway exists</h2>
+    <p class="lede">The HEART Pathway isn't a checklist to clear — it's a way of sorting chest pain into four very different futures, fast, without missing the one that's actively killing tissue.</p>
+    <p>Every patient who comes through the door with chest pain is one of four stories. The whole job of the pathway is to figure out which one — quickly, and without over- or under-calling it:</p>
+    <div class="tiers" style="grid-template-columns:repeat(2,1fr)">
+      <div class="tier high"><div class="score">STORY 1</div><h4>Occlusion now</h4><ul><li>STEMI <em>or</em> occlusion MI on a non-STEMI ECG</li><li>An artery is shut. Muscle is dying.</li><li>Needs reperfusion — minutes matter</li></ul></div>
+      <div class="tier mid"><div class="score">STORY 2</div><h4>ACS, not occluding</h4><ul><li>NSTEMI / unstable angina</li><li>Real coronary disease, not a full occlusion <em>yet</em></li><li>Needs admit, meds, monitored cardiac workup</li></ul></div>
+      <div class="tier low"><div class="score">STORY 3</div><h4>Truly low risk</h4><ul><li>Story not concerning, ECG clean, trop rules out</li><li>Won't benefit from admission or more acute testing</li><li>Safe discharge with follow-up</li></ul></div>
+      <div class="tier" style="background:#eef3f9;border-color:#cfdcec"><div class="score" style="color:var(--ink-2)">THE TWO ERRORS</div><h4 style="color:var(--ink-2)">What we're avoiding</h4><ul><li><b>Missed ACS</b> — sent home, comes back worse</li><li><b>Unnecessary admit</b> — beds, cost, downstream testing harm</li></ul></div>
+    </div>
+    <div class="why"><span class="tag">Why nurses own this</span><p>You are the continuity. The provider sees the patient in snapshots; you're at the bedside watching the movie. The pathway's whole premise is that <strong>the picture evolves</strong> — and the person most likely to catch the turn is the nurse who knows what "the turn" looks like.</p></div>
+    <div class="pearl"><span class="tag">House Sup lens</span><p>Every one of those four stories is a different bed. The earlier you read which story you're in, the earlier you're working the right placement — discharge home, obs/tele, PCU, ICU, or CVICU. Disposition thinking starts at triage, not at the order.</p></div>
+  </section>
+
+  <!-- 02 SCIENCE -->
+  <section class="panel" id="science" role="tabpanel">
+    <h2 class="sec">The science behind ACS</h2>
+    <p class="lede">Coronary disease isn't a pipe that slowly clogs until it stops. It's a plaque that tears, clots, and changes by the minute. That's why nothing you check is a single snapshot.</p>
+
+    <h3>It's a rupture, not a slow clog</h3>
+    <p>The old mental model was a narrowing lumen filling in like a rusty pipe. What actually drives most ACS is a <strong>vulnerable plaque</strong> in the artery wall that ruptures or erodes. Platelets pile onto the raw surface and form a thrombus. The danger isn't how <em>narrow</em> the artery looked last month — it's whether the cap tore today.</p>
+    <div class="why"><span class="tag">Why this matters at the bedside</span><p>This is why a patient can have a "clean cath" or a normal stress test a year ago and still be having a real MI right now. Plaque vulnerability beats plaque size. <strong>Nothing risk-stratifies to zero.</strong></p></div>
+
+    <h3>Partial vs. complete occlusion</h3>
+    <ul>
+      <li><strong>Partial / intermittent clot</strong> → ischemia that comes and goes. Symptoms wax and wane. ECG can look normal between episodes.</li>
+      <li><strong>Complete occlusion</strong> → full-thickness infarction unless flow is restored. This is the one chasing the clock.</li>
+    </ul>
+    <p>And the clot is not static. It can <strong>spontaneously reperfuse</strong> (the patient feels better, ECG improves) and then <strong>re-occlude</strong> (pain returns, ECG re-changes). The same artery can open and shut several times in an afternoon.</p>
+
+    <div class="pearl"><span class="tag">The one idea to take away</span><p>ACS is a <strong>moving target</strong>. That single sentence explains why we draw serial troponins, repeat ECGs when pain comes back, and don't get falsely reassured by one normal set. You are sampling a process, not reading a verdict.</p></div>
+
+    <h3>Why symptoms, ECG, and troponin all evolve</h3>
+    <p>Because the occlusion itself evolves, every downstream marker lags and shifts: pain tracks flow in real time, the ECG changes over minutes to hours as ischemia deepens or resolves, and troponin only rises once enough muscle has been injured — which takes time. Check too early and you can catch all three before they've declared.</p>
+  </section>
+
+  <!-- 03 ECG -->
+  <section class="panel" id="ecg" role="tabpanel">
+    <h2 class="sec">Why the ECG matters — and why one isn't enough</h2>
+    <p class="lede">The ECG is the single most important early test, and it's also the one most likely to falsely reassure. "No STEMI" is not the same as "no occlusion."</p>
+
+    <h3>Why 10 minutes</h3>
+    <p>A STAT 12-lead within 10 minutes of arrival exists to catch the patient whose artery is occluded <em>right now</em>, because reperfusion is the most time-sensitive, highest-mortality-benefit decision in all of ACS (aside from aspirin). Time is myocardium. The 10-minute clock is a triage and charge-nurse responsibility as much as a provider one.</p>
+
+    <h3>"No STEMI" ≠ "no occlusion MI"</h3>
+    <p>STEMI criteria were never designed to diagnose acute occlusion — they're a specific pattern, and they're insensitive early. In real numbers, classic STEMI criteria <strong>miss more than a quarter of true occlusions</strong>, which then get filed as "NSTEMI." Those missed occlusion MIs carry roughly <strong>double the mortality</strong> of NSTEMIs without occlusion. So a machine read of "no STEMI" or "nonspecific" is the start of the question, not the end.</p>
+    <div class="why"><span class="tag">What this changes for you</span><p>When the read says "nonspecific" but the patient looks and sounds like ACS, that's not a green light — that's the exact patient who needs a repeat tracing and a closer set of eyes. The unimpressive ECG in a concerning patient is the trap.</p></div>
+
+    <h3>Why serial ECGs</h3>
+    <p>The earliest signs of occlusion are subtle and dynamic — hyperacute T waves before any ST elevation, ST changes that come and go with reperfusion and re-occlusion. A truly ischemic ECG <em>evolves</em>. You only see evolution if you have more than one tracing. When in doubt, one ECG begets another.</p>
+
+    <div class="pearl"><span class="tag">Nurse teaching pearls — ECG</span>
+      <ul>
+        <li><strong>Repeat the ECG if pain recurs or worsens</strong>, or if the story is concerning despite a clean first tracing. Don't wait to be asked.</li>
+        <li><strong>Compare to old and EMS ECGs</strong> when available — a "nonspecific" tracing that's actually <em>new</em> is a different animal.</li>
+        <li><strong>Escalate now</strong> for dynamic changes between tracings, new ST depression, deep or new T-wave inversions, hyperacute T waves, or any unstable rhythm.</li>
+        <li>Pair the ECG with the patient: <strong>changes + ongoing pain</strong> is a louder alarm than either alone.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 HISTORY -->
+  <section class="panel" id="history" role="tabpanel">
+    <h2 class="sec">Why the history matters most</h2>
+    <p class="lede">The story carries more diagnostic weight than any single test — and the story is often atypical in exactly the patients we most need to catch.</p>
+
+    <h3>ACS doesn't read the textbook</h3>
+    <p>The classic crushing substernal pain radiating to the left arm is real, but it's far from universal. Atypical presentations are the rule — not the exception — especially in <strong>women, people with diabetes, older adults, and non-white patients</strong>. As many as a third of all MIs, and a majority of patients over 75, present with <strong>no chest pain at all</strong>.</p>
+    <p>Treat all of these as the same chest-pain story until proven otherwise:</p>
+    <ul>
+      <li>Pressure, tightness, squeezing, fullness, burning, "indigestion"</li>
+      <li>Discomfort in the throat, jaw, neck, shoulder, back, or one or both arms</li>
+      <li>Shortness of breath, nausea or vomiting, diaphoresis (cold sweat)</li>
+      <li>Unexplained weakness, fatigue, lightheadedness, or just "not right"</li>
+    </ul>
+    <p>Burning and indigestion-type discomfort carry the <em>same</em> risk of MI as classic pressure. Only purely "stabbing" pain leans the odds down — and even that doesn't rule anything out.</p>
+
+    <h3>Three "rule-outs" that aren't</h3>
+    <div class="card">
+      <p><strong>"The nitro fixed it, so it's cardiac."</strong> &nbsp;→&nbsp; No. Nitro relief is unreliable in both directions (it can relieve esophageal spasm too). Response to nitro does <strong>not</strong> rule ACS in or out.</p>
+      <p><strong>"The GI cocktail fixed it, so it's reflux."</strong> &nbsp;→&nbsp; No. Antacids relieve pain in up to a quarter of real MIs. A "GI cocktail" is treatment, never a diagnostic test.</p>
+      <p style="margin-bottom:0"><strong>"They had a normal stress test recently."</strong> &nbsp;→&nbsp; A recent negative stress test does not make today's ACS impossible. Plaques rupture independent of prior stenosis; a meaningful share of these patients still have significant disease.</p>
+    </div>
+    <div class="pearl"><span class="tag">How nurses score the history</span><p>The "History" piece of HEART is a judgment, not a yes/no: <strong>slightly suspicious (0), moderately (1), highly (2)</strong>. Your bedside picture — the way they describe it, how they look, whether it's like a prior event — directly feeds that score. A highly suspicious story (2) should make everyone cautious about calling the patient low risk, <em>even if the total adds up to ≤3.</em></p></div>
+  </section>
+
+  <!-- 05 TROPONIN -->
+  <section class="panel" id="trop" role="tabpanel">
+    <h2 class="sec">Troponin: injury marker, not a verdict</h2>
+    <p class="lede">High-sensitivity troponin T tells you heart muscle was injured. It does <em>not</em> tell you the injury was a Type 1 MI. The number alone never makes the diagnosis — the <strong>pattern</strong> does.</p>
+    <p class="jump-note">Fuzzy on "99th percentile," "delta," or "high-sensitivity"? <span class="jump" data-jump="decoder">Plain-English decoder →</span></p>
+
+    <h3>Injury vs. infarction</h3>
+    <p>An elevated hs-TnT means myocardial injury. MI is only one cause. Up to <strong>85%</strong> of elevated troponins in the ED come from something other than Type 1 MI — heart failure, kidney disease, sepsis, PE, tachyarrhythmia, myocarditis, critical illness. With high-sensitivity assays, up to half of patients <em>without</em> ACS still have a detectable level. So the skill isn't reading "positive/negative" — it's interpreting the value <strong>in context</strong> and watching the trend.</p>
+
+    <h3>Local hs-Troponin T reference</h3>
+    <table class="trop">
+      <thead><tr><th>Band</th><th>Female</th><th>Male</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td><span class="band n">Normal</span></td><td class="v">&lt; 14 ng/L</td><td class="v">&lt; 22 ng/L</td><td>Below sex-specific cutoff</td></tr>
+        <tr><td><span class="band i">Indeterminate</span></td><td class="v">14 – 51 ng/L</td><td class="v">22 – 51 ng/L</td><td>Gray zone — the delta decides</td></tr>
+        <tr><td><span class="band a">Abnormal / critical</span></td><td class="v" colspan="2" style="text-align:center">≥ 52 ng/L</td><td>Significant injury — interpret with story + ECG</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Why the delta is the whole game</h3>
+    <p>A single value is a still frame. The <strong>delta</strong> — the change between serial draws — is what separates an <em>acute</em> process from a <em>chronic</em> one.</p>
+    <div class="tiers" style="grid-template-columns:1fr 1fr">
+      <div class="tier high"><div class="score">RISING / FALLING</div><h4 style="font-size:15px">Abnormal delta</h4><ul><li><span class="mono">&gt; 5 ng/L</span> at 1 hour, <em>or</em></li><li><span class="mono">&gt; 7 ng/L</span> at 3 hours</li><li>A moving troponin = <strong>acute</strong> injury. In the right story, that's MI until proven otherwise.</li></ul></div>
+      <div class="tier low"><div class="score">FLAT</div><h4 style="font-size:15px">Low-risk rule-out</h4><ul><li>HEART ≤ 3, <em>and</em></li><li>Troponin below sex-specific cutoff, <em>and</em></li><li>Delta <span class="mono">&lt; 3 ng/L</span> at 1 hr (or <span class="mono">≤ 5 ng/L</span> at 3 hr)</li></ul></div>
+    </div>
+    <div class="why"><span class="tag">Flat-but-elevated vs. rising</span><p>A troponin that's <strong>elevated but flat</strong> across serial draws usually means <em>chronic</em> injury — the failing kidney, the stiff heart, the baseline that's always 40. A troponin that's <strong>rising or falling</strong> points to something <em>acute</em>. Same number, completely different meaning, depending on whether it moved.</p></div>
+    <div class="pearl"><span class="tag">Nurse operational pearl</span><p>You protect the delta. <strong>Document the exact time the baseline troponin was drawn</strong> so the 1-hour or 3-hour repeat lands on time. A delta drawn early, late, or missed entirely is how a real rise gets blurred into "indeterminate." The timing is a nursing save.</p></div>
+  </section>
+
+  <!-- 06 BEYOND ACS -->
+  <section class="panel" id="beyond" role="tabpanel">
+    <h2 class="sec">When troponin isn't ACS</h2>
+    <p class="lede">Troponin is organ-specific, not disease-specific. It says the heart muscle was hurt — never <em>why</em>. On a cardiac floor, most of your bumped troponins aren't plaque ruptures. Here's how to tell strain from a heart attack.</p>
+    <p class="jump-note">Tripped up by "sensitivity," "specificity," or "NPV"? <span class="jump" data-jump="decoder">Plain-English decoder →</span></p>
+
+    <h3>The distinction the whole field hinges on: injury vs. infarction</h3>
+    <p>This is the conceptual core of the Fourth Universal Definition of MI. <strong>Myocardial injury</strong> is any troponin above the 99th-percentile cutoff — damage, from any cause. <strong>Myocardial infarction</strong> is injury caused <em>specifically by ischemia</em>. A blood test alone can never diagnose an MI:</p>
+    <div class="card" style="text-align:center;background:#eef3f9;border-color:#cfdcec">
+      <p style="margin:0;font-family:var(--disp);font-weight:700;font-size:15.5px;line-height:1.45">
+        Acute injury <span class="mono" style="color:var(--muted)">(troponin rising / falling, ≥1 value &gt; cutoff)</span><br>
+        <span style="color:var(--high)">+</span> clinical evidence of ischemia <span style="color:var(--high)">=</span> <span style="color:var(--high)">Acute MI</span></p>
+    </div>
+    <p style="margin-top:-4px">"Clinical evidence of ischemia" means at least one of: <strong>ischemic symptoms</strong>, <strong>new ischemic ECG changes</strong>, <strong>imaging showing new loss of viable muscle or a new wall-motion abnormality</strong>, or a <strong>coronary thrombus on angiography/autopsy</strong>. No ischemia, no MI — even with a sky-high troponin.</p>
+
+    <h3>Read it as a fork: acute or chronic, ischemic or not</h3>
+    <div class="injury-tree">
+      <div class="it-top">Troponin &gt; 99th-percentile cutoff <span class="mono">= MYOCARDIAL INJURY</span></div>
+      <div class="it-cols">
+        <div class="it-branch">
+          <h5>Rising / falling → ACUTE</h5>
+          <div class="it-card mi"><b>+ ischemia → Myocardial infarction</b>Type 1 (plaque rupture) or Type 2 (supply–demand).<span class="who">the ACS story · dynamic ECG · cath</span></div>
+          <div class="it-card acute"><b>No ischemia → Acute injury</b>Real, acute, but not an MI.<span class="who">myocarditis · PE · sepsis · acute decompensated HF</span></div>
+        </div>
+        <div class="it-branch">
+          <h5>Flat / stable → CHRONIC</h5>
+          <div class="it-card chronic"><b>Chronic injury</b>Persistently elevated, no significant change.<span class="who">CKD / ESRD · stable HF · LVH · structural heart disease</span></div>
+          <div class="it-card" style="background:#fff;border-color:var(--line)"><b style="color:var(--ink)">Why it still matters</b>Chronic elevation is <em>not</em> a false positive — it flags a higher-risk heart and worse outcomes.</div>
+        </div>
+      </div>
+    </div>
+    <div class="why"><span class="tag">The mental flip</span><p>For a bumped troponin, stop asking "<em>is it positive?</em>" and start asking three questions in order: <strong>Did it move? Is there ischemia? What's their baseline?</strong> Those three turn a scary number into a clear story.</p></div>
+
+    <h3>The 5 types of MI — and the three you'll see most</h3>
+    <table class="trop">
+      <thead><tr><th>Type</th><th>Mechanism</th><th>Where you meet it</th></tr></thead>
+      <tbody>
+        <tr><td class="v">Type 1</td><td>Plaque rupture/erosion → thrombus</td><td>Classic ACS — the pathway's main target</td></tr>
+        <tr class="you"><td class="v">Type 2 <span class="hl">your floor</span></td><td>Supply–demand mismatch, <em>no</em> plaque rupture</td><td>Sepsis, anemia, severe HTN, shock, tachyarrhythmia, hypoxemia, spasm</td></tr>
+        <tr><td class="v">Type 3</td><td>Sudden cardiac death with ischemic signs before biomarkers drawn</td><td>Arrest with ECG/symptoms suggestive of MI</td></tr>
+        <tr class="you"><td class="v">Type 4 <span class="hl">post-cath</span></td><td>PCI-related — 4a procedure · 4b stent thrombosis · 4c restenosis</td><td>Your post-PCI patients</td></tr>
+        <tr class="you"><td class="v">Type 5 <span class="hl">post-CABG</span></td><td>CABG-related myonecrosis</td><td>Your fresh open-heart patients</td></tr>
+      </tbody>
+    </table>
+    <div class="pearl"><span class="tag">Heart-hospital reality</span><p>At a CV specialty hospital, Types 2, 4, and 5 are everyday life. A troponin bump in a <strong>fresh post-CABG</strong> heart is <em>expected</em> surgical injury — not a missed coronary event. The skill is holding both truths at once: don't panic at the expected bump, and don't get so used to it that you miss a <em>new, dynamic</em> rise riding on top.</p></div>
+
+    <h3>The non-ACS causes worth naming out loud</h3>
+    <div class="twocol">
+      <div class="card"><h4>Cardiac</h4><ul>
+        <li>Heart failure (acute & chronic)</li>
+        <li>Myocarditis, any cardiomyopathy</li>
+        <li>Tachy/ventricular arrhythmias</li>
+        <li>Takotsubo (stress cardiomyopathy)</li>
+        <li>Ablation, defibrillator shocks, cardiac procedures, contusion</li>
+      </ul></div>
+      <div class="card"><h4>Systemic</h4><ul>
+        <li>Sepsis & critical illness</li>
+        <li>CKD / ESRD</li>
+        <li>PE, pulmonary hypertension</li>
+        <li>Stroke, subarachnoid hemorrhage</li>
+        <li>Infiltrative disease (amyloid, sarcoid), chemo agents, extreme exertion</li>
+      </ul></div>
+    </div>
+    <p class="jump-note">PE is the ACS mimic you'll actually screen for at the bedside — it gets its own short section. <span class="jump" data-jump="pe">PE &amp; PERC →</span></p>
+
+    <h3>The two patients you'll meet every shift: CHF and CKD</h3>
+    <div class="card">
+      <h4 style="font-family:var(--disp);font-size:16px;margin:0 0 8px;color:var(--teach)">CKD / ESRD — the chronically elevated baseline</h4>
+      <p>Dialysis and advanced-kidney patients almost always run a troponin above the population cutoff. Reduced renal clearance, chronic uremic strain, LVH, and microvascular disease all keep it up. <strong>It is valid, not a lab error</strong> — and it predicts worse cardiovascular outcomes.</p>
+      <p style="margin-bottom:0">Here's the catch: in these patients the <strong>absolute number is nearly meaningless</strong>. A flat <code class="val">60</code> may be their normal. The signal is the <strong>delta off their own baseline</strong> — a <code class="val">60 → 110</code> with an ischemic story is the alarm, not the <code class="val">60</code> itself. Knowing or hunting down their prior baseline is gold.</p>
+    </div>
+    <div class="card">
+      <h4 style="font-family:var(--disp);font-size:16px;margin:0 0 8px;color:var(--teach)">CHF — strain that can turn acute</h4>
+      <p>A failing heart leaks troponin from chronic wall stress, stretch, and subendocardial ischemia — so a stable elevated level often just reflects the disease. But an <strong>acute decompensation</strong> can drive a genuine rise/fall through a Type 2 mechanism: more wall stress, tachycardia, hypoxemia, and low output all starve a heart that's already working too hard.</p>
+      <p style="margin-bottom:0">So in CHF, flat-elevated usually means chronic strain; <strong>rising/falling</strong> means something acute is happening — sometimes a Type 2 MI, occasionally a Type 1 on top. Either way, a moving troponin in a decompensating CHF patient earns attention, not a shrug.</p>
+    </div>
+
+    <div class="stop"><span class="tag">The danger cuts both ways</span>
+      <ul>
+        <li><strong>Over-calling:</strong> treating every bumped CKD/CHF troponin as an acute MI → unnecessary cath, anticoagulation, and risk.</li>
+        <li><strong>Under-calling:</strong> "that's just their kidneys / just their heart failure" → missing a real Type 1 MI <em>layered on top</em>, because the baseline elevation lulled everyone.</li>
+      </ul>
+      <p>The delta plus the clinical story is what cuts through both. A known baseline is the single most useful thing you can put in front of the provider.</p>
+    </div>
+
+    <div class="pearl"><span class="tag">Nurse operational pearls — the strained heart</span>
+      <ul>
+        <li><strong>Hunt the baseline.</strong> Prior admits, dialysis records, the last discharge summary — a known baseline turns an ambiguous number into a clear delta.</li>
+        <li><strong>Push for serial sampling</strong> in CHF/CKD. A single value in these patients is nearly useless; the trend is everything.</li>
+        <li><strong>Never "ignore it."</strong> Any troponin is worse than none, and higher is worse than lower — even chronic elevation marks a high-risk cardiac patient who deserves eyes on them, not dismissal.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 07 PE & PERC -->
+  <section class="panel" id="pe" role="tabpanel">
+    <h2 class="sec">The big mimic: PE &amp; the PERC rule</h2>
+    <p class="lede">Chest pain, shortness of breath, palpitations, syncope, that throat/chest tightness — they overlap between ACS and pulmonary embolism. When PE is on the table but suspicion is <em>low</em>, you'll see providers reach for PERC. Here's what it actually does.</p>
+
+    <h3>What PERC is — and what it isn't</h3>
+    <p><strong>PERC = Pulmonary Embolism Rule-out Criteria.</strong> It is <strong>not</strong> a PE diagnosis score, and it never tells you someone <em>has</em> a clot. It's a clearance checklist used in one specific situation:</p>
+    <ul>
+      <li>It's only used when the provider's gestalt / pretest probability for PE is <strong>already low</strong>.</li>
+      <li>If <strong>all 8 criteria are negative</strong>, PE can often be ruled out <strong>without a D-dimer or CT</strong> — sparing the patient labs, radiation, and time.</li>
+      <li>If <strong>any one item is positive</strong>, the patient is "<strong>PERC positive</strong>" — meaning PERC <em>can't rule PE out by itself</em>. That is <em>not</em> a diagnosis of PE.</li>
+    </ul>
+
+    <div class="stop"><span class="tag">The pearl that prevents misuse</span><p><strong>PERC is a stop rule, not a start rule.</strong> It exists to <em>stop</em> unnecessary PE testing in very-low-risk patients. It should never be used to <em>dismiss</em> PE when the story, vitals, hypoxia, syncope, DVT signs, or provider concern point to higher risk.</p></div>
+
+    <div class="why"><span class="tag">Don't confuse it with HEART</span><p>HEART is <strong>additive</strong> — you sum points into a risk tier. PERC is <strong>all-or-none</strong> — every one of the 8 has to be clear to "pass," and a single positive item fails the whole rule. So "PERC positive" isn't a high score; it just means the shortcut doesn't apply here.</p></div>
+
+    <h3>The 8 PERC criteria — all must be clear</h3>
+    <p>To be PERC-<em>negative</em> (ruled out), every one of these has to be true:</p>
+    <ul class="checklist">
+      <li><b>Age &lt; 50</b>Younger than 50</li>
+      <li><b>HR &lt; 100</b>Not tachycardic</li>
+      <li><b>SpO₂ ≥ 95%</b>On room air</li>
+      <li><b>No unilateral leg swelling</b>No one-sided calf/leg swelling</li>
+      <li><b>No hemoptysis</b>Not coughing up blood</li>
+      <li><b>No prior DVT / PE</b>No clot history</li>
+      <li><b>No recent surgery / trauma</b>None in the recent window</li>
+      <li><b>No hormone / estrogen use</b>No OCPs, HRT, etc.</li>
+    </ul>
+
+    <h3>Worked example: a 56-year-old woman</h3>
+    <div class="card" style="margin-bottom:6px"><p style="margin:0">Chest pressure with throat tightness and palpitations. You run the 8 criteria with her:</p></div>
+    <table class="trop">
+      <thead><tr><th>Criterion</th><th>Her status</th><th>Counts?</th></tr></thead>
+      <tbody>
+        <tr><td>Age ≥ 50</td><td class="v">Yes — she's 56</td><td><span class="band a">+1</span></td></tr>
+        <tr><td>HR ≥ 100</td><td class="v">No</td><td><span class="band n">clear</span></td></tr>
+        <tr><td>Room-air SpO₂ &lt; 95%</td><td class="v">No</td><td><span class="band n">clear</span></td></tr>
+        <tr><td>Unilateral leg swelling</td><td class="v">No</td><td><span class="band n">clear</span></td></tr>
+        <tr><td>Hemoptysis</td><td class="v">No</td><td><span class="band n">clear</span></td></tr>
+        <tr><td>Prior DVT / PE</td><td class="v">No</td><td><span class="band n">clear</span></td></tr>
+        <tr><td>Recent surgery / trauma</td><td class="v">No</td><td><span class="band n">clear</span></td></tr>
+        <tr><td>Hormone / estrogen use</td><td class="v">No</td><td><span class="band n">clear</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-family:var(--mono);font-weight:600;font-size:14px;margin:10px 0">One positive item (age) &nbsp;→&nbsp; <span style="color:var(--high)">PERC positive</span></p>
+    <div class="pearl"><span class="tag">How to read that</span><p>She's <strong>not</strong> PERC-negative — <strong>age alone</strong> trips one criterion. That does <em>not</em> make PE likely; it only means PERC can't independently rule it out. From here it's provider judgment: if suspicion for PE stays <strong>low</strong>, the next step may be a <strong>D-dimer</strong> or no further PE workup per local pathway. If suspicion is <strong>moderate/high</strong>, that's a <strong>Wells / Geneva → D-dimer → CTPA</strong> pathway — not PERC.</p></div>
+
+    <h3>Nursing &amp; House Sup operations</h3>
+    <p>Keep PE on your radar alongside ACS when you see:</p>
+    <ul>
+      <li>Unexplained tachycardia or hypoxia, pleuritic chest pain, syncope, hemoptysis</li>
+      <li>Unilateral leg swelling, recent surgery or immobility, estrogen/hormone use</li>
+      <li>Prior DVT/PE, active cancer, or pregnancy/postpartum status</li>
+    </ul>
+    <div class="pearl"><span class="tag">What it changes for you</span>
+      <ul>
+        <li>If PE concern <strong>rises</strong>, the patient likely needs <strong>additional ED workup before disposition</strong> — don't let them drift toward discharge on the ACS track alone.</li>
+        <li>If PE is <strong>confirmed or strongly suspected</strong>, bed need rides on <strong>hemodynamics, O₂ requirement, RV strain, troponin/BNP elevation, the anticoagulation plan, and ICU vs. tele</strong>. A large clot with RV strain and a bumped troponin is an ICU conversation, not a tele one.</li>
+      </ul>
+    </div>
+    <div class="why"><span class="tag">Why this lives in an ACS module</span><p>PE is one reason a troponin rises <em>without</em> a coronary occlusion — RV strain, from the Beyond ACS list. Same overlapping symptoms, completely different treatment. Holding both possibilities open is exactly the anti-anchoring habit this whole pathway is built on.</p></div>
+    <p class="jump-note">Stable, but the team can't cleanly separate ACS vs PE vs aorta? There's one CT for that. <span class="jump" data-jump="tro">Triple Rule-Out →</span></p>
+  </section>
+
+  <!-- 08 TRIPLE RULE-OUT -->
+  <section class="panel" id="tro" role="tabpanel">
+    <h2 class="sec">Triple Rule-Out CTA — the gray-zone anatomy tool</h2>
+    <p class="lede">Sometimes the team genuinely can't tell whether stable chest pain is coronary, a clot, or the aorta. Triple Rule-Out is one CT that looks at all three dangerous vascular causes at once.</p>
+
+    <h3>What it is</h3>
+    <p>A <strong>CT angiography protocol</strong> that evaluates the three vascular killers of chest pain in a single study:</p>
+    <div class="tiers">
+      <div class="tier high"><div class="score">1</div><h4 style="font-size:15px">Coronary</h4><ul><li>CAD / ACS coronary anatomy — is there a culprit lesion?</li></ul></div>
+      <div class="tier mid"><div class="score">2</div><h4 style="font-size:15px">Pulmonary</h4><ul><li>Pulmonary embolism — clot in the lungs?</li></ul></div>
+      <div class="tier high"><div class="score">3</div><h4 style="font-size:15px">Aortic</h4><ul><li>Acute aortic syndrome / dissection — is the aorta torn?</li></ul></div>
+    </div>
+    <p>It does <strong>not</strong> replace clinical judgment, ECG, troponin timing, the HEART score, or PE risk screening — it sits alongside them as one more piece of decision support.</p>
+
+    <h3>Three lenses, three different questions</h3>
+    <p>This is the clean way to keep the tools straight:</p>
+    <div class="tri">
+      <div class="card"><span class="lh">Estimates risk</span><b class="t">HEART</b><p>How likely is <strong>ACS</strong>? A risk score — shows no anatomy.</p></div>
+      <div class="card"><span class="lh">Estimates risk</span><b class="t">PERC / Wells</b><p>How likely is <strong>PE</strong>? A risk rule — also no anatomy.</p></div>
+      <div class="card" style="border-color:var(--teach-line);background:var(--teach-bg)"><span class="lh">Shows anatomy</span><b class="t" style="color:var(--teach)">Triple Rule-Out</b><p>Is there a dangerous vascular cause we can <strong>see</strong> — coronary, PE, or aorta?</p></div>
+    </div>
+    <div class="why"><span class="tag">From the ED provider's chair</span><p>HEART estimates ACS risk, but it doesn't show anatomy and it says nothing about PE or dissection. In gray-area patients where HEART is neither clearly reassuring nor clearly high-risk, Triple Rule-Out can answer whether there's a dangerous vascular cause <em>visible on imaging</em> before committing to discharge vs. obs/admit.</p></div>
+
+    <h3>Who's the gray-zone patient?</h3>
+    <p>TRO is for a <em>selected</em> patient — not everyone with chest pain. Picture someone who is:</p>
+    <ul class="checklist">
+      <li><b>Stable</b>Not crashing</li>
+      <li><b>No STEMI</b>ECG doesn't force the cath lab</li>
+      <li><b>Troponin not yet diagnostic</b>Indeterminate, no clear delta yet</li>
+      <li><b>HEART in the middle</b>Not low enough to confidently discharge, not high enough to clearly admit/cath</li>
+      <li><b>Overlapping symptoms</b>Chest pressure, throat/jaw/back discomfort, SOB, a pleuritic component, palpitations, syncope-like spells, unexplained tachycardia</li>
+      <li><b>PE/aorta still plausible</b>Age or risk factors keep the clot and the aorta on the table</li>
+    </ul>
+
+    <h3>Where TRO does <em>not</em> fit</h3>
+    <div class="stop"><span class="tag">Not the right tool when…</span>
+      <ul>
+        <li><strong>Obvious STEMI / occlusion MI</strong> needing the cath lab — go to cath, not CT.</li>
+        <li><strong>Hemodynamic instability or shock</strong> — too unstable for the scanner.</li>
+        <li><strong>Severe hypoxia or obvious high-risk PE</strong> — target it directly.</li>
+        <li><strong>A strong classic dissection story</strong> — that's a dedicated aortic CTA + urgent surgical pathway, now.</li>
+        <li><strong>A clear diagnosis</strong> where a targeted, focused study images it better.</li>
+        <li><strong>As a blanket test</strong> for every chest-pain patient — it's a selected-use tool, not a default.</li>
+      </ul>
+    </div>
+
+    <h3>Where it sits in the pathway</h3>
+    <p>TRO is a <strong>side pathway</strong>, not a step inside the HEART score. It branches off <em>after</em> the initial ECG, troponin, and clinical assessment — for the gray-zone patient only:</p>
+    <div class="tro-flow">
+      <div class="tro-top">After initial ECG · troponin · clinical assessment →</div>
+      <div class="tro-cols">
+        <div class="tro-cell"><span class="lab">Clearly low</span>Ruled out → discharge track</div>
+        <div class="tro-cell hot"><span class="lab">Gray zone</span>Stable, but ACS vs PE vs aorta can't be separated clinically → <strong>consider TRO CTA</strong></div>
+        <div class="tro-cell"><span class="lab">Clearly high</span>Admit / cath track</div>
+      </div>
+    </div>
+
+    <h3>Bedside &amp; operational nursing</h3>
+    <h4 style="font-family:var(--disp);font-size:14px;margin:14px 0 6px;color:var(--ink-2)">Before the scan</h4>
+    <ul>
+      <li><strong>Renal + allergy check:</strong> creatinine/GFR and contrast-allergy history — it's a contrast study.</li>
+      <li><strong>IV access:</strong> ensure adequate access for CTA (often a larger-bore, power-injectable line).</li>
+      <li><strong>HR &amp; rhythm matter:</strong> coronary image quality suffers with tachycardia or an irregular rhythm — clarify whether a <strong>beta blocker or nitro</strong> is being given to sharpen the coronary images.</li>
+      <li><strong>Keep watching while they wait:</strong> recurrent chest pain, BP instability, rhythm changes, new O₂ need, or neuro/perfusion changes — any of these can change the plan before the patient ever reaches the scanner.</li>
+    </ul>
+
+    <h4 style="font-family:var(--disp);font-size:14px;margin:16px 0 6px;color:var(--ink-2)">After results — anticipate the disposition shift</h4>
+    <div class="outcomes">
+      <div class="oc neg"><b>Negative TRO</b>+ reassuring ECG/troponins → may support discharge.</div>
+      <div class="oc cor"><b>Coronary disease / stenosis</b>→ cardiology, obs/admit, or cath pathway.</div>
+      <div class="oc pe"><b>PE found</b>→ anticoagulation; tele vs ICU by clot burden, RV strain, BP/O₂.</div>
+      <div class="oc ao"><b>Aortic pathology</b>→ <strong>immediate escalation</strong> — ICU / CT surgery / vascular / transfer-level concern.</div>
+    </div>
+
+    <div class="pearl"><span class="tag">The one line to remember</span><p>Triple Rule-Out is a <strong>gray-zone anatomy tool</strong>. HEART estimates ACS risk. PERC/Wells estimate PE risk. TRO helps when the provider is asking: <em>is there a dangerous vascular cause we can see — coronary, PE, or aorta — before deciding discharge vs. obs/admit?</em></p></div>
+  </section>
+
+  <!-- 09 DECODER -->
+  <section class="panel" id="decoder" role="tabpanel">
+    <h2 class="sec">The research words, in plain English</h2>
+    <p class="lede">None of these are as scary as they sound — they're shorthand researchers use. Here's what each one actually means at the bedside, and why it matters for the patient in front of you.</p>
+
+    <div class="gloss-group">
+      <h3>The "is this number abnormal?" words</h3>
+
+      <div class="dterm">
+        <div class="term">99th percentile / Upper Reference Limit (URL)</div>
+        <p class="plain">The line between "normal" and "abnormal" for troponin.</p>
+        <div class="ana"><b>Picture this:</b> line up 100 perfectly healthy people by their troponin, lowest to highest. The 99th percentile is the value 99 of them fall under. Cross that line and you're outside what almost every healthy heart shows.</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> It's a statistical "normal ceiling," not a magic heart-attack number. Above it = injury worth explaining — but it never tells you the <em>cause</em>. That's still the story's job.</p>
+      </div>
+
+      <div class="dterm">
+        <div class="term">ng/L (nanograms per liter)</div>
+        <p class="plain">Just the measuring stick — how much troponin is in the blood.</p>
+        <div class="ana"><b>Scale check:</b> a nanogram is a billionth of a gram. We're measuring vanishingly tiny amounts, which is exactly why the assay has to be so precise.</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> Every cutoff you use — 14, 22, 52 — is in this one unit. "18 ng/L" vs "52 ng/L" is just less or more troponin on the same ruler.</p>
+      </div>
+
+      <div class="dterm">
+        <div class="term">Delta (Δ)</div>
+        <p class="plain">The change between two troponin draws. "Δ" is just the Greek letter for "difference."</p>
+        <div class="ana"><b>That's the whole trick:</b> baseline 18, repeat 27 → Δ +9. The delta is simply the movement between draws.</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> A <em>moving</em> troponin = acute. A <em>flat</em> one = chronic. The delta is the most useful thing on the entire trend — which is why you guard the timing of the draws.</p>
+      </div>
+
+      <div class="dterm">
+        <div class="term">High-sensitivity assay</div>
+        <p class="plain">A newer test that can "see" much lower troponin levels than the old ones.</p>
+        <div class="ana"><b>Like an upgrade:</b> from reading glasses to a microscope. You catch tiny amounts of troponin earlier — sometimes within an hour of injury.</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> Sharper eyes are why we can rule in or out faster with 1-hr and 3-hr deltas. It's also why up to half of people <em>without</em> ACS now show a detectable number — the test picks up normal wear-and-tear too.</p>
+      </div>
+    </div>
+
+    <div class="gloss-group">
+      <h3>The "can we trust the machine?" words</h3>
+
+      <div class="dterm">
+        <div class="term">Coefficient of variation (CV)</div>
+        <p class="plain">How much the result wobbles if you ran the exact same sample over and over.</p>
+        <div class="ana"><b>Like a bathroom scale:</b> step on it five times. Reads 150, 150, 151, 150, 149 → low wobble, trustworthy. Reads 150, 162, 144 → you can't trust a small change. A good troponin assay wobbles ≤10%.</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> Low wobble is what lets us trust a small <em>real</em> change (a Δ of +6) instead of writing it off as noise. The precision is the whole reason the delta means something.</p>
+      </div>
+
+      <div class="dterm">
+        <div class="term">Limit of blank / detection / quantitation (LoB / LoD / LoQ)</div>
+        <p class="plain">Three steps in "how low can the test reliably see?"</p>
+        <div class="ana"><b>Like hearing a whisper across a room:</b> &nbsp;<b>LoB</b> = the background hum when no one's talking. &nbsp;<b>LoD</b> = "I can tell someone whispered" (there's <em>some</em> troponin). &nbsp;<b>LoQ</b> = "I can tell you exactly what they said" (a number you can trust).</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> This is why a result can read "undetectable" (&lt;6 ng/L) — the test genuinely sees nothing — which in the right very-low-risk patient is reassuring on its own.</p>
+      </div>
+    </div>
+
+    <div class="gloss-group">
+      <h3>The "how good is this test?" words — sensitivity &amp; specificity</h3>
+      <p>Every test can fail two ways: it can <strong>miss a real case</strong> (false negative) or it can <strong>cry wolf</strong> (false positive). These two words just tell you which failure a test is good at avoiding.</p>
+
+      <div class="ss">
+        <div class="ss-card sn">
+          <div class="big">Sensitivity</div>
+          <p class="one">Catches real cases. Miss-proof.</p>
+          <p class="d">A sensitive test rarely misses someone who truly has the disease (few false negatives) — like a smoke detector that goes off for every fire.</p>
+          <div class="mnem"><b>SnNout</b> → a <b>S</b>e<b>n</b>sitive test, when <b>N</b>egative, rules it <b>OUT</b>.</div>
+        </div>
+        <div class="ss-card sp">
+          <div class="big">Specificity</div>
+          <p class="one">Avoids false alarms. Picky.</p>
+          <p class="d">A specific test rarely flags someone who's actually fine (few false positives) — like a strict bouncer who only stops real troublemakers.</p>
+          <div class="mnem"><b>SpPin</b> → a <b>Sp</b>ecific test, when <b>P</b>ositive, rules it <b>IN</b>.</div>
+        </div>
+      </div>
+
+      <div class="why"><span class="tag">See it in the pathway</span><p>This is exactly why "<strong>no STEMI</strong>" can't reassure you: STEMI criteria are <em>insensitive</em> for occlusion — they <strong>miss</strong> a lot of real ones. And it's why a positive <strong>modified Sgarbossa</strong> (99% specific) gets believed: when something that picky fires, it's almost always real.</p></div>
+
+      <div class="dterm">
+        <div class="term">PPV &amp; NPV (predictive values)</div>
+        <p class="plain">When the test is positive — or negative — how much should you actually believe it?</p>
+        <div class="ana"><b>NPV</b> = when it says "negative," how often that's truly right. The HEART pathway's <b>99.6% NPV</b> means: of the low-risk patients it ruled out, 99.6% really had no MI or death at 30 days. That's the number that lets us send them home. <b>PPV</b> is the same idea for a positive result.</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> The twist: these depend on <em>who you test</em>. The same result means different things in a high-suspicion vs. low-suspicion patient. That's the math behind "the story matters" — and why we don't order troponin on people with no real suspicion for ACS.</p>
+      </div>
+
+      <div class="dterm">
+        <div class="term">Likelihood ratio (+LR / −LR)</div>
+        <p class="plain">How much one finding should move your suspicion up or down.</p>
+        <div class="ana"><b>Needle-mover:</b> a big <b>+LR</b> shoves you toward the disease; a tiny <b>−LR</b> pulls you away. A high-risk HEART score has a +LR around <b>13</b> (strongly toward ACS); a low-risk HEART has a −LR around <b>0.20</b> (strongly away).</div>
+        <p class="sowhat"><span class="tag-mono">Why you care</span> You don't need the math. Just know some findings barely move the needle, and some — a highly suspicious history, a dynamic ECG — move it hard. That's why those get the override.</p>
+      </div>
+    </div>
+
+    <div class="pearl"><span class="tag">The whole tab in one breath</span><p><strong>Sensitive</strong> → trust it when it's <strong>negative</strong> (SnNout). <strong>Specific</strong> → trust it when it's <strong>positive</strong> (SpPin). <strong>99th percentile</strong> = the healthy "normal ceiling." <strong>Δ</strong> = the change. <strong>NPV</strong> = how much you can trust a negative. Everything else is detail.</p></div>
+  </section>
+
+  <!-- 08 HEART -->
+  <section class="panel" id="heart" role="tabpanel">
+    <h2 class="sec">The HEART score — support, not autopilot</h2>
+    <p class="lede">HEART combines five things you're already assessing into one shared language for risk. It guides disposition. It does not override the clinician — or your gut.</p>
+
+    <div class="heart-grid">
+      <div class="hrow"><div class="letter">H<small>HISTORY</small></div><div class="pts"><b>How suspicious is the story?</b><span class="opt"><strong>0</strong> slightly · <strong>1</strong> moderately · <strong>2</strong> highly suspicious</span></div></div>
+      <div class="hrow"><div class="letter">E<small>ECG</small></div><div class="pts"><b>Ischemia on the tracing?</b><span class="opt"><strong>0</strong> normal · <strong>1</strong> nonspecific repol · <strong>2</strong> significant ST deviation</span></div></div>
+      <div class="hrow"><div class="letter">A<small>AGE</small></div><div class="pts"><b>Age band</b><span class="opt"><strong>0</strong> &lt; 45 · <strong>1</strong> 45–64 · <strong>2</strong> ≥ 65</span></div></div>
+      <div class="hrow"><div class="letter">R<small>RISK</small></div><div class="pts"><b>Risk factors (HTN, DM, smoking, lipids, obesity, FHx)</b><span class="opt"><strong>0</strong> none · <strong>1</strong> 1–2 · <strong>2</strong> ≥ 3 <em>or</em> known atherosclerotic disease</span></div></div>
+      <div class="hrow"><div class="letter">T<small>TROPONIN</small></div><div class="pts"><b>Initial hs-TnT vs. cutoff</b><span class="opt"><strong>0</strong> normal · <strong>1</strong> 1–3× cutoff · <strong>2</strong> &gt; 3× cutoff</span></div></div>
+    </div>
+
+    <h3>What the total means for the bed</h3>
+    <div class="tiers">
+      <div class="tier low"><div class="score">HEART 0–3</div><h4>Low risk</h4><ul><li><em>Only</em> if story isn't highly suspicious, ECG nonischemic, no ongoing/recurrent symptoms, <em>and</em> serial trop rules out</li><li>→ likely discharge, PCP follow-up, return precautions</li></ul></div>
+      <div class="tier mid"><div class="score">HEART 4–6</div><h4>Intermediate</h4><ul><li>Indeterminate trop, recurrent symptoms, known CAD, or provider concern</li><li>→ obs / tele, serial trop + ECG, cardiology input</li></ul></div>
+      <div class="tier high"><div class="score">HEART 7–10</div><h4>High risk</h4><ul><li>Rising trop, dynamic ECG, ongoing pain, CHF/O₂ need, instability, arrhythmia</li><li>→ admit, cardiology, urgent invasive eval as indicated</li></ul></div>
+    </div>
+
+    <div class="stop"><span class="tag">The override rule</span><p>HEART <strong>supports</strong> judgment — it never replaces it. A highly suspicious history (2) or acute ischemic ECG changes (2) should keep a patient <em>out</em> of the low-risk bin <strong>regardless of total score</strong>. Discharging someone with high clinical suspicion just because the math says ≤3 is exactly the failure mode this pathway is built to prevent.</p></div>
+  </section>
+
+  <!-- 07 WATCH-OUTS -->
+  <section class="panel" id="watch" role="tabpanel">
+    <h2 class="sec">Nurse operational watch-outs</h2>
+    <p class="lede">For ED, charge, and House Sup: the running list that turns a risk score into a safe shift and the right bed.</p>
+
+    <h3>Track these in real time</h3>
+    <ul class="checklist">
+      <li><b>Baseline trop time</b>When exactly the 0-hr troponin was drawn</li>
+      <li><b>Delta due</b>When the 1-hr or 3-hr repeat needs to land — own that clock</li>
+      <li><b>Recurrent chest pain</b>Any return or change in symptoms since last assessment</li>
+      <li><b>Repeat ECG on recurrence</b>Pain comes back → tracing repeats, then escalate changes</li>
+      <li><b>Rhythm / palpitations</b>New ectopy, runs, brady or tachy, or "fluttering"</li>
+      <li><b>BP instability</b>Hypotension, a widening or narrowing trend, or new lability</li>
+      <li><b>O₂ / CHF signs</b>New O₂ requirement, crackles, rising work of breathing</li>
+      <li><b>Cardiac history</b>Known CAD, prior stents, CABG, prior MI — raises the floor</li>
+      <li><b>Pending cardiology</b>Consult ordered? Seen? Plan documented yet?</li>
+      <li><b>What's still pending</b>Document open items before any disposition is called</li>
+    </ul>
+
+    <div class="pearl"><span class="tag">Translate risk into a bed</span><p>The House Sup question underneath all of it: <strong>where does this patient sleep?</strong> The ladder at our shop:</p>
+      <ul>
+        <li><strong>Low risk, ruled out</strong> → discharge home — clear the projected admit early.</li>
+        <li><strong>Intermediate / indeterminate</strong> → obs or tele — plan the monitored bed before the bottleneck.</li>
+        <li><strong>High risk / unstable / dynamic ECG / rising trop</strong> → <strong>PCU or ICU</strong> — PCU for higher-acuity monitoring; <strong>ICU once there are drips that need titrating</strong> (nitro, heparin, pressors, antiarrhythmics).</li>
+        <li><strong>CVICU</strong> → reserved for the patient headed to <strong>emergent CABG</strong> or needing <strong>mechanical circulatory support (MCS)</strong> — IABP, Impella, ECMO.</li>
+      </ul>
+      <p style="margin-bottom:0">Start the placement the moment the picture turns, not after the order.</p>
+    </div>
+    <div class="why"><span class="tag">Why it's a flow issue, not just a clinical one</span><p>At a 22-bed cardiovascular specialty hospital, the difference between a tele bed, a PCU bed, an ICU bed for titratable drips, and a CVICU bed held for emergent surgery or MCS is a real constraint on the board. Reading the trajectory early — rising trop, recurrent pain, new instability — is also reading the next four hours of bed demand. The clinical call and the capacity call are the same call.</p></div>
+  </section>
+
+  <!-- 08 WHAT GOES WRONG -->
+  <section class="panel" id="wrong" role="tabpanel">
+    <h2 class="sec">What could go wrong</h2>
+    <p class="lede">Every one of these is a near-miss that has happened in real EDs. Knowing the shape of the error is how you catch it.</p>
+
+    <div class="card"><h3 style="margin-top:0">The patient who looks stable but is evolving</h3><p>Comfortable now, vitals fine, first set unremarkable — and the artery re-occludes an hour later. The fix: serial sampling and a low threshold to repeat the ECG <em>when something changes</em>, not on a fixed timer alone.</p></div>
+    <div class="card"><h3 style="margin-top:0">"No STEMI" read as "all clear"</h3><p>A non-STEMI ECG in a concerning patient is the missed-occlusion trap. STEMI criteria miss a quarter of occlusions. The unimpressive tracing in a sick-sounding story earns more scrutiny, not less.</p></div>
+    <div class="card"><h3 style="margin-top:0">Troponin drawn too early — or the delta missed</h3><p>A 0-hr drawn 30 minutes into symptoms can be normal before the rise. If the repeat is late or skipped, the delta — the whole diagnostic signal — disappears. Protect the timing.</p></div>
+    <div class="card"><h3 style="margin-top:0">Ongoing symptoms that never get escalated</h3><p>The patient quietly mentions the pain came back, it gets charted, and nothing happens. Recurrent or persistent pain is an active alarm — repeat ECG, tell the provider, reassess the plan.</p></div>
+    <div class="card"><h3 style="margin-top:0">Anchoring on GI / anxiety / musculoskeletal too early</h3><p>"Reflux," "panic attack," "pulled muscle" — comfortable labels that close the workup prematurely. Cardiac ischemia mimics all three. Keep ACS on the list until it's actually ruled out — and remember PE wears the same clothes (pleuritic pain, SOB, palpitations, syncope), so it stays on the list too.</p></div>
+    <div class="card" style="border-color:var(--high-line);background:var(--high-bg)"><h3 style="margin-top:0;color:var(--high)">HEART score used without judgment</h3><p>The most dangerous one: trusting a ≤3 in a patient whose story screams cardiac. The score is a tool. The patient is the data. When they disagree, believe the patient and escalate.</p></div>
+  </section>
+
+  <!-- 09 CASE -->
+  <section class="panel" id="case" role="tabpanel">
+    <h2 class="sec">Case: the "almost low risk" patient</h2>
+    <p class="lede">A walkthrough of the exact patient this pathway is built to catch — atypical, borderline on paper, and dynamic once you watch the trend.</p>
+
+    <div class="card" style="margin-bottom:6px"><p style="margin:0"><strong>Presentation.</strong> 58-year-old woman, history of type 2 diabetes and hypertension, arrives with ~2 hours of "bad indigestion," mild shortness of breath, and feeling washed out. No classic chest pain. She's diaphoretic but says she "probably just ate something." BP 138/84, HR 92, SpO₂ 96%. First ECG: nonspecific, no STEMI.</p></div>
+
+    <div class="tline">
+      <div class="tstep">
+        <span class="t">T = 0 · TRIAGE</span>
+        <h4>Score the story honestly</h4>
+        <p>Diabetic woman, atypical-but-classic-for-atypical presentation, diaphoresis, exertional fatigue. This is <em>moderately-to-highly</em> suspicious history, not reassuring. Early HEART estimate: <span class="mono">H1 · E0 · A1 · R2 · T?</span></p>
+      </div>
+      <div class="tstep">
+        <span class="t">T = 0 · FIRST TROPONIN</span>
+        <h4>Baseline hs-TnT = 18 ng/L (indeterminate)</h4>
+        <p>Above the female cutoff of 14, below 52 — squarely in the gray zone. Adds 1 point. Running HEART ≈ <strong>5 (intermediate)</strong>. <strong>Document the exact draw time</strong> so the 1-hr delta lands on schedule.</p>
+      </div>
+      <div class="tstep flag">
+        <span class="t">T = 1 HR · DELTA + SYMPTOMS</span>
+        <h4>Repeat hs-TnT = 27 ng/L → delta +9 ng/L</h4>
+        <p>That's <span class="mono">&gt; 5 ng/L</span> at 1 hour — an <strong>abnormal, rising delta</strong>. The troponin <em>moved</em>: this is acute injury, not a chronic baseline. Around the same time she says the "indigestion" is back. <strong>Repeat the ECG now.</strong></p>
+      </div>
+      <div class="tstep flag">
+        <span class="t">DISPOSITION DECISION</span>
+        <h4>What tips discharge → admit</h4>
+        <p>Three things move her out of any "low-risk discharge" conversation: a <strong>suspicious story</strong>, a <strong>rising delta</strong>, and <strong>recurrent symptoms</strong>. Whatever the first total looked like, this is not a rule-out. Cardiology involved; admit for monitored cardiac care, serial trop/ECG continuing, urgent invasive eval per cards.</p>
+      </div>
+    </div>
+
+    <div class="pearl"><span class="tag">Nursing watch-outs in this case</span>
+      <ul>
+        <li>Don't let "indigestion" + female + diabetic anchor the team to GI — that's the population that presents atypically.</li>
+        <li>You owned the delta timing, so the +9 rise was unmistakable instead of blurred.</li>
+        <li>Recurrent symptoms triggered a repeat ECG without waiting to be told.</li>
+        <li>Keep continuous monitoring on — rising trop + recurrent pain is the window where rhythm or hemodynamic instability shows up.</li>
+      </ul>
+    </div>
+    <div class="why"><span class="tag">House Sup bed planning</span><p>At triage she read as a possible discharge or short obs. The moment the delta rose and pain recurred, the placement shifted to a <strong>monitored tele or PCU bed with cardiology</strong> — stepping up to <strong>ICU if she needs titratable drips</strong> (nitro, heparin), and <strong>CVICU only if she destabilizes toward MCS or emergent surgical revascularization</strong>. Working that bed at T+1hr — not at the admit order — is what keeps the board ahead of the patient.</p></div>
+  </section>
+
+  <!-- 10 SCRIPT -->
+  <section class="panel" id="script" role="tabpanel">
+    <h2 class="sec">Bedside teaching script</h2>
+    <p class="lede">A 3–5 minute version to say out loud at huddle or the bedside. Spoken language, not slides — the bolded lines are the ones to land.</p>
+
+    <div class="script">
+      <h3>"Reading the story before it ends" — huddle script</h3>
+
+      <span class="beat">Open · 20 sec</span>
+      <p>"Quick one on chest pain. The HEART Pathway isn't a box to check — it's how we sort one symptom into four totally different patients, fast, without missing the one whose artery is actually shutting. <em>Our job as nurses is to catch the turn.</em>"</p>
+
+      <span class="beat">The big idea · 40 sec</span>
+      <p>"Here's the one thing to remember: ACS is a <em>moving target</em>. A plaque tears, it clots, and that clot can open and close several times in an afternoon. That's why one normal ECG and one normal troponin don't close the case — we're sampling a process, not reading a verdict."</p>
+
+      <span class="beat">ECG · 45 sec</span>
+      <p>"On the ECG — <em>'no STEMI' is not 'all clear.'</em> STEMI criteria miss more than a quarter of real occlusions, and those carry double the mortality. So if the read says 'nonspecific' but the patient looks like ACS, that's our cue to <em>repeat the tracing</em> and grab a closer look — especially if the pain comes back."</p>
+
+      <span class="beat">History · 40 sec</span>
+      <p>"The story matters more than any single test, and it's atypical in exactly the people we most need to catch — women, diabetics, older folks. Pressure, indigestion, jaw or arm, short of breath, just 'not right.' And three traps: nitro working, the GI cocktail working, or a recent normal stress test — <em>none of those rule out ACS.</em>"</p>
+
+      <span class="beat">Troponin · 40 sec</span>
+      <p>"Troponin means injury — not automatically a heart attack. The magic is the <em>delta</em>. A number that's elevated but flat is usually chronic. A number that's <em>rising</em> — more than 5 at an hour — is acute. So the most valuable thing you'll do is <em>document the exact time you drew the baseline</em>, so the repeat lands on time and we can actually see the trend."</p>
+
+      <span class="beat">Close · 30 sec</span>
+      <p>"Bottom line: the score supports our judgment, it doesn't override it. If the story screams cardiac, a low number doesn't send them home. And every risk level is a different bed — discharge, tele, or CVICU. <em>The earlier we read the story, the earlier we've got the right bed ready.</em> Questions?"</p>
+    </div>
+  </section>
+
+  <!-- 11 HANDOUT -->
+  <section class="panel" id="handout" role="tabpanel">
+    <div class="handout-actions no-print">
+      <button class="btn" onclick="window.print()">Print one-page handout</button>
+      <span style="font-size:13px;color:var(--muted);align-self:center">Prints just this page — fits one sheet.</span>
+    </div>
+
+    <div id="print-target" class="handout">
+      <h2 class="sec" style="margin-bottom:2px">ACS HEART Pathway — Bedside Quick Reference</h2>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 14px">CV Nursing Teaching Series · the <em>why</em> behind the pathway, in one page</p>
+
+      <div class="ho-grid">
+        <div class="ho-block">
+          <h4>The one idea</h4>
+          <p style="font-size:13px;margin:0">ACS is a <strong>moving target</strong> — plaque tears, clots, opens, re-closes. One normal set ≠ ruled out. You're sampling a process.</p>
+        </div>
+        <div class="ho-block">
+          <h4>HEART = H · E · A · R · T</h4>
+          <ul>
+            <li><strong>H</strong>istory 0/1/2 (slight/mod/high)</li>
+            <li><strong>E</strong>CG 0/1/2</li>
+            <li><strong>A</strong>ge &lt;45 / 45–64 / ≥65</li>
+            <li><strong>R</strong>isk factors 0 / 1–2 / ≥3 or known dz</li>
+            <li><strong>T</strong>roponin normal / 1–3× / &gt;3×</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>hs-Troponin T (local)</h3>
+      <table class="trop">
+        <thead><tr><th>Band</th><th>Female</th><th>Male</th></tr></thead>
+        <tbody>
+          <tr><td><span class="band n">Normal</span></td><td class="v">&lt; 14 ng/L</td><td class="v">&lt; 22 ng/L</td></tr>
+          <tr><td><span class="band i">Indeterminate</span></td><td class="v">14–51</td><td class="v">22–51</td></tr>
+          <tr><td><span class="band a">Abnormal</span></td><td class="v" colspan="2" style="text-align:center">≥ 52 ng/L</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;margin:8px 0 0"><strong>Abnormal delta:</strong> <span class="mono">&gt;5 ng/L @1hr</span> or <span class="mono">&gt;7 ng/L @3hr</span> = acute. &nbsp;<strong>Rule-out:</strong> HEART ≤3 + below cutoff + delta <span class="mono">&lt;3 @1hr</span> (or <span class="mono">≤5 @3hr</span>). Flat-elevated = usually chronic.</p>
+
+      <div class="ho-grid" style="margin-top:14px">
+        <div class="ho-block">
+          <h4>Disposition</h4>
+          <ul>
+            <li><strong>0–3 Low</strong> → d/c (only if story not high, ECG clean, no recurrent sx, trop ruled out)</li>
+            <li><strong>4–6 Intermediate</strong> → obs/tele, serial trop+ECG, cards</li>
+            <li><strong>7–10 High</strong> → admit, cards, urgent invasive eval</li>
+          </ul>
+        </div>
+        <div class="ho-block">
+          <h4>Escalate immediately</h4>
+          <ul>
+            <li>Recurrent / persistent chest pain</li>
+            <li>Dynamic ECG, new ST depression, hyperacute/new TWI</li>
+            <li>Hypotension, new O₂ need, CHF signs</li>
+            <li>New arrhythmia / palpitations</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ho-grid" style="margin-top:14px">
+        <div class="ho-block" style="border-color:var(--high-line);background:var(--high-bg)">
+          <h4 style="color:var(--high)">Three "rule-outs" that aren't</h4>
+          <ul>
+            <li>Nitro relief — <strong>not</strong> a rule-in/out</li>
+            <li>GI cocktail relief — <strong>not</strong> a rule-in/out</li>
+            <li>Recent normal stress test — <strong>not</strong> protective today</li>
+          </ul>
+        </div>
+        <div class="ho-block">
+          <h4>Nurse saves</h4>
+          <ul>
+            <li>Chart <strong>exact baseline trop time</strong> → protect the delta</li>
+            <li>Pain back → <strong>repeat ECG</strong>, don't wait</li>
+            <li>Atypical = women, diabetics, elderly, non-white</li>
+            <li>Read risk early → ready the right bed</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin-top:16px">Troponin up ≠ always MI</h3>
+      <div class="ho-grid">
+        <div class="ho-block">
+          <h4>Injury vs. infarction</h4>
+          <ul>
+            <li><strong>Injury</strong> = trop &gt; cutoff (any cause)</li>
+            <li><strong>MI</strong> = injury <em>+ ischemia</em> (symptoms / new ECG / wall-motion / thrombus)</li>
+            <li>Type 2 = supply–demand (sepsis, anemia, HTN, shock, tachy)</li>
+            <li>Type 4/5 = post-PCI / post-CABG — expected bump</li>
+          </ul>
+        </div>
+        <div class="ho-block" style="border-color:var(--teach-line);background:var(--teach-bg)">
+          <h4 style="color:var(--teach)">CHF & CKD patients</h4>
+          <ul>
+            <li>Chronically elevated baseline is <strong>real, not false +</strong></li>
+            <li>Absolute number ≈ useless — read the <strong>delta off their baseline</strong></li>
+            <li><strong>Flat</strong> = chronic strain · <strong>rising/falling + ischemia</strong> = acute on top</li>
+            <li><strong>Hunt the baseline</strong>; push serial draws; never "just their kidneys"</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="font-size:10.5px;color:var(--ink-2);margin-top:14px;background:#e7f1f8;border:1px solid var(--teach-line);border-radius:8px;padding:9px 12px"><strong>Three lenses:</strong> HEART = ACS risk · PERC/Wells = PE risk · Triple Rule-Out CTA = gray-zone CT for coronary / PE / aorta when the three can't be separated clinically (stable patients only).</p>
+
+      <p style="font-size:10.5px;color:var(--muted);margin-top:14px;background:#f1f5fa;border:1px solid var(--line);border-radius:8px;padding:9px 12px"><strong>Term key:</strong> <strong>Sensitive</strong> test → trust a NEGATIVE (SnNout) · <strong>Specific</strong> test → trust a POSITIVE (SpPin) · <strong>99th %ile</strong> = healthy "normal ceiling" · <strong>Δ</strong> = change between draws · <strong>NPV</strong> = how much you can trust a negative result.</p>
+
+      <p style="font-size:11px;color:var(--muted);margin-top:12px;border-top:1px solid var(--line);padding-top:10px"><strong>Override rule:</strong> the score supports judgment, never replaces it. A highly suspicious history (2) or acute ischemic ECG keeps a patient out of "low risk" regardless of total. When the patient and the score disagree, believe the patient and escalate.</p>
+    </div>
+  </section>
+
+  <!-- 12 CHECK -->
+  <section class="panel" id="check" role="tabpanel">
+    <h2 class="sec">Quick check</h2>
+    <p class="lede">Eight questions for the end of the in-service. Tap an answer to see the reasoning.</p>
+    <div id="quiz"></div>
+    <div id="score" style="display:none;font-family:var(--disp);font-weight:700;font-size:18px;margin-top:10px;padding:14px 18px;border-radius:11px;background:var(--ink);color:#fff"></div>
+    <div style="margin-top:14px"><button class="btn ghost" id="reset-quiz" type="button">Reset quiz</button></div>
+  </section>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong>Cardiovascular Nursing Bedside Teaching Series.</strong> Educational use for nursing staff — not patient-facing medical advice, and not a substitute for clinical judgment or current institutional policy.</p>
+    <p>Clinical content adapted for nursing education from the <strong>BSW ED Comprehensive ACS HEART Pathway Supplement</strong> (Farzad, v3.1.21) and the Fourth Universal Definition of MI. Local hs-Troponin T cutoffs and HEART disposition thresholds shown reflect the values standardized for this teaching set; always verify against your facility's current pathway and assay reference ranges before clinical use.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Tabs
+  var row=document.getElementById('tabrow');
+  var btns=Array.prototype.slice.call(row.querySelectorAll('button'));
+  var panels=Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  function show(id){
+    btns.forEach(function(b){b.setAttribute('aria-selected', b.dataset.t===id);});
+    panels.forEach(function(p){p.classList.toggle('active', p.id===id);});
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.t);});});
+  document.querySelectorAll('[data-jump]').forEach(function(el){el.addEventListener('click',function(){show(el.getAttribute('data-jump'));});});
+
+  // Quiz
+  var QS=[
+    {q:"A diabetic woman has a nonspecific first ECG but a story you'd score as highly suspicious. The machine reads \u201cno STEMI.\u201d Best next nursing action?",
+     a:["Reassure the patient — no STEMI means no occlusion","Repeat the ECG and flag the suspicious story for a closer read","Wait for the 3-hour troponin before doing anything","Document \u201cnonspecific, no acute change\u201d and move on"],
+     c:1,
+     e:"\u201cNo STEMI\u201d isn\u2019t \u201cno occlusion\u201d \u2014 STEMI criteria miss over a quarter of occlusions. A concerning story with an unimpressive ECG is exactly when you repeat the tracing and escalate."},
+    {q:"Baseline hs-TnT in a male patient is 30 ng/L. The 1-hour repeat is 34 ng/L (delta +4). How do you read this?",
+     a:["Definite acute MI \u2014 it\u2019s above the male cutoff","Rising delta \u2014 escalate as acute injury","Essentially flat delta \u2014 more consistent with chronic injury; interpret with story + ECG","Rule-out \u2014 discharge"],
+     c:2,
+     e:"A delta of +4 ng/L is below the >5 @1hr threshold \u2014 essentially flat. An elevated-but-flat troponin usually means chronic injury. It\u2019s not an automatic rule-out either; the story and ECG still drive the call."},
+    {q:"An ESRD patient on dialysis has an hs-TnT of 58 ng/L. Their chart shows a baseline that runs 50\u201360. They feel well, no chest pain, ECG unchanged. Best read?",
+     a:["Acute MI \u2014 it\u2019s above 52","Chronic myocardial injury \u2014 flat at their known baseline; not an acute MI, but still a high-risk heart","False positive \u2014 the kidneys, ignore it","Rule-out \u2014 discharge, no further workup"],
+     c:1,
+     e:"In CKD/ESRD troponin is chronically elevated and valid \u2014 not a false positive. Flat at their own baseline with no ischemia points to chronic injury, not an acute MI. But it\u2019s never \u201cignore it\u201d: chronic elevation flags worse cardiac outcomes. Compare against their baseline, not the population cutoff \u2014 the delta is everything."},
+    {q:"Which response actually helps rule ACS in or out?",
+     a:["The chest pain resolved with nitroglycerin","The pain went away after a GI cocktail","A normal stress test two months ago","None of these \u2014 they\u2019re all unreliable for ACS"],
+     c:3,
+     e:"All three are classic false-reassurance traps. Nitro and antacid relief don\u2019t rule ACS in or out, and a recent normal stress test doesn\u2019t make today\u2019s plaque rupture impossible."},
+    {q:"A patient meets 7 of the 8 PERC criteria but is 56 (age \u226550). Provider suspicion for PE was already low. What does \u201cPERC positive\u201d mean here?",
+     a:["The patient has a PE","PERC can\u2019t rule PE out on its own \u2014 next step is provider judgment (often D-dimer or no further testing per pathway), not a PE diagnosis","Discharge \u2014 PERC cleared them","Start anticoagulation now"],
+     c:1,
+     e:"PERC is all-or-none: any single positive item (here, age) makes it \u201cPERC positive,\u201d meaning the shortcut can\u2019t rule PE out by itself. It does NOT mean PE is present. With low pretest suspicion the next step is provider judgment \u2014 a D-dimer or no further workup per local pathway \u2014 not a diagnosis or treatment. PERC is a stop rule, not a start rule."},
+    {q:"A stable patient has no STEMI, a not-yet-diagnostic troponin, and a HEART that\u2019s neither low enough to discharge nor high enough to admit \u2014 and the team can\u2019t cleanly separate ACS, PE, and aortic causes. Which tool is built for exactly this gray zone?",
+     a:["Re-run the HEART score until it\u2019s decisive","Triple Rule-Out CTA \u2014 one CT for coronary, PE, and aorta","PERC \u2014 it rules out all three","Discharge; HEART wasn\u2019t high"],
+     c:1,
+     e:"TRO is the gray-zone anatomy tool: one CTA evaluating coronary, PE, and aorta when the three can\u2019t be separated clinically. HEART estimates ACS risk but shows no anatomy and doesn\u2019t assess PE or dissection; PERC only addresses PE, and only in low-suspicion patients. TRO isn\u2019t for obvious STEMI, instability, or as a blanket test for every chest pain."},
+    {q:"A patient\u2019s HEART score totals 3, but you scored the history a 2 (highly suspicious) and the pain is recurrent. The right move?",
+     a:["Low risk by total \u2014 prepare for discharge","Keep them out of the low-risk bin and escalate \u2014 judgment overrides the math","Re-add the score until it comes out higher","Order a GI cocktail as a diagnostic test"],
+     c:1,
+     e:"The override rule: a highly suspicious history or recurrent symptoms keeps a patient out of \u201clow risk\u201d regardless of total. The score supports judgment \u2014 it never overrides a screaming story."},
+    {q:"As House Sup, when should you start working the bed placement for a chest-pain patient whose trop just rose and whose pain recurred?",
+     a:["After the admit order is entered","Now \u2014 the trajectory is the placement signal","Only once cardiology has seen them","At shift change"],
+     c:1,
+     e:"Reading the trajectory \u2014 rising trop, recurrent pain, any instability \u2014 is also reading the next few hours of bed demand. Working the right monitored bed at the turn, not at the order, keeps the board ahead of the patient."}
+  ];
+  var qWrap=document.getElementById('quiz'), scoreEl=document.getElementById('score');
+  function buildQuiz(){
+    var answered=0, correct=0;
+    qWrap.innerHTML='';
+    scoreEl.style.display='none'; scoreEl.textContent='';
+    QS.forEach(function(item,qi){
+      var d=document.createElement('div'); d.className='q';
+      var stem=document.createElement('div'); stem.className='stem'; stem.textContent=(qi+1)+'. '+item.q; d.appendChild(stem);
+      item.a.forEach(function(opt,oi){
+        var b=document.createElement('button'); b.className='opt'; b.textContent=opt;
+        b.addEventListener('click',function(){
+          if(d.dataset.done) return; d.dataset.done='1'; answered++;
+          var opts=d.querySelectorAll('.opt');
+          opts.forEach(function(o){o.style.pointerEvents='none';});
+          if(oi===item.c){b.classList.add('correct'); correct++;}
+          else{b.classList.add('wrong'); opts[item.c].classList.add('correct');}
+          d.querySelector('.exp').classList.add('show');
+          if(answered===QS.length){
+            scoreEl.style.display='block';
+            scoreEl.textContent='Score: '+correct+' / '+QS.length+(correct===QS.length?'  \u2014 nailed it.':'  \u2014 review the misses above.');
+          }
+        });
+        d.appendChild(b);
+      });
+      var ex=document.createElement('div'); ex.className='exp'; ex.innerHTML='<strong>Why:</strong> '+item.e; d.appendChild(ex);
+      qWrap.appendChild(d);
+    });
+  }
+  buildQuiz();
+  var rq=document.getElementById('reset-quiz');
+  if(rq) rq.addEventListener('click',function(){ buildQuiz(); window.scrollTo({top:0,behavior:'smooth'}); });
+})();
+</script>
+</body>
+</html>
