@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hidden Post-CABG SAM/LVOTO — CVICU Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans',sans-serif;background:#07101f;color:#cbd5e1;min-height:100vh;font-size:15px;line-height:1.65}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#07101f}::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+
+/* LAYOUT */
+.container{max-width:1060px;margin:0 auto;padding:0 24px}
+.section{padding:60px 0}
+.section-alt{background:#090f1e;border-top:1px solid #0d2040;border-bottom:1px solid #0d2040}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+@media(max-width:680px){.grid-2,.grid-3{grid-template-columns:1fr}.hero-meta{flex-direction:column}.pathway-toggle{flex-direction:column}.drug-table-wrap{overflow-x:auto}}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#07101f 0%,#0b1835 55%,#081220 100%);border-bottom:1px solid #1a3560;padding:68px 0 52px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-60px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(30,90,200,0.07) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,44px);font-weight:900;line-height:1.12;color:#e2e8f0;margin-bottom:16px;letter-spacing:-0.02em}
+.hero h1 em{font-style:italic;color:#60a5fa}
+.hero-subtitle{font-size:16px;color:#64748b;max-width:660px;line-height:1.65;margin-bottom:32px}
+.hero-meta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:32px}
+.hero-stat{padding:14px 20px;background:rgba(12,24,50,0.9);border:1px solid #1e3a5f;border-radius:10px;min-width:140px}
+.hero-stat .label{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:#475569;margin-bottom:5px}
+.hero-stat .value{font-size:17px;font-weight:600;color:#e2e8f0;line-height:1.2}
+.hero-stat .sub{font-size:11.5px;color:#64748b;margin-top:3px}
+.recognition-win{display:flex;gap:14px;align-items:flex-start;padding:18px 22px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.25);border-radius:10px;max-width:680px}
+.rw-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.rw-text strong{display:block;font-size:14px;font-weight:600;color:#34d399;margin-bottom:4px}
+.rw-text p{font-size:13px;color:#6ee7b7;line-height:1.55}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;padding:4px 10px;border-radius:4px}
+.bd{background:rgba(220,38,38,0.12);color:#f87171;border:1px solid rgba(220,38,38,0.28)}
+.bw{background:rgba(217,119,6,0.12);color:#fbbf24;border:1px solid rgba(217,119,6,0.28)}
+.bi{background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.28)}
+.bs{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.28)}
+.bn{background:rgba(100,116,139,0.12);color:#94a3b8;border:1px solid rgba(100,116,139,0.28)}
+.bp{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.28)}
+
+/* SECTION HEADERS */
+.section-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#3b82f6;margin-bottom:10px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,30px);font-weight:700;color:#e2e8f0;margin-bottom:8px;line-height:1.2}
+.section-desc{font-size:14.5px;color:#64748b;max-width:640px;margin-bottom:36px;line-height:1.6}
+
+/* CARDS */
+.card{background:#0b1828;border:1px solid #152d50;border-radius:12px;padding:22px}
+.card-dl{border-left:3px solid #dc2626}
+.card-wl{border-left:3px solid #d97706}
+.card-sl{border-left:3px solid #10b981}
+.card-il{border-left:3px solid #3b82f6}
+.card-pl{border-left:3px solid #8b5cf6}
+.card-al{border-left:3px solid #f59e0b}
+.card h3{font-size:15px;font-weight:600;color:#e2e8f0;margin-bottom:9px;line-height:1.3}
+.card h4{font-size:13px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:7px;margin-top:14px}
+.card p,.card li{font-size:13.5px;color:#94a3b8;line-height:1.6}
+.card ul{list-style:none;margin-top:8px}
+.card li{padding:3px 0 3px 18px;position:relative}
+.card li::before{content:'→';position:absolute;left:0;color:#3b82f6;font-size:11px;top:5px}
+.card li.bad::before{color:#f87171;content:'✗'}
+.card li.good::before{color:#34d399;content:'✓'}
+.card li.warn::before{color:#fbbf24;content:'⚠'}
+
+/* QUOTE BLOCK */
+.tee-quote{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-left:3px solid #3b82f6;border-radius:8px;padding:16px 20px;margin:12px 0}
+.tee-quote p{font-size:13.5px;font-style:italic;color:#93c5fd;line-height:1.6}
+.tee-quote .source{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#3b82f6;margin-top:8px;letter-spacing:0.06em}
+
+/* TABS */
+.tab-nav{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:26px;padding:5px;background:#09142a;border-radius:10px;border:1px solid #0d2040}
+.tab-btn{padding:9px 16px;background:transparent;border:none;border-radius:7px;color:#64748b;font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.18s;white-space:nowrap}
+.tab-btn:hover{color:#94a3b8;background:rgba(30,58,95,0.4)}
+.tab-btn.active{color:#e2e8f0;background:#0b1828;border:1px solid #1e3a5f}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* VICIOUS CYCLE */
+.cycle-wrap{display:flex;flex-direction:column;align-items:center;gap:0;max-width:420px;margin:0 auto}
+.cn{padding:11px 20px;border-radius:8px;font-size:13px;font-weight:500;text-align:center;line-height:1.3;width:100%}
+.cn-a{background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.35);color:#fbbf24}
+.cn-b{background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.35);color:#f87171}
+.cn-c{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.35);color:#c084fc}
+.cn-d{background:rgba(239,68,68,0.22);border:1px solid rgba(239,68,68,0.55);color:#fca5a5;font-weight:700}
+.ca{font-size:20px;color:#dc2626;text-align:center;line-height:1;padding:3px 0}
+.cycle-label{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:0.08em;text-align:center;margin-top:3px}
+
+/* PATHWAY TOGGLE */
+.pathway-toggle{display:flex;gap:10px;margin-bottom:22px}
+.ptb{flex:1;padding:13px 16px;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1px solid;transition:all 0.2s;text-align:center;line-height:1.35}
+.ptb-wrong{background:rgba(220,38,38,0.07);color:#f87171;border-color:rgba(220,38,38,0.22)}
+.ptb-wrong.active{background:rgba(220,38,38,0.18);border-color:#dc2626;color:#fca5a5}
+.ptb-right{background:rgba(16,185,129,0.07);color:#34d399;border-color:rgba(16,185,129,0.22)}
+.ptb-right.active{background:rgba(16,185,129,0.18);border-color:#10b981;color:#6ee7b7}
+.pathway-box{padding:22px;border-radius:10px;border:1px solid}
+.pb-wrong{background:rgba(220,38,38,0.05);border-color:rgba(220,38,38,0.28)}
+.pb-right{background:rgba(16,185,129,0.05);border-color:rgba(16,185,129,0.28)}
+.pb-wrong h3{color:#f87171;font-size:15px;margin-bottom:14px}
+.pb-right h3{color:#34d399;font-size:15px;margin-bottom:14px}
+.pstep{display:flex;gap:11px;margin-bottom:10px;align-items:flex-start}
+.psn{width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.psn-w{background:rgba(220,38,38,0.2);color:#f87171;border:1px solid rgba(220,38,38,0.4)}
+.psn-r{background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(16,185,129,0.4)}
+.pstep-text{font-size:13.5px;color:#94a3b8;line-height:1.5}
+.pstep-text strong{color:#e2e8f0}
+.ob{margin-top:14px;padding:13px;border-radius:8px;font-size:13.5px;font-weight:600;text-align:center}
+.ob-bad{background:rgba(220,38,38,0.14);color:#fca5a5;border:1px solid rgba(220,38,38,0.3)}
+.ob-good{background:rgba(16,185,129,0.14);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3)}
+
+/* DRUG TABLE */
+.drug-table-wrap{overflow-x:auto}
+.drug-table{width:100%;border-collapse:collapse;font-size:13px;min-width:620px}
+.drug-table th{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:#475569;padding:10px 14px;border-bottom:1px solid #152d50;text-align:left;background:#09142a}
+.drug-table td{padding:11px 14px;border-bottom:1px solid rgba(21,45,80,0.5);vertical-align:middle;color:#94a3b8}
+.drug-table tr:last-child td{border-bottom:none}
+.drug-table tr:hover td{background:rgba(30,58,95,0.12)}
+.dn{font-weight:600;color:#e2e8f0;font-size:14px}
+.rb-row{display:flex;gap:4px;flex-wrap:wrap}
+.rb{padding:3px 7px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:500}
+.ra1{background:rgba(239,68,68,0.14);color:#f87171;border:1px solid rgba(239,68,68,0.28)}
+.rb1{background:rgba(251,191,36,0.14);color:#fbbf24;border:1px solid rgba(251,191,36,0.28)}
+.rb2{background:rgba(168,85,247,0.14);color:#c084fc;border:1px solid rgba(168,85,247,0.28)}
+.rnone{background:rgba(100,116,139,0.1);color:#64748b;border:1px solid rgba(100,116,139,0.22);font-style:italic}
+.sv{padding:4px 10px;border-radius:4px;font-size:10.5px;font-weight:600;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.sv-go{background:rgba(16,185,129,0.14);color:#34d399;border:1px solid rgba(16,185,129,0.3)}
+.sv-caution{background:rgba(217,119,6,0.14);color:#fbbf24;border:1px solid rgba(217,119,6,0.3)}
+.sv-stop{background:rgba(220,38,38,0.14);color:#f87171;border:1px solid rgba(220,38,38,0.3)}
+
+/* TIMELINE / ALGO */
+.algo-step{display:flex;gap:16px;margin-bottom:6px;position:relative}
+.algo-step::before{content:'';position:absolute;left:19px;top:40px;bottom:-6px;width:1px;background:#152d50}
+.algo-step:last-child::before{display:none}
+.algo-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;flex-shrink:0;margin-top:2px}
+.algo-num-go{background:rgba(16,185,129,0.15);color:#34d399;border:2px solid rgba(16,185,129,0.4)}
+.algo-num-stop{background:rgba(220,38,38,0.15);color:#f87171;border:2px solid rgba(220,38,38,0.4)}
+.algo-num-check{background:rgba(59,130,246,0.15);color:#60a5fa;border:2px solid rgba(59,130,246,0.4)}
+.algo-body{padding-bottom:16px;flex:1}
+.algo-body strong{font-size:14px;font-weight:600;color:#e2e8f0;display:block;margin-bottom:4px}
+.algo-body p{font-size:13px;color:#64748b;line-height:1.55}
+
+/* TEE FINDINGS */
+.tee-finding{padding:14px 16px;border-radius:8px;border:1px solid;margin-bottom:10px}
+.tee-finding .f-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px}
+.tee-finding .f-text{font-size:13.5px;line-height:1.55}
+.tee-finding .f-why{font-size:12px;margin-top:5px;font-style:italic}
+.tf-structural{background:rgba(59,130,246,0.06);border-color:rgba(59,130,246,0.2);color:#93c5fd}
+.tf-structural .f-label{color:#3b82f6}
+.tf-structural .f-why{color:#60a5fa}
+.tf-dynamic{background:rgba(220,38,38,0.06);border-color:rgba(220,38,38,0.2);color:#fca5a5}
+.tf-dynamic .f-label{color:#dc2626}
+.tf-dynamic .f-why{color:#f87171}
+.tf-key{background:rgba(251,191,36,0.06);border-color:rgba(251,191,36,0.2);color:#fde68a}
+.tf-key .f-label{color:#d97706}
+.tf-key .f-why{color:#fbbf24}
+
+/* NURSING WATCH */
+.watch-item{display:flex;gap:12px;padding:13px 16px;background:rgba(11,24,40,0.8);border:1px solid #152d50;border-radius:9px;margin-bottom:9px;align-items:flex-start}
+.watch-icon{font-size:20px;flex-shrink:0;margin-top:1px;width:28px;text-align:center}
+.watch-body strong{font-size:13.5px;font-weight:600;color:#e2e8f0;display:block;margin-bottom:3px}
+.watch-body p{font-size:13px;color:#64748b;line-height:1.5}
+
+/* HANDOFF PEARL */
+.handoff-box{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.22);border-radius:12px;padding:26px;margin-top:32px}
+.handoff-box h3{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#d97706;margin-bottom:14px}
+.handoff-line{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(251,191,36,0.1)}
+.handoff-line:last-child{border-bottom:none}
+.hl-key{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fbbf24;width:160px;flex-shrink:0;padding-top:1px;font-weight:500}
+.hl-val{font-size:13px;color:#fde68a;line-height:1.5}
+
+/* CLINICAL TRAP */
+.trap-card{background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.25);border-radius:12px;padding:24px}
+.trap-card h3{font-family:'Playfair Display',serif;font-size:19px;color:#f87171;margin-bottom:12px}
+.trap-card p{font-size:13.5px;color:#fca5a5;line-height:1.6}
+
+/* KEY TAKEAWAYS */
+.takeaway{display:flex;gap:14px;padding:18px;background:#0b1828;border:1px solid #152d50;border-radius:10px;margin-bottom:12px;align-items:flex-start}
+.ta-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#1e3a5f;flex-shrink:0;line-height:1;width:36px;text-align:right}
+.ta-body strong{font-size:14px;font-weight:600;color:#e2e8f0;display:block;margin-bottom:4px}
+.ta-body p{font-size:13.5px;color:#64748b;line-height:1.55}
+
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,#1e3a5f,transparent);margin:40px 0}
+
+/* FOOTER */
+.footer{background:#04080f;border-top:1px solid #0d2040;padding:28px 0;text-align:center}
+.footer p{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#334155;letter-spacing:0.05em}
+.footer p span{color:#1e3a5f}
+
+/* CLINICAL NOTE BOX */
+.note-box{background:#09142a;border:1px solid #152d50;border-radius:10px;padding:20px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#64748b;line-height:1.7}
+.note-box .nb-line{padding:3px 0}
+.note-box .nb-key{color:#3b82f6}
+.note-box .nb-val{color:#94a3b8}
+.note-box .nb-alert{color:#fbbf24;font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="badge bi">CVICU Teaching Case</span>
+      <span class="badge bw">Dynamic LVOTO</span>
+      <span class="badge bd">Post-CABG SAM</span>
+      <span class="badge bn">CVICU Teaching Case · Composite — details fictionalized</span>
+    </div>
+    <h1>Hidden Post-CABG <em>SAM/LVOTO</em>:<br>When Hypotension Should NOT<br>Be Treated With Inotropes</h1>
+    <p class="hero-subtitle">A male patient in his 70s post off-pump CABG × 4 developed dynamic systolic anterior motion unmasked by hypovolemia — not classic HOCM, not obvious on first pass. An astute anesthesiologist caught it on TEE in real time and changed the trajectory of care.</p>
+    <div class="hero-meta">
+      <div class="hero-stat">
+        <div class="label">Patient</div>
+        <div class="value">73 y.o. Male</div>
+        <div class="sub">Stephen L. Martin</div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">Procedure</div>
+        <div class="value">Off-Pump CABG × 4</div>
+        <div class="sub">the anesthesiologist</div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">Pre-op EF</div>
+        <div class="value">55–60%</div>
+        <div class="sub">Concentric LVH · Mild AS</div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">Post-op EF</div>
+        <div class="value">&gt;65%</div>
+        <div class="sub">Hyperdynamic · SAM trigger</div>
+      </div>
+      <div class="hero-stat">
+        <div class="label">Key Pressor</div>
+        <div class="value">Phenylephrine</div>
+        <div class="sub">Alpha-1 only · No beta-1</div>
+      </div>
+    </div>
+    <div class="recognition-win">
+      <div class="rw-icon">🏆</div>
+      <div class="rw-text">
+        <strong>Recognition Win — the cardiologist, MD (Anesthesiology)</strong>
+        <p>Intraoperative TEE identified dynamic SAM with severe MR during hypovolemia/hypotension. Documented resolution with volume and increased afterload — providing the diagnosis and treatment algorithm simultaneously. This recognition prevented inappropriate inotrope use and potential hemodynamic collapse.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS NAV -->
+<div class="container" style="padding-top:40px">
+  <div class="tab-nav" id="mainTabs">
+    <button class="tab-btn active" onclick="showTab('snapshot')">Case Snapshot</button>
+    <button class="tab-btn" onclick="showTab('missed')">Why Easy to Miss</button>
+    <button class="tab-btn" onclick="showTab('tee')">TEE Findings</button>
+    <button class="tab-btn" onclick="showTab('substrate')">Substrate vs Trigger</button>
+    <button class="tab-btn" onclick="showTab('physio')">Pathophysiology</button>
+    <button class="tab-btn" onclick="showTab('pressors')">Neo vs Levo vs Inotropes</button>
+    <button class="tab-btn" onclick="showTab('worse')">What Makes It Worse</button>
+    <button class="tab-btn" onclick="showTab('algo')">Management Algorithm</button>
+    <button class="tab-btn" onclick="showTab('nursing')">Nursing Watch-Outs</button>
+    <button class="tab-btn" onclick="showTab('echo')">Repeat Echo / Course</button>
+    <button class="tab-btn" onclick="showTab('takeaways')">Key Takeaways</button>
+  </div>
+
+  <!-- TAB: SNAPSHOT -->
+  <div id="tab-snapshot" class="tab-panel active" style="padding-bottom:60px">
+    <div class="section-label">01 · Case Snapshot</div>
+    <div class="section-title">The Patient & What Happened</div>
+    <div class="section-desc">A complex cardiac surgery patient whose post-op hypotension had a counterintuitive cause — and a counterintuitive fix.</div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card card-il">
+        <h3>🧑‍⚕️ Patient Profile</h3>
+        <ul>
+          <li>male in his 70s, ~190 cm, ~120 kg (BMI ~31)</li>
+          <li>PAD · Asthma · CKD · HTN · HLD · DM Type 2</li>
+          <li>Neuropathy · GERD · Sleep apnea</li>
+          <li>Aortic stenosis (mild–moderate, calcified valve)</li>
+          <li>NSTEMI with multivessel CAD → off-pump CABG × 4</li>
+          <li>History: Left BKA · Right LE vascular disease</li>
+          <li>A1c 7.2% · Pre-op Cr 1.44 (CKD baseline)</li>
+        </ul>
+      </div>
+      <div class="card card-wl">
+        <h3>🔬 Intraoperative Event</h3>
+        <p style="margin-bottom:10px">During off-pump CABG, toward the end of the case, the patient developed <strong style="color:#fbbf24">systolic anterior motion (SAM)</strong> of the mitral valve with severe MR.</p>
+        <p style="margin-bottom:10px">This occurred during periods of <strong style="color:#fbbf24">hypovolemia and hypotension</strong> — not at baseline.</p>
+        <p>The anesthesiologist (the cardiologist) identified this on TEE in real time and documented resolution with <strong style="color:#fbbf24">IV fluid administration</strong> and <strong style="color:#fbbf24">increased afterload</strong>.</p>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:20px">
+      <div class="card card-sl">
+        <h3>✅ What Worked</h3>
+        <ul>
+          <li class="good">IV fluids / albumin boluses</li>
+          <li class="good">Phenylephrine (alpha-1 pure)</li>
+          <li class="good">Norepinephrine weaned off</li>
+          <li class="good">No inotropes administered</li>
+          <li class="good">Cautious diuresis plan</li>
+          <li class="good">SAM resolved with treatment</li>
+        </ul>
+      </div>
+      <div class="card card-dl">
+        <h3>🚫 Explicitly Avoided</h3>
+        <ul>
+          <li class="bad">Dobutamine</li>
+          <li class="bad">Epinephrine</li>
+          <li class="bad">Milrinone</li>
+          <li class="bad">Aggressive diuresis early post-op</li>
+          <li class="bad">Hypotension left untreated</li>
+          <li class="bad">Hypovolemia left untreated</li>
+        </ul>
+      </div>
+      <div class="card card-al">
+        <h3>📋 ICU Day 1 Orders</h3>
+        <ul>
+          <li>Phenylephrine 40 mcg/min (titrating)</li>
+          <li>Precedex 0.6 mcg/kg/hr (weaned)</li>
+          <li>Insulin drip 1.8 units/hr</li>
+          <li>Levo stopped 00:43 POD1</li>
+          <li>PRBC × 1 (Hgb 7.1)</li>
+          <li>Target MAP ≥ 65 mmHg</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <div class="nb-line"><span class="nb-key">ICU Day 1 Note (the APRN/intensivist team):</span></div>
+      <div class="nb-line nb-alert">"SAM postop and required fluids and Phenylephrine. Avoid hypotension."</div>
+      <div class="nb-line"><span class="nb-key">Plan: </span><span class="nb-val">Continue Phenylephrine · Avoid hypovolemia and hypotension · No inotropes · Diurese when appropriate but caution with SAM · Lift sedation → SBT → extubation</span></div>
+      <div class="nb-line"><span class="nb-key">HD: </span><span class="nb-val">SBP 100–120s · HR 60–70s NSR · Phenylephrine 20→40 mcg/min · Off Levophed</span></div>
+      <div class="nb-line"><span class="nb-key">CXR: </span><span class="nb-val">Low aerations · Bilateral atelectasis · Pulmonary congestion · Small left pleural effusion</span></div>
+    </div>
+  </div>
+
+  <!-- TAB: WHY EASY TO MISS -->
+  <div id="tab-missed" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">02 · Diagnostic Challenge</div>
+    <div class="section-title">Why This Was Easy to Miss</div>
+    <div class="section-desc">This is not textbook HOCM. Every feature of this patient made it easier to attribute his hypotension to something else entirely.</div>
+
+    <div class="trap-card" style="margin-bottom:24px">
+      <h3>⚠️ The Clinical Trap</h3>
+      <p>Post-op hypotension after CABG has a long differential: bleeding, tamponade, cardiogenic shock, vasoplegia, arrhythmia. The <strong style="color:#f87171">standard ICU reflex</strong> for a hypotensive post-CABG patient with low-output physiology is to add a vasopressor — often norepinephrine — or reach for an inotrope if the EF looks weak. In this patient, the EF was not weak. It was <strong style="color:#f87171">hyperdynamic (&gt;65%)</strong>. The inotrope reflex would have been catastrophic.</p>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card card-wl">
+        <h3>🎭 What Made This Look Like Ordinary Shock</h3>
+        <ul>
+          <li>Hypotension after major cardiac surgery</li>
+          <li>Significant blood loss and drain output</li>
+          <li>Anemia (Hgb 7.1–8.4)</li>
+          <li>Bilateral pulmonary congestion on CXR</li>
+          <li>Patient had prior NSTEMI</li>
+          <li>Pre-op echo: EF 55–60%, only trace MR</li>
+          <li>No prior HOCM or known outflow obstruction</li>
+          <li>Off-pump case — no bypass to blame</li>
+        </ul>
+      </div>
+      <div class="card card-il">
+        <h3>🔍 What Made This SAM — Not HOCM, Not Septic Shock</h3>
+        <ul>
+          <li>MR was <strong style="color:#60a5fa">dynamic</strong> — severe only with hypovolemia</li>
+          <li>MR resolved <strong style="color:#60a5fa">immediately</strong> with fluid + Neo</li>
+          <li>No fixed LVOT gradient at rest</li>
+          <li>Hyperdynamic EF (>65%) post-revascularization</li>
+          <li>Structural substrate: LVH, MAC, calcified P2</li>
+          <li>Timing: developed "toward the end of the case"</li>
+          <li>Off-pump CABG → major preload swings</li>
+          <li>TEE showed reversibility in real time</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card card-pl">
+      <h3>🧠 The Pattern That Should Trigger SAM on Your Differential</h3>
+      <p style="margin-bottom:12px">Think SAM when a post-CABG patient has:</p>
+      <div class="grid-2">
+        <ul>
+          <li>Preserved or hyperdynamic EF despite hypotension</li>
+          <li>Worsening hemodynamics with inotropes</li>
+          <li>Dynamic or load-dependent MR murmur</li>
+          <li>Hypotension worse with hypovolemia</li>
+        </ul>
+        <ul>
+          <li>Concentric LVH on echo pre-op</li>
+          <li>Mitral annular calcification</li>
+          <li>Heavy posterior leaflet calcification (especially P2)</li>
+          <li>Thickened anterior mitral leaflet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: TEE -->
+  <div id="tab-tee" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">03 · Echocardiographic Data</div>
+    <div class="section-title">TEE Findings — Cardiology</div>
+    <div class="section-desc">Anesthesiology perioperative TEE, OR 3. Probe: 3D X8-2t matrix array. Ordered by the anesthesiologist, MD.</div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div>
+        <p class="section-label" style="margin-bottom:12px">Pre-Surgical Findings</p>
+        <div class="tee-finding tf-structural">
+          <div class="f-label">Left Ventricle</div>
+          <div class="f-text">Normal size · EF 55–60% · Normal wall motion · <strong>Concentric hypertrophy</strong> · CO 6.9 L/min</div>
+          <div class="f-why">↳ Thick walls + smaller cavity = narrowed LVOT geometry. Classic SAM substrate.</div>
+        </div>
+        <div class="tee-finding tf-structural">
+          <div class="f-label">Aortic Valve</div>
+          <div class="f-text">Calcified annulus/leaflets · Right coronary cusp non-mobile · Mild AS: Vmax 2.4 m/s, MG 16 mmHg, AVA 1.8 cm²</div>
+          <div class="f-why">↳ Chronic pressure overload → LVH remodeling over years.</div>
+        </div>
+        <div class="tee-finding tf-key">
+          <div class="f-label">Mitral Valve</div>
+          <div class="f-text"><strong>Calcified annulus · Thickened anterior leaflet · Heavily calcified posterior leaflet (primarily P2 scallop)</strong> · Trace MR · No MS (MG 1 mmHg)</div>
+          <div class="f-why">↳ P2 restriction shifts anterior leaflet anteriorly → predisposes to LVOT drag.</div>
+        </div>
+        <div class="tee-finding tf-structural">
+          <div class="f-label">Atria</div>
+          <div class="f-text">Biatrial enlargement · LAA patent · No PFO · Lipomatous interatrial hypertrophy</div>
+          <div class="f-why">↳ Chronic diastolic dysfunction, elevated filling pressures.</div>
+        </div>
+      </div>
+      <div>
+        <p class="section-label" style="margin-bottom:12px">Post-Surgical Findings (After CABG × 4)</p>
+        <div class="tee-finding tf-structural">
+          <div class="f-label">Left Ventricle</div>
+          <div class="f-text"><strong>EF visually estimated &gt;65%</strong> · Normal wall motion · Off inotropic support</div>
+          <div class="f-why">↳ Revascularization → hyperdynamic physiology. Critical trigger for SAM.</div>
+        </div>
+        <div class="tee-finding tf-dynamic">
+          <div class="f-label">⭐ Mitral Valve — KEY FINDING</div>
+          <div class="f-text"><strong>Notable systolic anterior motion with severe mitral regurgitation during periods of hypovolemia/hypotension — resolves with intravascular volume repletion and phenylephrine administration.</strong> Otherwise trace MR.</div>
+          <div class="f-why">↳ This single sentence = diagnosis + treatment algorithm. Dynamic, load-dependent SAM confirmed.</div>
+        </div>
+        <div class="tee-quote">
+          <p>"There is notable systolic anterior motion of the mitral valve with severe mitral regurgitation during periods of hypovolemia/hypotension that resolves with intravascular volume repletion and phenylephrine administration."</p>
+          <div class="source">— Anesthesiology TEE · CVICU Teaching Case · Composite — details fictionalized · 3:51 PM</div>
+        </div>
+        <div class="tee-finding tf-structural">
+          <div class="f-label">Right Ventricle</div>
+          <div class="f-text">Mildly dilated · Normal function post-procedure</div>
+        </div>
+        <div class="tee-finding tf-structural">
+          <div class="f-label">Aorta / Pericardium</div>
+          <div class="f-text">Grade 2 aortic disease (ascending/transverse/descending) · Trace pericardial effusion unchanged after chest closure · No dissection</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: SUBSTRATE vs TRIGGER -->
+  <div id="tab-substrate" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">04 · Structural vs Dynamic</div>
+    <div class="section-title">Structural Substrate vs Dynamic Trigger</div>
+    <div class="section-desc">SAM doesn't happen randomly. It requires a vulnerable anatomy AND a hemodynamic trigger. This patient had both.</div>
+
+    <div class="grid-2" style="margin-bottom:24px">
+      <div class="card card-il">
+        <div class="card-title-row">
+          <div class="card-icon" style="background:rgba(59,130,246,0.15);color:#60a5fa">🧱</div>
+          <div>
+            <span class="badge bi" style="margin-bottom:4px">Built Over Years</span>
+            <h3 style="margin-bottom:0">Structural Substrate</h3>
+          </div>
+        </div>
+        <p style="margin-bottom:12px;font-size:13.5px">The anatomy was already primed for SAM before the first incision. Years of HTN + AS created a ventricle that was stiff, thick-walled, and small-cavitied.</p>
+        <ul>
+          <li><strong style="color:#e2e8f0">Concentric LVH</strong> — thick walls narrow the LVOT geometry</li>
+          <li><strong style="color:#e2e8f0">Mild AS (chronic pressure loading)</strong> — further LV remodeling</li>
+          <li><strong style="color:#e2e8f0">Mitral annular calcification</strong> — restricts leaflet mobility</li>
+          <li><strong style="color:#e2e8f0">Heavily calcified posterior leaflet (P2)</strong> — shifts coaptation anteriorly, displaces AML toward LVOT</li>
+          <li><strong style="color:#e2e8f0">Thickened anterior mitral leaflet</strong> — larger surface area for Venturi drag</li>
+          <li><strong style="color:#e2e8f0">Biatrial enlargement</strong> — chronic diastolic dysfunction, stiff filling</li>
+          <li><strong style="color:#e2e8f0">Likely sigmoid septum</strong> — age-related basal septal convexity narrows LVOT further</li>
+        </ul>
+      </div>
+      <div class="card card-dl">
+        <div class="card-title-row">
+          <div class="card-icon" style="background:rgba(220,38,38,0.15);color:#f87171">⚡</div>
+          <div>
+            <span class="badge bd" style="margin-bottom:4px">Happened Intraoperatively</span>
+            <h3 style="margin-bottom:0">Dynamic Trigger</h3>
+          </div>
+        </div>
+        <p style="margin-bottom:12px;font-size:13.5px">The off-pump CABG created the perfect storm: preload dropped, LV became hyperdynamic after revascularization, and the outflow tract narrowed into obstruction.</p>
+        <ul>
+          <li><strong style="color:#e2e8f0">Off-pump manipulation</strong> — heart repositioned repeatedly, venous return fluctuates</li>
+          <li><strong style="color:#e2e8f0">Blood loss + third spacing</strong> — significant drain output, anemia (Hgb 7.1–8.4)</li>
+          <li><strong style="color:#e2e8f0">Hypovolemia</strong> — LV cavity shrinks → LVOT narrows further</li>
+          <li><strong style="color:#e2e8f0">Post-revascularization EF jump</strong> — 55–60% → &gt;65%, hyperdynamic</li>
+          <li><strong style="color:#e2e8f0">Catecholamine surge</strong> — endogenous stress response increases contractility</li>
+          <li><strong style="color:#e2e8f0">Low afterload</strong> — vasodilation + vasoplegia → ventricle empties too fast</li>
+          <li><strong style="color:#e2e8f0">Timing: "toward the end of the case"</strong> — cumulative effect of all triggers</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center;padding:28px">
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#475569;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px">The Equation</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;font-size:14px">
+        <span style="padding:10px 16px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);border-radius:8px;color:#93c5fd">Concentric LVH<br><small style="color:#64748b">+ MAC + P2 calcification</small></span>
+        <span style="color:#475569;font-size:20px">+</span>
+        <span style="padding:10px 16px;background:rgba(217,119,6,0.12);border:1px solid rgba(217,119,6,0.25);border-radius:8px;color:#fbbf24">Hypovolemia<br><small style="color:#64748b">Underfilled LV</small></span>
+        <span style="color:#475569;font-size:20px">+</span>
+        <span style="padding:10px 16px;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.25);border-radius:8px;color:#c084fc">Hyperdynamic EF<br><small style="color:#64748b">Post-revascularization</small></span>
+        <span style="color:#475569;font-size:24px">=</span>
+        <span style="padding:10px 16px;background:rgba(220,38,38,0.18);border:1px solid rgba(220,38,38,0.45);border-radius:8px;color:#fca5a5;font-weight:700">SAM/LVOTO<br><small style="color:#f87171">Severe dynamic MR</small></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PHYSIO -->
+  <div id="tab-physio" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">05 · Mechanism</div>
+    <div class="section-title">Pathophysiology Step-by-Step</div>
+    <div class="section-desc">SAM/LVOTO is a positive-feedback loop. Every untreated step makes the next step worse.</div>
+
+    <div class="grid-2" style="gap:28px">
+      <div>
+        <div class="cycle-wrap">
+          <div class="cn cn-a">Hypovolemia + Hypercontractility<br><small style="opacity:0.8">LVH / MAC / Hyperdynamic EF &gt;65%</small></div>
+          <div class="ca">↓</div>
+          <div class="cn cn-b">LV Cavity Shrinks · LVOT Narrows<br><small style="opacity:0.8">High-velocity systolic flow through narrow LVOT</small></div>
+          <div class="ca">↓</div>
+          <div class="cn cn-c">Venturi / Drag Forces<br><small style="opacity:0.8">Pull anterior mitral leaflet toward septum</small></div>
+          <div class="ca">↓</div>
+          <div class="cn cn-b">SAM — Anterior Leaflet Contacts Septum<br><small style="opacity:0.8">LVOT obstruction · Valve cannot coapt → severe MR</small></div>
+          <div class="ca">↓</div>
+          <div class="cn cn-c">Forward Flow Drops · MR Into LA<br><small style="opacity:0.8">LV pressure rises · Stroke volume falls</small></div>
+          <div class="ca">↓</div>
+          <div class="cn cn-d">⟳ Hypotension → Less Preload → Worse SAM<br><small style="opacity:0.9">Vicious cycle · Body compensates with more catecholamines → more obstruction</small></div>
+          <div class="cycle-label" style="margin-top:8px">Positive Feedback Loop — must be broken with volume + afterload</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card card-il">
+          <h3>🫀 What Is SAM, Mechanically?</h3>
+          <p>During systole, blood accelerates rapidly through a <strong style="color:#60a5fa">narrowed LVOT</strong>. The high-velocity flow creates a <strong style="color:#60a5fa">Venturi (drag) effect</strong> — like a flag in the wind — that pulls the <strong style="color:#60a5fa">anterior mitral leaflet</strong> anteriorly toward the septum.</p>
+          <p style="margin-top:8px">When the leaflet contacts the septum, it <strong style="color:#60a5fa">obstructs forward flow</strong> and disrupts coaptation, creating a jet of <strong style="color:#60a5fa">severe MR</strong> into the left atrium. This is not structural MR — it is <em>functional, load-dependent, and reversible</em>.</p>
+        </div>
+        <div class="card card-wl">
+          <h3>💉 Why Hypotension Makes It Worse</h3>
+          <p>Hypotension → less venous return → LV fills less → smaller LV cavity → LVOT narrows further → more Venturi force → worse SAM → less forward output → more hypotension.</p>
+          <p style="margin-top:8px;color:#fbbf24;font-weight:500">The body's catecholamine response to hypotension accelerates the cycle by increasing contractility further.</p>
+        </div>
+        <div class="card card-sl">
+          <h3>✅ Why Volume + Neo Breaks the Cycle</h3>
+          <ul>
+            <li class="good">Volume → fills LV → enlarges cavity → LVOT widens → less obstruction</li>
+            <li class="good">Phenylephrine → increases SVR/afterload → LV empties more slowly → more filling time → cavity size improves</li>
+            <li class="good">Both → reduce LVOT velocity → Venturi force drops → AML moves back → SAM resolves → MR disappears</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PRESSORS -->
+  <div id="tab-pressors" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">06 · Pharmacology</div>
+    <div class="section-title">Why Neo — Not Levo, Not Inotropes</div>
+    <div class="section-desc">Receptor pharmacology matters at the bedside. In SAM physiology, the wrong pressor can actively worsen obstruction.</div>
+
+    <div class="card" style="margin-bottom:24px">
+      <div class="drug-table-wrap">
+        <table class="drug-table">
+          <thead>
+            <tr>
+              <th>Drug</th>
+              <th>Receptors</th>
+              <th>Effect on LV Contractility</th>
+              <th>Effect on SVR/Afterload</th>
+              <th>SAM Verdict</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dn">Phenylephrine</span><br><small style="color:#64748b">Neo · α₁ pure</small></td>
+              <td>
+                <div class="rb-row">
+                  <span class="rb ra1">α₁ +++</span>
+                  <span class="rb rnone">β₁ none</span>
+                  <span class="rb rnone">β₂ none</span>
+                </div>
+              </td>
+              <td style="color:#34d399">No increase<br><small>Does not add inotropy</small></td>
+              <td style="color:#34d399">↑↑↑ Strong increase<br><small>Enlarges LV cavity, slows emptying</small></td>
+              <td><span class="sv sv-go">✓ Preferred</span></td>
+            </tr>
+            <tr>
+              <td><span class="dn">Norepinephrine</span><br><small style="color:#64748b">Levo · α₁ + β₁</small></td>
+              <td>
+                <div class="rb-row">
+                  <span class="rb ra1">α₁ +++</span>
+                  <span class="rb rb1">β₁ ++</span>
+                  <span class="rb rnone">β₂ minimal</span>
+                </div>
+              </td>
+              <td style="color:#fbbf24">Moderate increase<br><small>Beta-1 adds contractility</small></td>
+              <td style="color:#34d399">↑↑↑ Strong increase<br><small>Alpha dominates, raises MAP</small></td>
+              <td><span class="sv sv-caution">⚠ Use Caution</span></td>
+            </tr>
+            <tr>
+              <td><span class="dn">Epinephrine</span><br><small style="color:#64748b">α₁ + β₁ + β₂</small></td>
+              <td>
+                <div class="rb-row">
+                  <span class="rb rb1">β₁ +++</span>
+                  <span class="rb rb2">β₂ ++</span>
+                  <span class="rb ra1">α₁ ++</span>
+                </div>
+              </td>
+              <td style="color:#f87171">Strong increase<br><small>Powerful inotrope</small></td>
+              <td style="color:#fbbf24">Dose-dependent<br><small>β₂ vasodilation at low doses</small></td>
+              <td><span class="sv sv-stop">✗ Avoid in SAM</span></td>
+            </tr>
+            <tr>
+              <td><span class="dn">Dobutamine</span><br><small style="color:#64748b">β₁ dominant inotrope</small></td>
+              <td>
+                <div class="rb-row">
+                  <span class="rb rb1">β₁ +++</span>
+                  <span class="rb rb2">β₂ ++</span>
+                  <span class="rb rnone">α mild</span>
+                </div>
+              </td>
+              <td style="color:#f87171">Very strong increase<br><small>Hyperdynamic squeeze</small></td>
+              <td style="color:#f87171">↓ Decreases SVR<br><small>β₂ vasodilation worsens LVOT flow</small></td>
+              <td><span class="sv sv-stop">✗ Avoid — Dangerous</span></td>
+            </tr>
+            <tr>
+              <td><span class="dn">Milrinone</span><br><small style="color:#64748b">PDE-3 inhibitor inodilator</small></td>
+              <td>
+                <div class="rb-row">
+                  <span class="rb rb1">Inodilator</span>
+                  <span class="rb rnone">Non-adrenergic</span>
+                </div>
+              </td>
+              <td style="color:#f87171">Increases contractility<br><small>cAMP mediated</small></td>
+              <td style="color:#f87171">↓↓ Vasodilation<br><small>Worsens preload + LVOT velocity</small></td>
+              <td><span class="sv sv-stop">✗ Avoid — Dangerous</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card card-sl">
+        <h3>✅ Phenylephrine: Why It Works</h3>
+        <p>Pure α₁ agonist — raises SVR and MAP with zero beta activity. Increases afterload, which slows LV emptying, enlarges the LV cavity, reduces LVOT velocity, and diminishes Venturi drag on the anterior leaflet. No risk of worsening hyperdynamic physiology.</p>
+      </div>
+      <div class="card card-wl">
+        <h3>⚠️ Norepinephrine: The Nuance</h3>
+        <p>Strong alpha raises BP well — but moderate β₁ activity adds contractility. In SAM, this may worsen LVOT obstruction underneath even while MAP appears to improve. Watch for persistent labile hemodynamics, worsening MR, or pulmonary edema on levo — this is the "looks ok but isn't" pattern. Neo is cleaner.</p>
+      </div>
+      <div class="card card-dl">
+        <h3>🚫 Inotropes: Potentially Catastrophic</h3>
+        <p>The LV is <em>already</em> hyperdynamic. Dobutamine, milrinone, or epinephrine increase contractility in a ventricle that's squeezing too hard, in a cavity that's too small. LVOT velocity skyrockets. SAM worsens. MR worsens. BP drops further. This is the wrong-pathway death spiral.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;background:rgba(251,191,36,0.04);border-color:rgba(251,191,36,0.18)">
+      <h3 style="color:#fbbf24">📌 The Rule to Remember</h3>
+      <p style="font-size:14.5px;line-height:1.7">In SAM/LVOTO, the problem is <strong style="color:#fbbf24">NOT weak squeeze</strong>. The problem is an <strong style="color:#fbbf24">underfilled, hyperdynamic LV ejecting too fast through a narrowed outflow path</strong>. Inotropes treat weak squeeze. This patient does not have weak squeeze. Giving inotropes here is treating the wrong diagnosis with the wrong drug and making both worse simultaneously.</p>
+    </div>
+  </div>
+
+  <!-- TAB: WORSE -->
+  <div id="tab-worse" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">07 · Aggravating Factors</div>
+    <div class="section-title">What Would Make It Worse</div>
+    <div class="section-desc">Know what to avoid just as much as what to give. In SAM, several routine ICU interventions are actively harmful.</div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div>
+        <div class="watch-item" style="border-left:3px solid #dc2626">
+          <div class="watch-icon">💉</div>
+          <div class="watch-body">
+            <strong>Inotropes (Dobutamine / Milrinone / Epi)</strong>
+            <p>Increases contractility in an already-hyperdynamic LV. Faster LVOT flow velocity → more Venturi drag → worse SAM → worse MR → worse output. Do not confuse hyperdynamic-obstruction shock with cardiogenic shock.</p>
+          </div>
+        </div>
+        <div class="watch-item" style="border-left:3px solid #dc2626">
+          <div class="watch-icon">💧</div>
+          <div class="watch-body">
+            <strong>Aggressive Diuresis Early Post-Op</strong>
+            <p>Reduces preload → LV underfills → cavity shrinks → LVOT narrows → SAM worsens. This patient had clinical edema and pulmonary congestion but "caution with SAM" was explicitly documented. Tolerate some congestion early.</p>
+          </div>
+        </div>
+        <div class="watch-item" style="border-left:3px solid #dc2626">
+          <div class="watch-icon">💓</div>
+          <div class="watch-body">
+            <strong>Tachycardia</strong>
+            <p>Reduces diastolic filling time → LV fills less → smaller cavity → worse SAM. Avoid anything that accelerates HR: pain, agitation, beta-agonists, exogenous catecholamines.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="watch-item" style="border-left:3px solid #dc2626">
+          <div class="watch-icon">📉</div>
+          <div class="watch-body">
+            <strong>Hypotension — Any Cause</strong>
+            <p>Any drop in MAP feeds the cycle. Low preload → small LV → more SAM → less output → more hypotension. Treat aggressively and early. Do not allow permissive hypotension in this patient.</p>
+          </div>
+        </div>
+        <div class="watch-item" style="border-left:3px solid #dc2626">
+          <div class="watch-icon">🩸</div>
+          <div class="watch-body">
+            <strong>Hypovolemia From Any Source</strong>
+            <p>Bleeding, chest tube output, third spacing, inadequate volume replacement. All reduce LV preload. Keep euvolemic. Albumin or IVF PRN as ordered. Monitor drains and I&O closely.</p>
+          </div>
+        </div>
+        <div class="watch-item" style="border-left:3px solid #d97706">
+          <div class="watch-icon">💨</div>
+          <div class="watch-body">
+            <strong>Vasodilators / Low SVR States</strong>
+            <p>Anything that drops SVR allows the LV to empty more aggressively. Avoid nitroglycerin, nitroprusside, or milrinone. Beta₂ agonists also reduce afterload — even nebulized albuterol can matter in a borderline case.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ALGO -->
+  <div id="tab-algo" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">08 · Management</div>
+    <div class="section-title">Management Algorithm</div>
+    <div class="section-desc">This is the framework used for this patient. Pathway depends on hemodynamic context.</div>
+
+    <!-- PATHWAY TOGGLE -->
+    <div class="pathway-toggle" id="pathwayToggle">
+      <button class="ptb ptb-wrong active" onclick="showPathway('wrong')">⚠️ Treat as Ordinary Shock<br><small>Standard post-op hypotension reflex</small></button>
+      <button class="ptb ptb-right" onclick="showPathway('right')">✅ Treat as SAM/LVOTO<br><small>Correct pathway for this patient</small></button>
+    </div>
+
+    <div id="pathway-wrong" class="pathway-box pb-wrong">
+      <h3>⚠️ Wrong Pathway — "Standard Shock Reflex"</h3>
+      <div class="pstep step-wrong">
+        <div class="psn psn-w">1</div>
+        <div class="pstep-text"><strong>Recognize hypotension</strong> — SBP &lt;90, MAP &lt;65 post-CABG</div>
+      </div>
+      <div class="pstep step-wrong">
+        <div class="psn psn-w">2</div>
+        <div class="pstep-text"><strong>Add norepinephrine / increase vasopressor</strong> — MAP drops → reach for levo, which has β₁ activity → contractility ↑</div>
+      </div>
+      <div class="pstep step-wrong">
+        <div class="psn psn-w">3</div>
+        <div class="pstep-text"><strong>See persistent hypotension → assume cardiogenic</strong> — EF looks hyperdynamic but MAP still low → "heart must be weak"</div>
+      </div>
+      <div class="pstep step-wrong">
+        <div class="psn psn-w">4</div>
+        <div class="pstep-text"><strong>Add inotrope (dobutamine or milrinone)</strong> — increases contractility, drops SVR → LVOT velocity spikes → SAM dramatically worsens</div>
+      </div>
+      <div class="pstep step-wrong">
+        <div class="psn psn-w">5</div>
+        <div class="pstep-text"><strong>Hemodynamic collapse</strong> — severe MR + LVOTO + low CO → pulmonary edema, escalating pressors, possible arrest</div>
+      </div>
+      <div class="ob ob-bad">Outcome: Treating the wrong mechanism → death spiral. The inotrope is gasoline on the fire.</div>
+    </div>
+
+    <div id="pathway-right" class="pathway-box pb-right" style="display:none">
+      <h3>✅ Correct Pathway — SAM/LVOTO Management</h3>
+      <div class="pstep step-right">
+        <div class="psn psn-r">1</div>
+        <div class="pstep-text"><strong>Recognize the SAM pattern</strong> — hyperdynamic EF + dynamic MR + load-dependent hypotension → suspect LVOTO. Anesthesia TEE documented it here.</div>
+      </div>
+      <div class="pstep step-right">
+        <div class="psn psn-r">2</div>
+        <div class="pstep-text"><strong>Volume resuscitation</strong> — IVF/albumin bolus to increase LV preload → cavity enlarges → LVOT geometry improves → Venturi force drops</div>
+      </div>
+      <div class="pstep step-right">
+        <div class="psn psn-r">3</div>
+        <div class="pstep-text"><strong>Phenylephrine (α₁ pure)</strong> — increases SVR/afterload → slows LV emptying → cavity stays larger → LVOT velocity drops → SAM resolves</div>
+      </div>
+      <div class="pstep step-right">
+        <div class="psn psn-r">4</div>
+        <div class="pstep-text"><strong>Wean norepinephrine</strong> — β₁ inotropy not needed and potentially harmful. Replace with phenylephrine titrated to MAP ≥ 65.</div>
+      </div>
+      <div class="pstep step-right">
+        <div class="psn psn-r">5</div>
+        <div class="pstep-text"><strong>Strictly no inotropes</strong> — dobutamine, milrinone, epinephrine all contraindicated while SAM is the dominant mechanism</div>
+      </div>
+      <div class="pstep step-right">
+        <div class="psn psn-r">6</div>
+        <div class="pstep-text"><strong>Cautious diuresis only after SAM stability</strong> — tolerate some pulmonary congestion early; overly aggressive diuresis reactivates SAM</div>
+      </div>
+      <div class="pstep step-right">
+        <div class="psn psn-r">7</div>
+        <div class="pstep-text"><strong>Control heart rate</strong> — target HR 60–70s. Avoid tachycardia. Consider β-blockade once hemodynamically safe (already on ASA/statin; BB to be added per CVS).</div>
+      </div>
+      <div class="pstep step-right">
+        <div class="psn psn-r">8</div>
+        <div class="pstep-text"><strong>Repeat echo if:</strong> persistent hypotension, new murmur, worsening pulmonary edema, escalating pressor requirement, or clinical concern for residual LVOT gradient</div>
+      </div>
+      <div class="ob ob-good">Outcome: SAM resolves. MR becomes trace. Hemodynamics stabilize. Weaning phenylephrine over subsequent days.</div>
+    </div>
+  </div>
+
+  <!-- TAB: NURSING -->
+  <div id="tab-nursing" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">09 · Bedside Practice</div>
+    <div class="section-title">Nursing &amp; House Supervisor Watch-Outs</div>
+    <div class="section-desc">This is what to look for, what to escalate, and what NOT to do at the bedside for any post-CABG patient with a SAM flag.</div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#3b82f6;margin-bottom:14px">Monitor Closely For</p>
+        <div class="watch-item">
+          <div class="watch-icon">📊</div>
+          <div class="watch-body">
+            <strong>BP Trending Down — Escalate Early</strong>
+            <p>Any sustained MAP &lt;65 or SBP &lt;100 → titrate phenylephrine, bolus fluids or albumin per orders, and notify provider. Do not wait for MAP &lt;55 in this patient.</p>
+          </div>
+        </div>
+        <div class="watch-item">
+          <div class="watch-icon">🩸</div>
+          <div class="watch-body">
+            <strong>Chest Tube Output</strong>
+            <p>High drain output = volume loss = preload drop = SAM risk. Document hourly output, notify CVS per protocol (&gt;200 mL/hr). Replace losses per orders.</p>
+          </div>
+        </div>
+        <div class="watch-item">
+          <div class="watch-icon">❤️</div>
+          <div class="watch-body">
+            <strong>Heart Rate Changes</strong>
+            <p>Tachycardia reduces LV filling time and worsens SAM. New-onset SVT or AF → notify provider immediately. Target HR 60–70s. Treat pain and agitation to prevent catecholamine-driven HR elevation.</p>
+          </div>
+        </div>
+        <div class="watch-item">
+          <div class="watch-icon">🌬️</div>
+          <div class="watch-body">
+            <strong>Respiratory Status / SpO₂</strong>
+            <p>Worsening pulmonary edema may indicate SAM-related MR is worsening (blood pooling in LA). But aggressive diuresis to "fix" it can backfire by reducing preload. Notify provider before escalating diuretics.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#dc2626;margin-bottom:14px">Do NOT Do Without MD/APRN Order</p>
+        <div class="watch-item" style="border-left:3px solid #dc2626">
+          <div class="watch-icon">🚫</div>
+          <div class="watch-body">
+            <strong>Do NOT give inotropes if ordered without SAM confirmation</strong>
+            <p>If dobutamine or milrinone appears as a new PRN or order, confirm with the provider that SAM has resolved or is not the dominant mechanism. This patient has an explicit "No Inotropes" order while SAM is active.</p>
+          </div>
+        </div>
+        <div class="watch-item" style="border-left:3px solid #dc2626">
+          <div class="watch-icon">🚫</div>
+          <div class="watch-body">
+            <strong>Do NOT aggressively diurese without guidance</strong>
+            <p>Pulmonary congestion is expected in the early post-op period and may be tolerated temporarily. Pushing furosemide without communicating the SAM context can re-trigger hemodynamic instability.</p>
+          </div>
+        </div>
+        <div class="watch-item" style="border-left:3px solid #d97706">
+          <div class="watch-icon">⚠️</div>
+          <div class="watch-body">
+            <strong>Report New Murmur Promptly</strong>
+            <p>If you auscultate a new or changing systolic murmur, particularly one that's louder with standing or with reduced filling, this may signal active SAM. Notify provider. Echo may need to be repeated urgently.</p>
+          </div>
+        </div>
+        <div class="watch-item" style="border-left:3px solid #d97706">
+          <div class="watch-icon">⚠️</div>
+          <div class="watch-body">
+            <strong>Hemodynamic Instability After Positional Changes</strong>
+            <p>Sitting up, dangling, early mobility — any position change that reduces preload can re-trigger SAM. Use caution and monitor closely. Return to supine if BP drops significantly with position change.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="handoff-box">
+      <h3>📋 CN / ICU Handoff Pearl — Use This Language at Bedside Report</h3>
+      <div class="handoff-line">
+        <div class="hl-key">Diagnosis</div>
+        <div class="hl-val">Post-CABG dynamic SAM/LVOTO — not cardiogenic shock, not sepsis. Dynamic mitral regurgitation, load-dependent. Resolves with volume and phenylephrine.</div>
+      </div>
+      <div class="handoff-line">
+        <div class="hl-key">Pressor Rule</div>
+        <div class="hl-val">Phenylephrine ONLY. If MAP drops, titrate Neo up and bolus fluids/albumin per order. Do not switch to levo without provider consult. No inotropes.</div>
+      </div>
+      <div class="handoff-line">
+        <div class="hl-key">Diuresis Rule</div>
+        <div class="hl-val">Cautious. Tolerate mild pulmonary congestion early. Do not push furosemide aggressively while SAM is active — provider to make that call.</div>
+      </div>
+      <div class="handoff-line">
+        <div class="hl-key">HR Target</div>
+        <div class="hl-val">60–70s. Treat tachycardia. Manage pain and agitation to prevent catecholamine surge. Avoid anything that raises heart rate.</div>
+      </div>
+      <div class="handoff-line">
+        <div class="hl-key">Call Criteria</div>
+        <div class="hl-val">MAP &lt;65 not responding to pressor titration · Chest tube &gt;200 mL/hr · New murmur · HR &gt;90 sustained · Hemodynamic instability with positioning · Any plan to change vasoactive strategy</div>
+      </div>
+      <div class="handoff-line">
+        <div class="hl-key">Echo Context</div>
+        <div class="hl-val">TEE done intraop by the cardiologist confirmed dynamic SAM with severe MR during hypovolemia. Trace MR at rest. Repeat echo if clinical deterioration.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ECHO / COURSE -->
+  <div id="tab-echo" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">10 · Expected Trajectory</div>
+    <div class="section-title">Repeat Echo / Expected Clinical Course</div>
+    <div class="section-desc">SAM after CABG is often transient if managed correctly. Know when to repeat the echo and what to expect.</div>
+
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="card card-il">
+        <h3>🔁 When to Repeat Echo</h3>
+        <ul>
+          <li>Persistent hypotension despite phenylephrine and adequate volume</li>
+          <li>New or worsening pulmonary edema not explained by fluid overload alone</li>
+          <li>New or louder systolic murmur at the bedside</li>
+          <li>Escalating vasopressor requirement without clear cause</li>
+          <li>Concern for hemodynamic deterioration or clinical decline</li>
+          <li>Prior to switching from phenylephrine to another agent</li>
+          <li>When considering early diuresis — confirm SAM has resolved first</li>
+        </ul>
+      </div>
+      <div class="card card-sl">
+        <h3>📈 Expected Course (If Managed Correctly)</h3>
+        <div class="algo-step">
+          <div class="algo-num algo-num-go">POD1</div>
+          <div class="algo-body">
+            <strong>Hemodynamic Stabilization</strong>
+            <p>On phenylephrine + adequate volume, SAM resolves. MR should be trace at rest. MAP maintained 65–80s. Sedation weaned. Working toward extubation.</p>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num algo-num-check">POD2</div>
+          <div class="algo-body">
+            <strong>Pressor Wean Begins</strong>
+            <p>As patient auto-diureses and volume distributes, phenylephrine requirements typically fall. Monitor for recurrence with any acute preload drop.</p>
+          </div>
+        </div>
+        <div class="algo-step">
+          <div class="algo-num algo-num-go">POD3+</div>
+          <div class="algo-body">
+            <strong>Beta Blockade Introduction</strong>
+            <p>Once hemodynamically stable, beta blocker added per CVS plan for rate control and remodeling benefit. Controlled contractility helps prevent SAM recurrence.</p>
+          </div>
+        </div>
+        <div class="algo-step" style="margin-bottom:0">
+          <div class="algo-num algo-num-check" style="font-size:10px">Echo</div>
+          <div class="algo-body">
+            <strong>Outpatient Echo Consideration</strong>
+            <p>Formal echo at follow-up to reassess LVOT, MR, and LV function once EF normalizes from hyperdynamic state. MAC/AML anatomy is permanent — long-term awareness needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-wl">
+      <h3>⚠️ Structural Anatomy Does Not Go Away</h3>
+      <p style="font-size:14px;line-height:1.65">The concentric LVH, mitral annular calcification, thickened anterior leaflet, and calcified P2 are permanent. The SAM risk resolves when the hemodynamic triggers (hypovolemia, hyperdynamic state, low afterload) are corrected. This patient will always have a SAM-prone anatomy. Any future hospitalization with significant hypovolemia, tachycardia, or vasodilation should prompt awareness of this structural substrate.</p>
+    </div>
+  </div>
+
+  <!-- TAB: TAKEAWAYS -->
+  <div id="tab-takeaways" class="tab-panel" style="padding-bottom:60px">
+    <div class="section-label">11 · Summary</div>
+    <div class="section-title">Key Takeaways</div>
+    <div class="section-desc">What every CVICU nurse, charge nurse, and house supervisor should walk away knowing from this case.</div>
+
+    <div class="takeaway">
+      <div class="ta-num">1</div>
+      <div class="ta-body">
+        <strong>SAM is not just a HOCM diagnosis.</strong>
+        <p>It can develop dynamically in patients with structural predisposition: concentric LVH, mitral annular calcification, posterior leaflet restriction, and age-related LV remodeling. No family history of HOCM required. This was a patient in his 70s post-CABG patient, not a classic obstructive cardiomyopathy presentation.</p>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div class="ta-num">2</div>
+      <div class="ta-body">
+        <strong>A hyperdynamic EF + hypotension = red flag for LVOTO, not cardiogenic shock.</strong>
+        <p>The standard post-op reflex is to worry more as EF drops. Here, the EF went UP (&gt;65%) after revascularization — and that was part of the problem. Hyperdynamic + underfilled + hypertrophied = SAM. The squeeze is not the issue. The cavity size and outflow geometry are.</p>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div class="ta-num">3</div>
+      <div class="ta-body">
+        <strong>Dynamic, reversible MR is the fingerprint of SAM.</strong>
+        <p>Baseline MR was only trace. With hypovolemia/hypotension, it became severe. With volume + phenylephrine, it resolved. That reversibility — captured in real time on TEE — is the diagnostic key that distinguishes SAM-related MR from structural MR requiring surgical correction.</p>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div class="ta-num">4</div>
+      <div class="ta-body">
+        <strong>Phenylephrine is the right pressor. Inotropes are contraindicated.</strong>
+        <p>Pure α₁ vasoconstriction raises afterload, slows LV emptying, and allows the cavity to fill more completely — mechanically opposing SAM. Dobutamine, milrinone, and epinephrine make it worse. "Shocking" a patient into a worse state with an inotrope is one of the most preventable catastrophes in cardiac surgery ICU care.</p>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div class="ta-num">5</div>
+      <div class="ta-body">
+        <strong>Volume is treatment, not just supportive care.</strong>
+        <p>Fluid administration is an active pharmacological intervention for SAM. Expanding LV preload changes the geometry of the LVOT and directly reduces the Venturi force driving anterior leaflet motion. Cautious diuresis early must be weighed against the risk of re-triggering obstruction.</p>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div class="ta-num">6</div>
+      <div class="ta-body">
+        <strong>The anesthesiologist's intraoperative TEE changed this patient's course.</strong>
+        <p>Without real-time TEE identification and documentation, the ICU team would have been flying blind. The note from the cardiologist gave the overnight team, the APRN, and the attending a clear framework: load-dependent dynamic SAM, resolves with volume/Neo, no inotropes. This is what astute echocardiographic recognition looks like in practice.</p>
+      </div>
+    </div>
+
+    <div class="takeaway">
+      <div class="ta-num">7</div>
+      <div class="ta-body">
+        <strong>Know the cycle so you can break it before it spirals.</strong>
+        <p>Hypovolemia → small LV → LVOT narrows → high-velocity flow → Venturi drag → SAM → severe MR → low forward output → hypotension → less preload → worse SAM. Every link in that chain is a target for intervention. Volume breaks the preload link. Phenylephrine breaks the afterload link. No inotropes keeps the contractility link from becoming lethal.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="text-align:center;padding:20px 0">
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#334155;letter-spacing:0.06em">CVICU TEACHING CASE · THE HEART HOSPITAL BAYLOR DENTON</p>
+      <p style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1e3a5f;letter-spacing:0.06em;margin-top:4px">For educational use · CVICU CVICU Staff Development</p>
+    </div>
+  </div>
+
+</div><!-- end .container -->
+
+<div class="footer">
+  <p>Hidden Post-CABG SAM/LVOTO Case Study <span>·</span> The Heart Hospital Baylor Denton <span>·</span> CVICU Teaching Series</p>
+  <p style="margin-top:5px;color:#1e3a5f">Patient identifiers used with de-identification intent for educational purposes only</p>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('tab-' + id);
+  if (panel) panel.classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  btns.forEach(b => { if (b.getAttribute('onclick') === "showTab('" + id + "')") b.classList.add('active'); });
+}
+
+function showPathway(which) {
+  const wrong = document.getElementById('pathway-wrong');
+  const right = document.getElementById('pathway-right');
+  const btns = document.querySelectorAll('.ptb');
+  if (which === 'wrong') {
+    wrong.style.display = 'block';
+    right.style.display = 'none';
+    btns[0].classList.add('active');
+    btns[1].classList.remove('active');
+  } else {
+    wrong.style.display = 'none';
+    right.style.display = 'block';
+    btns[0].classList.remove('active');
+    btns[1].classList.add('active');
+  }
+}
+</script>
+</body>
+</html>
