@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bedside Teaching Series · THHBD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1317; --panel:#151c22; --panel2:#1b242c; --line:#26323b;
+  --ink:#e8e4da; --dim:#98a4ab; --faint:#5f6c74;
+  --teal:#3aaea6; --teal-dk:#1e6f6a; --gold:#d9a441; --ox:#a03a44; --ox-dk:#6e2830;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.mono{font-family:'Space Mono',monospace}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px}
+
+header{padding:34px 0 22px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#121a20,var(--bg))}
+.eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal)}
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(30px,5vw,46px);line-height:1.06;margin:8px 0 10px}
+h1 em{font-style:italic;color:var(--gold)}
+.sub{color:var(--dim);max-width:640px;font-size:14.5px}
+
+main{padding:26px 0 40px}
+.cat-head{display:flex;align-items:baseline;gap:12px;margin:30px 0 12px}
+.cat-head:first-child{margin-top:6px}
+.cat-name{font-family:'Fraunces',serif;font-size:21px;font-weight:600}
+.cat-count{font-family:'Space Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.12em;text-transform:uppercase}
+.cat-rule{flex:1;height:1px;background:var(--line)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px;transition:border-color .18s, transform .18s}
+a.card{text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--teal);transform:translateY(-2px)}
+a.card:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.card.soon{opacity:.62}
+.card h3{font-family:'Fraunces',serif;font-size:17px;font-weight:600;line-height:1.25}
+.card p{font-size:13.5px;color:var(--dim);flex:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
+.badge{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:999px;border:1px solid}
+.badge.live{color:#bff5ef;border-color:var(--teal-dk);background:rgba(30,111,106,.25)}
+.badge.soon{color:var(--dim);border-color:var(--line);background:var(--panel2)}
+.open{font-family:'Space Mono',monospace;font-size:12px;color:var(--teal)}
+
+.note{margin-top:38px;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--ox);border-radius:var(--radius);padding:14px 16px;font-size:13px;color:var(--dim)}
+.note strong{color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding:20px 0 34px;color:var(--faint);font-size:12.5px}
+footer .mono{font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">THHBD · Cardiovascular Critical Care</div>
+    <h1>Bedside Teaching <em>Series</em></h1>
+    <p class="sub">Interactive teaching tools and references built by nurses, for nurses — designed to be used at the bedside, in context, in the moment.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="cat-head"><span class="cat-name">Infusions &amp; Medications</span><span class="cat-rule"></span><span class="cat-count">2 tools</span></div>
+  <div class="grid">
+    <a class="card" href="drip-room/">
+      <h3>The Drip Room</h3>
+      <p>ICU continuous infusion preceptor — pressors, sedation, paralytics, and neuro/CVICU drips with unit-specific practice bands, receptor primers, and quizzes.</p>
+      <div class="card-foot"><span class="badge live">Live</span><span class="open">Open tool →</span></div>
+    </a>
+    <div class="card soon">
+      <h3>CV Medication &amp; Hemodynamics Reference</h3>
+      <p>Quick-reference app for cardiovascular medications and their hemodynamic effects.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+  </div>
+
+  <div class="cat-head"><span class="cat-name">Hemodynamics &amp; Devices</span><span class="cat-rule"></span><span class="cat-count">3 tools</span></div>
+  <div class="grid">
+    <div class="card soon">
+      <h3>Hemodynamics Supplement</h3>
+      <p>Foundations of pressure, flow, and resistance — taught through the belt-bag analogy.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+    <div class="card soon">
+      <h3>Temporary Pacemaker Troubleshooting</h3>
+      <p>Systematic approach to capture, sensing, and output problems on epicardial wires.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+    <div class="card soon">
+      <h3>ECMO Case Board</h3>
+      <p>Case-based walkthroughs for extracorporeal support.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+  </div>
+
+  <div class="cat-head"><span class="cat-name">Cardiac Surgery Recovery</span><span class="cat-rule"></span><span class="cat-count">2 tools</span></div>
+  <div class="grid">
+    <div class="card soon">
+      <h3>Post-Op Bleeding Management</h3>
+      <p>Recognition and management of bleeding after cardiac surgery.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+    <div class="card soon">
+      <h3>Post-CABG SAM / LVOTO Teaching Case</h3>
+      <p>Systolic anterior motion and outflow obstruction — a case that changes how you resuscitate.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+  </div>
+
+  <div class="cat-head"><span class="cat-name">Decision Pathways</span><span class="cat-rule"></span><span class="cat-count">2 tools</span></div>
+  <div class="grid">
+    <div class="card soon">
+      <h3>ACS HEART Pathway — Reading the Story Before It Ends</h3>
+      <p>Bedside teaching module on acute coronary syndrome risk stratification.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+    <div class="card soon">
+      <h3>PCI vs. CABG — Heart Team Decisions</h3>
+      <p>Decision tool and bedside reference card for revascularization strategy.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+  </div>
+
+  <div class="cat-head"><span class="cat-name">Pocket References</span><span class="cat-rule"></span><span class="cat-count">1 tool</span></div>
+  <div class="grid">
+    <div class="card soon">
+      <h3>Cardiac CCRN Pocket Guide</h3>
+      <p>High-yield review for cardiovascular certification.</p>
+      <div class="card-foot"><span class="badge soon">In migration</span></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Educational supplement only.</strong> These tools support bedside teaching and do not replace institutional policy, unit protocols, or provider orders. Verify all doses and interventions against current orders and your facility's references.
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">Built at the bedside</span> — maintained by J.J. Cruz, BSN, RN
+  </div>
+</footer>
+
+</body>
+</html>
