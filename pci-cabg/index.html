@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCI vs CABG — Heart Team Decision Framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ece0;
+    --paper-2:#ece2d3;
+    --card:#fbf7ef;
+    --ink:#2a2620;
+    --ink-soft:#56504656;
+    --muted:#6f675a;
+    --rule:#d9cdba;
+    --teal:#0f6e69;        /* PCI / catheter axis */
+    --teal-soft:#e3efed;
+    --oxblood:#7a2b2b;     /* CABG / surgery / urgency */
+    --oxblood-soft:#f3e4e0;
+    --gold:#9c6b1f;        /* needs evaluation / pearls */
+    --gold-soft:#f4ead2;
+    --sage:#4f6a4a;        /* medical therapy */
+    --sage-soft:#e6ecdf;
+    --slate:#3f5168;       /* systems / think */
+    --slate-soft:#e4e9ef;
+    --urg:#9a1f1f;         /* urgent / emergent */
+    --urg-soft:#f6ddd8;
+    --shadow:0 1px 2px rgba(42,38,32,.06),0 8px 28px rgba(42,38,32,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:
+      radial-gradient(1200px 600px at 80% -10%, #f7f1e6 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Newsreader",Georgia,serif;
+    font-size:18px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--teal);color:#fff}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .mono{font-family:"Space Mono",monospace}
+  h1,h2,h3,h4{font-family:"Fraunces",serif;font-weight:600;line-height:1.12;letter-spacing:-.01em}
+
+  /* ---------- Masthead ---------- */
+  header.mast{
+    border-bottom:2px solid var(--ink);
+    background:linear-gradient(180deg,#fbf7ef, #f3ece0);
+  }
+  .mast .wrap{padding-top:30px;padding-bottom:24px}
+  .kicker{font-family:"Space Mono",monospace;font-size:11.5px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--oxblood);margin:0 0 10px}
+  .mast h1{font-size:clamp(34px,6vw,58px);margin:0;font-weight:700}
+  .mast h1 em{font-style:italic;color:var(--teal)}
+  .mast h1 .vs{color:var(--muted);font-style:normal;padding:0 .12em}
+  .dek{font-size:19px;color:var(--muted);max-width:62ch;margin:14px 0 0}
+  .credits{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--muted);margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 18px}
+  .credits b{color:var(--ink);font-weight:700}
+
+  /* ---------- Disclaimer banner ---------- */
+  .disclaimer{background:var(--oxblood);color:#f7ece8;font-family:"Space Mono",monospace;
+    font-size:12px;letter-spacing:.04em;line-height:1.55}
+  .disclaimer .wrap{padding:12px 22px}
+  .disclaimer b{color:#fff}
+
+  /* ---------- Sticky nav ---------- */
+  nav.tabs{position:sticky;top:0;z-index:50;background:rgba(243,236,224,.94);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+  .tabs .wrap{display:flex;gap:2px;overflow-x:auto;padding:0 12px;scrollbar-width:thin}
+  .tab{appearance:none;border:0;background:none;cursor:pointer;white-space:nowrap;
+    font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--muted);
+    padding:14px 14px;border-bottom:2px solid transparent;transition:.18s}
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:var(--oxblood);border-bottom-color:var(--oxblood)}
+
+  /* ---------- Sections ---------- */
+  main{padding:42px 0 90px}
+  .panel{display:none;animation:fade .35s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .sec-head{margin:0 0 6px;font-size:clamp(26px,4vw,38px)}
+  .sec-sub{color:var(--muted);margin:0 0 26px;max-width:64ch}
+  .lead-num{font-family:"Space Mono",monospace;color:var(--oxblood);font-size:13px;letter-spacing:.2em}
+
+  /* ---------- Callout boxes ---------- */
+  .callout{border-radius:10px;padding:15px 17px 15px 18px;margin:18px 0;
+    border:1px solid var(--rule);position:relative;font-size:16.5px;line-height:1.56}
+  .callout .lab{font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;display:block;margin-bottom:6px;font-weight:700}
+  .callout p{margin:.3em 0}
+  .c-pearl{background:var(--gold-soft);border-left:4px solid var(--gold)}
+  .c-pearl .lab{color:var(--gold)}
+  .c-why{background:var(--teal-soft);border-left:4px solid var(--teal)}
+  .c-why .lab{color:var(--teal)}
+  .c-think{background:var(--slate-soft);border-left:4px solid var(--slate)}
+  .c-think .lab{color:var(--slate)}
+  .c-sys{background:var(--paper-2);border-left:4px solid var(--muted)}
+  .c-sys .lab{color:var(--muted)}
+  .c-flag{background:var(--oxblood-soft);border-left:4px solid var(--oxblood)}
+  .c-flag .lab{color:var(--oxblood)}
+  .c-fam{background:var(--sage-soft);border-left:4px solid var(--sage)}
+  .c-fam .lab{color:var(--sage)}
+
+  /* ---------- Generic cards ---------- */
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;
+    padding:24px 24px;box-shadow:var(--shadow);margin-bottom:20px}
+  .card h3{margin:.1em 0 .4em;font-size:23px}
+
+  /* ---------- Gate cards ---------- */
+  .gate{background:var(--card);border:1px solid var(--rule);border-radius:14px;
+    box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
+  .gate-top{display:flex;gap:16px;align-items:flex-start;cursor:pointer;
+    padding:20px 22px;user-select:none}
+  .gate-no{flex:none;width:50px;height:50px;border-radius:11px;background:var(--ink);
+    color:var(--paper);font-family:"Space Mono",monospace;font-weight:700;font-size:18px;
+    display:grid;place-items:center}
+  .gate.open .gate-no{background:var(--oxblood)}
+  .gate-ttl{flex:1}
+  .gate-ttl h3{margin:0;font-size:21px}
+  .gate-q{color:var(--muted);font-size:15.5px;margin:4px 0 0;font-style:italic}
+  .gate-caret{flex:none;color:var(--muted);font-family:"Space Mono",monospace;font-size:20px;
+    transition:.25s;margin-top:6px}
+  .gate.open .gate-caret{transform:rotate(45deg);color:var(--oxblood)}
+  .gate-body{display:none;padding:0 22px 22px 22px}
+  .gate.open .gate-body{display:block;animation:fade .3s ease}
+  .gate-body h4{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink);margin:18px 0 6px;border-top:1px dashed var(--rule);
+    padding-top:14px}
+  .gate-body h4:first-child{border-top:0;padding-top:0;margin-top:4px}
+  .verdict-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:6px 0}
+  .vd{border-radius:9px;padding:11px 13px;font-size:15px;border:1px solid var(--rule)}
+  .vd .vh{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
+  .vd-pci{background:var(--teal-soft)} .vd-pci .vh{color:var(--teal)}
+  .vd-cabg{background:var(--oxblood-soft)} .vd-cabg .vh{color:var(--oxblood)}
+  .vd-med{background:var(--sage-soft)} .vd-med .vh{color:var(--sage)}
+  .vd-more{background:var(--gold-soft)} .vd-more .vh{color:var(--gold)}
+  .datalist{margin:.2em 0;padding-left:1.1em}
+  .datalist li{margin:.18em 0;font-size:15.5px}
+
+  /* ---------- Tables ---------- */
+  .table-scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:12px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;background:var(--paper-2);color:var(--ink);position:sticky;top:0}
+  tbody tr:last-child td{border-bottom:0}
+  td .g{font-family:"Space Mono",monospace;font-weight:700;color:var(--oxblood)}
+  .pill{display:inline-block;font-family:"Space Mono",monospace;font-size:10.5px;
+    padding:2px 7px;border-radius:20px;letter-spacing:.04em;white-space:nowrap}
+  .pill.pci{background:var(--teal-soft);color:var(--teal)}
+  .pill.cabg{background:var(--oxblood-soft);color:var(--oxblood)}
+  .pill.med{background:var(--sage-soft);color:var(--sage)}
+  .pill.more{background:var(--gold-soft);color:var(--gold)}
+  .pill.urg{background:var(--oxblood);color:#fff}
+
+  /* ---------- Decision tree (ascii) ---------- */
+  .tree{background:#1f1c17;color:#ece3d3;border-radius:12px;padding:22px;overflow-x:auto;
+    font-family:"Space Mono",monospace;font-size:13px;line-height:1.85;box-shadow:var(--shadow)}
+  .tree .t-q{color:#e6c483}
+  .tree .t-pci{color:#5fc2bb}
+  .tree .t-cabg{color:#e69089}
+  .tree .t-med{color:#9fc28f}
+  .tree .t-more{color:#e6c483}
+  .tree .t-urg{color:#ff9d8a;font-weight:700}
+  .tree .t-c{color:#7d7567}
+
+  /* ---------- ACLS-style algorithm ---------- */
+  .algo-intro{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 6px;
+    font-family:"Space Mono",monospace;font-size:11px}
+  .lg{display:inline-flex;align-items:center;gap:7px;color:var(--muted)}
+  .sw{width:14px;height:14px;border-radius:4px;border:1px solid rgba(0,0,0,.12)}
+  .sw.pci{background:var(--teal)} .sw.cabg{background:var(--oxblood)} .sw.med{background:var(--sage)}
+  .sw.more{background:var(--gold)} .sw.team{background:var(--slate)} .sw.urg{background:var(--urg)}
+  .sw.dec{background:var(--card);border:2px solid var(--ink)} .sw.act{background:#ddd2bf}
+  .algo-how{font-family:"Space Mono",monospace;font-size:11.5px;color:var(--muted);
+    background:var(--card);border:1px dashed var(--rule);border-radius:9px;padding:11px 14px;
+    margin:14px 0 26px;line-height:1.7}
+  .algo-how b{color:var(--ink)}
+  .algo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,0.92fr);align-items:start}
+  .spine{grid-column:1;display:flex;flex-direction:column;align-items:center}
+  .side{grid-column:2;display:flex;flex-direction:column;justify-content:center;padding-top:6px}
+  .node{width:100%;max-width:560px;border-radius:13px;padding:15px 17px;box-shadow:var(--shadow);
+    border:1px solid var(--rule);background:var(--card);position:relative}
+  .node .gb{position:absolute;top:-11px;left:16px;font-family:"Space Mono",monospace;font-size:10px;
+    font-weight:700;letter-spacing:.08em;background:var(--ink);color:var(--paper);padding:3px 9px;border-radius:20px}
+  .node h3{font-size:17px;margin:2px 0 0}
+  .node p{margin:6px 0 0;font-size:14.5px;color:var(--ink)}
+  .node .tag{font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:700;display:block;margin-bottom:3px}
+  .n-start{background:var(--ink);color:var(--paper);text-align:center;max-width:480px}
+  .n-start h3{color:var(--paper);font-size:16px} .n-start p{color:#d8cdbb;font-size:13px}
+  .n-decision{border:2px solid var(--ink);border-radius:16px}
+  .n-decision .tag{color:var(--oxblood)}
+  .n-decision::before{content:"◆";position:absolute;right:15px;top:13px;color:var(--oxblood);font-size:13px}
+  .n-act{background:#efe7d8;border-color:#cdbfa6}
+  .n-act .tag{color:var(--muted)}
+  .term{border-radius:13px;padding:14px 16px;box-shadow:var(--shadow);color:#fff;max-width:430px;width:100%}
+  .term .tag{font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    opacity:.9;display:block;margin-bottom:2px}
+  .term h3{color:#fff;font-size:16px}
+  .term p{margin:5px 0 0;font-size:13.5px;opacity:.97;color:#fff}
+  .term ul{margin:7px 0 0;padding-left:1.05em}
+  .term li{font-size:13px;margin:3px 0;opacity:.97}
+  .t-pci{background:linear-gradient(135deg,#0f6e69,#0b504c)}
+  .t-cabg{background:linear-gradient(135deg,#7a2b2b,#5a1d1d)}
+  .t-med{background:linear-gradient(135deg,#4f6a4a,#3a5036)}
+  .t-more{background:linear-gradient(135deg,#9c6b1f,#765012)}
+  .t-team{background:linear-gradient(135deg,#3f5168,#2c3a4c)}
+  .t-urg{background:linear-gradient(135deg,#9a1f1f,#6a1212)}
+  .down{display:flex;flex-direction:column;align-items:center;height:38px;position:relative}
+  .down .ln{width:2px;flex:1;background:var(--ink)}
+  .down .hd{width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;
+    border-top:9px solid var(--ink);margin-top:-1px}
+  .down .alab{position:absolute;left:50%;top:50%;transform:translate(10px,-50%);
+    font-family:"Space Mono",monospace;font-size:10px;font-weight:700;color:var(--ink);
+    background:var(--paper);padding:1px 6px;border-radius:10px;letter-spacing:.06em}
+  .hbr{display:flex;align-items:center;min-width:34px}
+  .hbr .ln{height:2px;flex:1;min-width:22px;background:var(--ink)}
+  .hbr .ln.dash{background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 11px)}
+  .hbr .hd{width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;
+    border-left:9px solid var(--ink)}
+  .hbr .alab{font-family:"Space Mono",monospace;font-size:10px;font-weight:700;letter-spacing:.06em;
+    background:var(--paper);padding:1px 7px;border-radius:10px;white-space:nowrap}
+  .alab.yes{color:var(--sage)} .alab.no{color:var(--ink)} .alab.unk{color:var(--gold)} .alab.urg{color:var(--urg)}
+  .branch-wrap{display:flex;align-items:stretch;margin-bottom:6px}
+  .branch-wrap .hbr{flex:none}
+  .subflow{display:flex;flex-direction:column;align-items:center;width:100%}
+  .subflow .down{height:26px}
+  .converge{margin-top:30px;border:2px solid var(--slate);border-radius:16px;background:var(--slate-soft);
+    padding:16px 18px;position:relative}
+  .converge .gb{position:absolute;top:-11px;left:16px;font-family:"Space Mono",monospace;font-size:10px;
+    font-weight:700;background:var(--slate);color:var(--paper);padding:3px 9px;border-radius:20px}
+  .converge h3{font-size:17px;color:var(--slate)}
+  .converge p{margin:6px 0 0;font-size:14.5px}
+  @media(max-width:780px){
+    .algo{grid-template-columns:1fr}
+    .spine,.side{grid-column:1;align-items:stretch}
+    .node,.term{max-width:none}
+    .branch-wrap{flex-direction:column;align-items:stretch}
+    .branch-wrap .hbr{flex-direction:row;justify-content:center;margin:8px 0 4px}
+    .branch-wrap .hbr .ln{display:none}
+    .branch-wrap .hbr .hd{transform:rotate(90deg)}
+    .side{margin-bottom:6px}
+  }
+
+  /* ---------- Key Concepts ---------- */
+  .concept{background:var(--card);border:1px solid var(--rule);border-radius:14px;
+    box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden}
+  .concept-top{display:flex;gap:14px;align-items:baseline;padding:20px 22px 6px}
+  .concept-top .abbr{font-family:"Space Mono",monospace;font-weight:700;color:var(--teal);
+    font-size:13px;letter-spacing:.04em;flex:none}
+  .concept-top h3{font-size:21px;margin:0}
+  .concept-body{padding:4px 22px 22px}
+  .concept-body p{font-size:16px;margin:.5em 0}
+  .concept-body h4{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink);margin:16px 0 5px}
+  .minibar{display:flex;border-radius:8px;overflow:hidden;margin:8px 0 4px;border:1px solid var(--rule);
+    font-family:"Space Mono",monospace;font-size:11.5px}
+  .minibar div{padding:8px 10px;color:#fff;flex:1;text-align:center}
+  .mb-low{background:var(--sage)} .mb-int{background:var(--gold)} .mb-high{background:var(--oxblood)}
+  .keyfact{font-family:"Space Mono",monospace;font-size:12px;background:var(--paper-2);
+    border-radius:8px;padding:9px 12px;margin:8px 0;display:inline-block}
+  .keyfact b{color:var(--teal)}
+  .extlink{display:inline-block;font-family:"Space Mono",monospace;font-size:12px;color:#fff;
+    background:var(--slate);padding:9px 14px;border-radius:8px;text-decoration:none;margin-top:6px}
+  .extlink:hover{background:#2c3a4c}
+  .wash-table{min-width:680px}
+  .wash-table td .brand{color:var(--muted);font-size:12.5px}
+  .badge-cont{background:var(--sage-soft);color:var(--sage)}
+  .badge-stop{background:var(--oxblood-soft);color:var(--oxblood)}
+
+  /* ---------- Cath report / TIMI ---------- */
+  .timi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin:12px 0 6px}
+  .timi-card{border:1px solid var(--rule);border-radius:12px;padding:13px;text-align:center;background:var(--paper-2)}
+  .timi-card svg{width:100%;height:auto;display:block;margin-bottom:9px}
+  .timi-card .gname{font-family:"Space Mono",monospace;font-weight:700;font-size:13px;color:var(--ink)}
+  .timi-card .gdesc{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.42}
+  .timi-card.g0{border-color:var(--oxblood);background:var(--oxblood-soft)}
+  .timi-card.g3{border-color:var(--sage);background:var(--sage-soft)}
+  .sev-table td:first-child,.gloss-table td:first-child{font-family:"Space Mono",monospace;font-weight:700;color:var(--teal);white-space:nowrap}
+  .gloss-table{min-width:560px}
+  @media(min-width:780px){.timi-grid{grid-template-columns:repeat(4,1fr)}}
+
+  /* ---------- Quiz ---------- */
+  .quiz-wrap{max-width:760px}
+  .quiz-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
+    font-family:"Space Mono",monospace;font-size:12px;color:var(--muted)}
+  .qbar{height:6px;background:var(--paper-2);border-radius:6px;overflow:hidden;margin-bottom:18px}
+  .qbar i{display:block;height:100%;background:var(--oxblood);transition:width .35s}
+  .quiz-card{background:var(--card);border:1px solid var(--rule);border-radius:14px;
+    box-shadow:var(--shadow);padding:22px 24px}
+  .quiz-tag{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal);font-weight:700}
+  .quiz-scenario{font-size:17px;margin:8px 0 4px;line-height:1.5}
+  .quiz-q{font-family:"Fraunces",serif;font-weight:600;font-size:19px;margin:12px 0 14px;letter-spacing:-.01em}
+  .quiz-opts{display:flex;flex-direction:column;gap:9px}
+  .qopt{text-align:left;font-family:"Newsreader",serif;font-size:15.5px;border:1px solid var(--rule);
+    background:var(--paper);border-radius:10px;padding:12px 15px;cursor:pointer;transition:.15s;
+    display:flex;gap:11px;align-items:flex-start;color:var(--ink)}
+  .qopt:hover{border-color:var(--ink)}
+  .qopt .mk{font-family:"Space Mono",monospace;font-weight:700;flex:none;color:var(--muted)}
+  .qopt.disabled{cursor:default}
+  .qopt.correct{background:var(--sage-soft);border-color:var(--sage)}
+  .qopt.correct .mk{color:var(--sage)}
+  .qopt.wrong{background:var(--oxblood-soft);border-color:var(--oxblood)}
+  .qopt.wrong .mk{color:var(--oxblood)}
+  .quiz-explain{margin-top:16px;margin-bottom:0}
+  .quiz-actions{display:flex;justify-content:flex-end;margin-top:16px}
+  .quiz-final{text-align:center;padding:30px 20px}
+  .score-ring{font-family:"Fraunces",serif;font-weight:700;font-size:48px;color:var(--oxblood);line-height:1}
+  .score-sub{color:var(--muted);font-family:"Space Mono",monospace;font-size:13px;margin:8px 0 18px}
+
+  /* ---------- Gate Walker (interactive) ---------- */
+  .walker{display:grid;grid-template-columns:1fr;gap:18px}
+  .qblock{background:var(--card);border:1px solid var(--rule);border-radius:13px;
+    padding:18px 20px;box-shadow:var(--shadow)}
+  .qblock h4{font-family:"Fraunces",serif;font-weight:600;font-size:18px;margin:0 0 3px;letter-spacing:0;
+    text-transform:none}
+  .qblock .hint{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opt{font-family:"Space Mono",monospace;font-size:12.5px;border:1px solid var(--rule);
+    background:var(--paper);border-radius:8px;padding:8px 13px;cursor:pointer;transition:.15s;color:var(--ink)}
+  .opt:hover{border-color:var(--ink)}
+  .opt.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .opt.sel.tealsel{background:var(--teal);border-color:var(--teal)}
+  .opt.sel.oxsel{background:var(--oxblood);border-color:var(--oxblood)}
+  .walker-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:4px}
+  .btn{font-family:"Space Mono",monospace;font-size:13px;letter-spacing:.04em;border:0;cursor:pointer;
+    padding:13px 22px;border-radius:9px;transition:.18s}
+  .btn-primary{background:var(--oxblood);color:#fff}
+  .btn-primary:hover{background:#5f2020}
+  .btn-ghost{background:none;border:1px solid var(--rule);color:var(--muted)}
+  .btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+
+  #result{margin-top:8px}
+  .result-card{border-radius:14px;padding:24px;color:#fff;box-shadow:var(--shadow)}
+  .result-card .rk{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;opacity:.85}
+  .result-card h3{font-size:30px;margin:6px 0 8px;color:#fff}
+  .result-card p{margin:.3em 0;opacity:.96;font-size:16px}
+  .rc-pci{background:linear-gradient(135deg,#0f6e69,#0b504c)}
+  .rc-cabg{background:linear-gradient(135deg,#7a2b2b,#5a1d1d)}
+  .rc-med{background:linear-gradient(135deg,#4f6a4a,#3a5036)}
+  .rc-team{background:linear-gradient(135deg,#3f5168,#2c3a4c)}
+  .rc-more{background:linear-gradient(135deg,#9c6b1f,#765012)}
+  .rc-urg{background:linear-gradient(135deg,#9a1f1f,#6a1212)}
+  .flags{margin-top:18px}
+  .flag{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--rule);
+    border-radius:9px;padding:11px 14px;margin-bottom:8px;font-size:15px}
+  .flag .fi{font-size:15px;line-height:1.5}
+  .flag .ft{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:700;display:block;margin-bottom:2px}
+  .flag.red .ft{color:var(--oxblood)} .flag.amber .ft{color:var(--gold)}
+  .flag.blue .ft{color:var(--slate)} .flag.green .ft{color:var(--sage)}
+  .reasoning{margin-top:14px;font-size:14.5px}
+  .reasoning li{margin:.3em 0}
+  .gate-trace{font-family:"Space Mono",monospace;font-size:12px;color:var(--muted);
+    background:var(--paper-2);border-radius:8px;padding:10px 13px;margin-top:12px;line-height:1.7}
+
+  /* ---------- JSON viewer ---------- */
+  .codebox{position:relative}
+  pre.code{background:#1f1c17;color:#ece3d3;border-radius:12px;padding:22px;overflow-x:auto;
+    font-family:"Space Mono",monospace;font-size:12.5px;line-height:1.65;margin:0;box-shadow:var(--shadow)}
+  pre.code .k{color:#e6c483}
+  pre.code .s{color:#9fc28f}
+  pre.code .n{color:#5fc2bb}
+  pre.code .c{color:#7d7567}
+  .copybtn{position:absolute;top:12px;right:12px;font-family:"Space Mono",monospace;font-size:11px;
+    background:#3a352c;color:#ece3d3;border:0;border-radius:7px;padding:7px 12px;cursor:pointer}
+  .copybtn:hover{background:#4a4436}
+
+  /* ---------- Scenario cards ---------- */
+  .scn{background:var(--card);border:1px solid var(--rule);border-radius:13px;
+    box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
+  .scn-top{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+    cursor:pointer;border-bottom:1px solid transparent}
+  .scn.open .scn-top{border-bottom-color:var(--rule)}
+  .scn-top h3{font-size:18px;margin:0}
+  .scn-top .stub{color:var(--muted);font-size:14px;margin-top:3px}
+  .scn-body{display:none;padding:16px 20px 20px}
+  .scn.open .scn-body{display:block;animation:fade .3s}
+  .kv{display:grid;grid-template-columns:130px 1fr;gap:4px 14px;font-size:15px;margin:8px 0 14px}
+  .kv dt{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--muted);
+    text-transform:uppercase;padding-top:3px}
+  .kv dd{margin:0}
+
+  footer{border-top:2px solid var(--ink);background:#fbf7ef}
+  footer .wrap{padding:26px 22px;font-family:"Space Mono",monospace;font-size:11.5px;
+    color:var(--muted);line-height:1.7}
+
+  @media(max-width:680px){
+    body{font-size:17px}
+    .verdict-grid{grid-template-columns:1fr}
+    .kv{grid-template-columns:1fr}
+    .kv dt{padding-top:8px}
+  }
+</style>
+</head>
+<body>
+
+<div class="disclaimer"><div class="wrap">
+  <b>EDUCATIONAL USE ONLY.</b> This tool teaches how a Heart Team reasons through revascularization decisions. It does <b>not</b> diagnose, does <b>not</b> generate a validated clinical recommendation, and does <b>not</b> replace physician judgment. Established scores referenced here (SYNTAX, STS, EuroSCORE II, GRACE, TIMI) must be calculated with their own validated instruments at the bedside.
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <p class="kicker">Heart Team Teaching Framework · Coronary Revascularization</p>
+  <h1><em>PCI</em><span class="vs">vs</span><em>CABG</em></h1>
+  <p class="dek">A first-principles walk through the ten decision gates that interventional cardiology, cardiac surgery, and heart failure use to choose stents, surgery, medicine — or more data. Built for CVICU nurses, charge nurses, house supervisors, and APPs.</p>
+  <div class="credits">
+    <span>Voiced by a <b>combined Heart Team</b>:</span>
+    <span>Interventional Cardiology</span>·<span>Cardiothoracic Surgery</span>·<span>Heart Failure</span>·<span>Hospitalist</span>·<span>CVICU Nurse Educator</span>·<span>CDS Design</span>
+  </div>
+</div></header>
+
+<nav class="tabs"><div class="wrap" id="tabbar">
+  <button class="tab active" data-t="overview">00 · Overview</button>
+  <button class="tab" data-t="walker">▸ Gate Walker</button>
+  <button class="tab" data-t="gates">The 10 Gates</button>
+  <button class="tab" data-t="algorithm">Algorithm</button>
+  <button class="tab" data-t="concepts">Key Concepts</button>
+  <button class="tab" data-t="cath">Cath Report</button>
+  <button class="tab" data-t="table">Gates Table</button>
+  <button class="tab" data-t="scenarios">Scenarios</button>
+  <button class="tab" data-t="pearls">Pearls &amp; Family</button>
+  <button class="tab" data-t="redflags">Red Flags</button>
+  <button class="tab" data-t="quiz">Quiz</button>
+  <button class="tab" data-t="think">Think Like the Team</button>
+</div></nav>
+
+<main><div class="wrap">
+
+<!-- ================= OVERVIEW ================= -->
+<section class="panel active" id="overview">
+  <p class="lead-num">SECTION 00</p>
+  <h2 class="sec-head">What this tool teaches</h2>
+  <p class="sec-sub">Revascularization is not a single yes/no. It is a sequence of <b>gates</b>. At each gate the team asks one clean question, and the answer either advances the decision, redirects it, or sends it back for more data. Learn the gates and the whole conversation stops being a mystery.</p>
+
+  <div class="card">
+    <h3>The mental model in one breath</h3>
+    <p>First decide <b>whether</b> to revascularize at all (is there ischemia, are there symptoms, is there prognostic benefit). Only then decide <b>how</b> — stent or surgery — by weighing <b>anatomy</b> against <b>the patient</b>. Throughout, <b>urgency overrides everything</b>: an unstable patient is no longer a planning problem, it's a clock.</p>
+    <div class="callout c-why">
+      <span class="lab">Why this matters</span>
+      <p>Nurses and supervisors don't pick the procedure — but you stage the timeline. Knowing the gates tells you when a case is electively planned, when antiplatelets must wash out, when a "consult" is actually a Heart Team meeting, and when "we're taking them now" is the only right answer.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>The three forces in tension</h3>
+    <div class="verdict-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="vd vd-pci"><span class="vh">Catheter axis · PCI</span>Fast, less invasive, repeatable, no sternotomy. Rewards <b>focal, simple</b> anatomy and frail/high-surgical-risk patients.</div>
+      <div class="vd vd-cabg"><span class="vh">Surgical axis · CABG</span>Durable, complete revascularization, prognostic benefit in the right patient. Rewards <b>complex, multivessel, diabetic, low-EF</b> disease.</div>
+      <div class="vd vd-med"><span class="vh">Medical axis · OMT</span>Always the floor under both. Guideline-directed therapy treats every patient; sometimes it's the whole answer.</div>
+    </div>
+    <div class="callout c-think">
+      <span class="lab">Think</span>
+      <p>PCI and CABG are not rivals fighting for the same patient. They are tools matched to anatomy and physiology. The art is the <b>match</b> — and the Heart Team exists precisely for the cases where the match isn't obvious.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>The six places a patient can land</h3>
+    <p style="margin-bottom:14px">Every path through the gates ends in one of these output categories:</p>
+    <table style="min-width:0"><tbody>
+      <tr><td><span class="pill pci">PCI FAVORED</span></td><td>Simple/durable anatomy, or surgery too risky.</td></tr>
+      <tr><td><span class="pill cabg">CABG FAVORED</span></td><td>Complex/multivessel, diabetes, low EF, left main with high complexity.</td></tr>
+      <tr><td><span class="pill" style="background:var(--slate-soft);color:var(--slate)">HEART TEAM</span></td><td>Genuine equipoise; competing factors; needs the table.</td></tr>
+      <tr><td><span class="pill med">MEDICAL THERAPY</span></td><td>No ischemia/symptoms/prognostic indication to revascularize.</td></tr>
+      <tr><td><span class="pill urg">URGENT / EMERGENT</span></td><td>STEMI, shock, mechanical complication — the clock wins.</td></tr>
+      <tr><td><span class="pill more">NEED MORE DATA</span></td><td>Missing physiology, anatomy detail, or risk assessment.</td></tr>
+    </tbody></table>
+  </div>
+
+  <p style="text-align:center;margin-top:30px"><button class="btn btn-primary" onclick="go('walker')">▸ Try the interactive Gate Walker</button></p>
+</section>
+
+<!-- ================= GATE WALKER ================= -->
+<section class="panel" id="walker">
+  <p class="lead-num">INTERACTIVE</p>
+  <h2 class="sec-head">Gate Walker</h2>
+  <p class="sec-sub">Answer what you know. The engine applies the same IF/THEN logic the gates describe, raises educational risk flags, and lands the case in one of the six categories — <b>showing its reasoning</b>. Leave anything unknown and it will tell you that more data is needed.</p>
+
+  <div class="callout c-flag" style="margin-bottom:24px">
+    <span class="lab">Read before using</span>
+    <p>This engine is a <b>teaching simulation</b>, not a calculator. It does not compute a real SYNTAX, STS, or GRACE score — you supply those judgments. Its output is "how the team would likely lean," never a clinical order.</p>
+  </div>
+
+  <div class="walker" id="walkerForm"></div>
+
+  <div class="walker-actions">
+    <button class="btn btn-primary" onclick="runWalker()">Evaluate the gates →</button>
+    <button class="btn btn-ghost" onclick="resetWalker()">Reset</button>
+  </div>
+
+  <div id="result"></div>
+</section>
+
+<!-- ================= THE 10 GATES ================= -->
+<section class="panel" id="gates">
+  <p class="lead-num">SECTION 01–10</p>
+  <h2 class="sec-head">The ten decision gates</h2>
+  <p class="sec-sub">Tap any gate to open it. Each gives you the question, why it matters, the data needed, what tilts the answer each way, the classic pitfalls, and how to say it plainly to a nurse or family.</p>
+  <div id="gatesAccordion"></div>
+</section>
+
+<!-- ================= ALGORITHM ================= -->
+<section class="panel" id="algorithm">
+  <p class="lead-num">PATHWAY</p>
+  <h2 class="sec-head">The decision algorithm</h2>
+  <p class="sec-sub">An ACLS-style, top-to-bottom pathway. Follow the spine; each ◆ box asks one question and either exits to a colored endpoint or drops to the next gate. Urgency is checked first and overrides everything below it.</p>
+
+  <div class="algo-intro">
+    <span class="lg"><span class="sw dec"></span>Decision (gate)</span>
+    <span class="lg"><span class="sw act"></span>Action step</span>
+    <span class="lg"><span class="sw urg"></span>Urgent</span>
+    <span class="lg"><span class="sw pci"></span>PCI</span>
+    <span class="lg"><span class="sw cabg"></span>CABG</span>
+    <span class="lg"><span class="sw team"></span>Heart Team</span>
+    <span class="lg"><span class="sw med"></span>Medical</span>
+    <span class="lg"><span class="sw more"></span>More data</span>
+  </div>
+  <div class="algo-how"><b>How to read it:</b> ◆ boxes are decisions. A branch peeling to the right (<b>YES / UNKNOWN</b>) exits the pathway to a colored endpoint. The <b>NO</b> arrow continues down the spine to the next gate. Every non-urgent path converges at the Heart Team.</div>
+
+  <div class="algo">
+    <!-- START -->
+    <div class="spine">
+      <div class="node n-start"><h3>Obstructive CAD confirmed on angiography</h3><p>Enter the Heart Team revascularization pathway</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div></div>
+    </div><div class="side"></div>
+
+    <!-- GATE 8 -->
+    <div class="spine">
+      <div class="node n-decision"><span class="gb">GATE 8</span><span class="tag">Decision · urgency first</span>
+        <h3>Clinically or hemodynamically UNSTABLE?</h3>
+        <p>STEMI · cardiogenic shock · mechanical complication · refractory / high-risk NSTEMI</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div><span class="alab">NO</span></div>
+    </div>
+    <div class="side"><div class="branch-wrap">
+      <div class="hbr"><span class="alab urg">YES</span><div class="ln"></div><div class="hd"></div></div>
+      <div class="term t-urg"><span class="tag">Urgent / emergent — clock wins</span><h3>Stabilize &amp; revascularize now</h3>
+        <ul>
+          <li><b>STEMI</b> → primary PCI of culprit (FMC-to-device ≤90 min)</li>
+          <li><b>Cardiogenic shock</b> → culprit PCI + mechanical support (CULPRIT-SHOCK)</li>
+          <li><b>Mechanical complication</b> (VSD, papillary muscle / free-wall rupture) → emergent surgery</li>
+          <li><b>High-risk / refractory NSTEMI</b> → early invasive (&lt;24 h)</li>
+        </ul></div>
+    </div></div>
+
+    <!-- GATE 1 -->
+    <div class="spine">
+      <div class="node n-decision"><span class="gb">GATE 1</span><span class="tag">Decision · whether to treat</span>
+        <h3>Refractory symptoms on OMT, large ischemic burden, OR prognostic anatomy?</h3>
+        <p>Prognostic = left main · proximal LAD · multivessel with low EF</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div><span class="alab">YES</span></div>
+    </div>
+    <div class="side">
+      <div class="branch-wrap"><div class="hbr"><span class="alab no">NO</span><div class="ln"></div><div class="hd"></div></div>
+        <div class="term t-med"><span class="tag">Endpoint</span><h3>Medical therapy likely</h3>
+          <p>Optimize guideline-directed therapy + risk factors; reassess if symptoms or ischemia change. <i>(ISCHEMIA logic.)</i></p></div></div>
+      <div class="branch-wrap"><div class="hbr"><span class="alab unk">UNKNOWN</span><div class="ln dash"></div><div class="hd"></div></div>
+        <div class="term t-more"><span class="tag">Endpoint</span><h3>Need more data</h3>
+          <p>Symptom status / ischemic burden unclear → stress or functional imaging.</p></div></div>
+    </div>
+
+    <!-- GATE 2 -->
+    <div class="spine">
+      <div class="node n-decision"><span class="gb">GATE 2</span><span class="tag">Decision · physiology</span>
+        <h3>Physiologically significant?</h3>
+        <p>FFR ≤0.80 / iFR ≤0.89 — or a clear indication (ACS culprit, critical left main)</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div><span class="alab">YES · decide HOW</span></div>
+    </div>
+    <div class="side">
+      <div class="branch-wrap"><div class="hbr"><span class="alab no">NO</span><div class="ln"></div><div class="hd"></div></div>
+        <div class="term t-med"><span class="tag">Endpoint</span><h3>Medical therapy / defer</h3>
+          <p>Lesion does not limit flow and no prognostic indication → treat medically (FAME logic).</p></div></div>
+      <div class="branch-wrap"><div class="hbr"><span class="alab unk">NOT DONE</span><div class="ln dash"></div><div class="hd"></div></div>
+        <div class="term t-more"><span class="tag">Endpoint</span><h3>Need more data</h3>
+          <p>Intermediate lesion, stable, no physiology → measure FFR / iFR.</p></div></div>
+    </div>
+
+    <!-- GATES 3-5 -->
+    <div class="spine">
+      <div class="node n-decision"><span class="gb">GATES 3–5</span><span class="tag">Decision · data sufficiency</span>
+        <h3>Anatomy &amp; risk fully characterized?</h3>
+        <p>SYNTAX / SYNTAX II · graftable distal targets · STS / EuroSCORE II</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div><span class="alab">YES</span></div>
+    </div>
+    <div class="side"><div class="branch-wrap">
+      <div class="hbr"><span class="alab unk">NO</span><div class="ln dash"></div><div class="hd"></div></div>
+      <div class="term t-more"><span class="tag">Endpoint</span><h3>Need more data</h3>
+        <p>Complete the angiographic read + surgical risk scoring before weighing PCI vs CABG.</p></div>
+    </div></div>
+
+    <!-- GATE 7 -->
+    <div class="spine">
+      <div class="node n-decision"><span class="gb">GATE 7</span><span class="tag">Decision · can the patient have surgery?</span>
+        <h3>Prohibitive surgical risk OR no graftable distal targets?</h3>
+        <p>Assess frailty, not age. Diffuse distal disease leaves nowhere to graft.</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div><span class="alab">NO</span></div>
+    </div>
+    <div class="side"><div class="branch-wrap">
+      <div class="hbr"><span class="alab yes">YES</span><div class="ln"></div><div class="hd"></div></div>
+      <div class="term t-pci"><span class="tag">Endpoint</span><h3>PCI favored</h3>
+        <p>Surgery not survivable / not feasible → PCI for symptom relief (accept less-complete revasc). If durable PCI also unlikely → <b>medical / palliative</b> + goals-of-care.</p></div>
+    </div></div>
+
+    <!-- GATE 6 -->
+    <div class="spine">
+      <div class="node n-decision"><span class="gb">GATE 6</span><span class="tag">Decision · does it favor surgery?</span>
+        <h3>CABG-favoring feature WITH acceptable risk &amp; targets?</h3>
+        <p>Diabetes + multivessel (FREEDOM) · low-EF ischemic CM (STICH) · complex left main · high-SYNTAX 3-vessel</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div><span class="alab">NO</span></div>
+    </div>
+    <div class="side"><div class="branch-wrap">
+      <div class="hbr"><span class="alab yes">YES</span><div class="ln"></div><div class="hd"></div></div>
+      <div class="subflow">
+        <div class="node n-act" style="max-width:430px"><span class="gb">GATE 9</span><span class="tag">Action · washout before CABG</span>
+          <h3>Time the antithrombotics</h3>
+          <p class="mono" style="font-size:12px;line-height:1.7">clopidogrel ~5d · ticagrelor ~3d · prasugrel ~7d · warfarin ~5d→INR&lt;1.5 · DOAC by agent + renal · ASA usually continue.</p>
+          <p style="font-size:13px"><b>Can't safely wait?</b> → reconsider PCI. <span class="mono" style="font-size:11px">(full table in Key Concepts)</span></p></div>
+        <div class="down" style="height:26px"><div class="ln"></div><div class="hd"></div></div>
+        <div class="term t-cabg"><span class="tag">Endpoint</span><h3>CABG favored</h3>
+          <p>Confirm at Heart Team (Class I for left main / multivessel) with informed agreement.</p></div>
+      </div>
+    </div></div>
+
+    <!-- GATES 3-4 -->
+    <div class="spine">
+      <div class="node n-decision"><span class="gb">GATES 3–4</span><span class="tag">Decision · is PCI durable here?</span>
+        <h3>Low SYNTAX (0–22), focal, 1–2 vessel, durable COMPLETE PCI feasible?</h3>
+        <p>Favorable morphology · no heavy uncrossable calcium · achievable complete revascularization</p></div>
+      <div class="down"><div class="ln"></div><div class="hd"></div><span class="alab">NO</span></div>
+    </div>
+    <div class="side"><div class="branch-wrap">
+      <div class="hbr"><span class="alab yes">YES</span><div class="ln"></div><div class="hd"></div></div>
+      <div class="term t-pci"><span class="tag">Endpoint</span><h3>PCI favored</h3>
+        <p>Clean, durable percutaneous target. Document informed patient agreement.</p></div>
+    </div></div>
+
+    <!-- TERMINAL HEART TEAM -->
+    <div class="spine">
+      <div class="term t-team" style="max-width:560px"><span class="tag">Endpoint · genuine equipoise</span>
+        <h3>Heart Team discussion required</h3>
+        <p>Intermediate SYNTAX (23–32), left main of intermediate complexity, or conflicting factors (EXCEL vs NOBLE territory). <b>Class I.</b> Bring SYNTAX II + STS / EuroSCORE II + the patient's preference.</p></div>
+    </div><div class="side"></div>
+  </div><!-- /algo -->
+
+  <div class="converge"><span class="gb">GATE 10</span>
+    <h3>All elective paths converge here</h3>
+    <p>PCI-favored, CABG-favored, and equipoise cases are all finalized as a <b>shared, documented, patient-informed</b> recommendation. A formal multidisciplinary Heart Team discussion is a <b>Class I</b> recommendation for left main and multivessel disease (per ACC/AHA/SCAI and ESC/EACTS revascularization guidance) — the output is a recommendation <i>and</i> its rationale, not a single specialist's signature.</p>
+  </div>
+</section>
+
+<!-- ================= KEY CONCEPTS ================= -->
+<section class="panel" id="concepts">
+  <p class="lead-num">REFERENCE</p>
+  <h2 class="sec-head">Key concepts behind the gates</h2>
+  <p class="sec-sub">The tests, scores, and trials the team keeps invoking — explained from first principles, with the numbers that matter and where the real validated tools live.</p>
+
+  <!-- FFR / iFR -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">G2</span><h3>FFR &amp; iFR — measuring whether a narrowing actually starves the muscle</h3></div>
+    <div class="concept-body">
+      <p>An angiogram shows the <i>shape</i> of a narrowing, not whether it limits flow. <b>FFR (Fractional Flow Reserve)</b> and <b>iFR (instantaneous wave-free Ratio)</b> answer the functional question — is this lesion causing ischemia?</p>
+      <h4>What FFR is</h4>
+      <p>FFR is the ratio of blood flow the artery <i>can</i> deliver past the narrowing versus what it would deliver if it were normal. In practice it's measured as the pressure beyond the lesion (Pd) divided by the pressure in the aorta (Pa) at <b>maximal hyperemia</b> — when the vessel is forced fully open. A normal vessel = 1.0.</p>
+      <div class="keyfact"><b>FFR ≤ 0.80</b> = significant (treat) &nbsp;·&nbsp; <b>&gt; 0.80</b> = defer</div>
+      <h4>How it's done</h4>
+      <p>During the cath, a <b>pressure-sensor guidewire</b> is advanced across the lesion. Maximal hyperemia is induced — usually <b>IV or intracoronary adenosine</b> (or regadenoson / papaverine). The wire records Pd, the catheter records Pa, and the system computes the ratio at peak vasodilation.</p>
+      <h4>What iFR adds</h4>
+      <p>iFR measures the same pressure ratio but only during the diastolic <b>"wave-free period,"</b> when resting resistance is naturally low and stable — so <b>no adenosine is needed</b>. That makes it faster and avoids adenosine's flushing, breathlessness, and transient heart block. DEFINE-FLAIR and iFR-SWEDEHEART showed it's non-inferior to FFR.</p>
+      <div class="keyfact"><b>iFR ≤ 0.89</b> = significant &nbsp;·&nbsp; <b>&gt; 0.89</b> = defer</div>
+      <div class="callout c-flag"><span class="lab">Guardrail · the gray zone</span><p>These cutoffs are not bright lines. <b>Borderline values</b> (e.g., FFR ~0.78–0.82, iFR ~0.87–0.91) sit in a gray zone — the interventionalist weighs the lesion, the vessel's territory, symptoms, and trial context, not the number alone. Don't treat a single reading as a verdict.</p></div>
+      <div class="callout c-pearl"><span class="lab">Pearl · the pullback</span><p>Slowly withdrawing the wire records pressure <i>along</i> the whole vessel. An <b>abrupt step-up</b> at one spot = a focal, stentable lesion. A <b>gradual gradient</b> = diffuse disease smeared down the artery — a poor stent target and a nudge toward surgery or medicine.</p></div>
+      <div class="callout c-fam"><span class="lab">Say it to a family</span><p>"We threaded a tiny pressure sensor past the narrowing. It tells us whether the blockage is truly choking off blood flow — or just looks narrow on the picture."</p></div>
+    </div>
+  </div>
+
+  <!-- SYNTAX -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">G3</span><h3>SYNTAX score — grading anatomical complexity</h3></div>
+    <div class="concept-body">
+      <p>The <b>SYNTAX score</b> (named for the SYNTAX trial — <i>SYNergy between PCI with TAXUS and Cardiac Surgery</i>) is an angiographic tally of how complex the coronary disease is. Every lesion in a vessel ≥1.5 mm with ≥50% narrowing is scored and weighted.</p>
+      <h4>What drives the score up</h4>
+      <p>Lesion <b>location</b> (proximal/dominant segments score higher), plus high-risk features: <b>total occlusions (CTOs)</b>, <b>bifurcations / trifurcations</b>, <b>aorto-ostial lesions</b>, <b>severe tortuosity</b>, <b>length &gt; 20 mm</b>, <b>heavy calcification</b>, <b>thrombus</b>, and <b>diffuse disease / small vessels</b>. More disease in worse places = higher score.</p>
+      <h4>The bands</h4>
+      <div class="minibar"><div class="mb-low">Low 0–22 → PCI reasonable</div><div class="mb-int">Intermediate 23–32 → Heart Team</div><div class="mb-high">High ≥33 → CABG favored</div></div>
+      <p>Higher complexity predicts both a tougher, less durable PCI <i>and</i> a larger benefit from the completeness of bypass.</p>
+      <h4>SYNTAX II — adding the patient</h4>
+      <p>Plain SYNTAX is <b>anatomy only</b> and is operator-variable. <b>SYNTAX score II</b> blends in clinical variables — age, sex, creatinine clearance, LVEF, COPD, peripheral vascular disease, unprotected left main — to estimate individualized mortality and give a more honest PCI-vs-CABG steer. When you hear "SYNTAX II," that's anatomy <i>plus</i> the person.</p>
+      <div class="callout c-flag"><span class="lab">Pitfall</span><p>Treating SYNTAX as a precise verdict. It's an anchor for the conversation, not a calculator output — and anatomic SYNTAX without clinical context is only half the picture.</p></div>
+    </div>
+  </div>
+
+  <!-- STS -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">G5/7</span><h3>STS score — predicting surgical risk</h3></div>
+    <div class="concept-body">
+      <p>The <b>STS Adult Cardiac Surgery Risk Score</b> (Society of Thoracic Surgeons) estimates a specific patient's risk from cardiac surgery. Its headline output is <b>PROM — Predicted Risk of Mortality</b> — plus risks of stroke, renal failure, prolonged ventilation, reoperation, deep sternal wound infection, and prolonged stay.</p>
+      <h4>What goes into it</h4>
+      <p>Age, sex, body size, the planned procedure and its <b>urgency</b> (elective → urgent → emergent → salvage), prior cardiac surgery, plus comorbidities: diabetes, renal function / dialysis, lung disease, peripheral and cerebrovascular disease, prior MI, heart failure / NYHA class, and EF. It's built and <b>regularly recalibrated</b> on the enormous STS National Database.</p>
+      <h4>What "high risk" means</h4>
+      <p>Borrowing the bands widely used in valve decisions:</p>
+      <div class="minibar"><div class="mb-low">Low &lt; 4%</div><div class="mb-int">Intermediate 4–8%</div><div class="mb-high">High &gt; 8% (often prohibitive &gt; 10–15%)</div></div>
+      <p>A "high" PROM doesn't forbid surgery — it raises the bar, shifts weight toward PCI or transcatheter options, and makes the goals-of-care conversation mandatory. It always travels with a <b>frailty</b> assessment, because two patients with the same PROM can have very different real-world reserve.</p>
+      <h4>Can we make it automatic in this tool?</h4>
+      <p>Honestly — <b>no, and we shouldn't fake it.</b> The real STS model is a proprietary, periodically re-fit regression on a national registry; any home-grown reimplementation would be unvalidated and potentially misleading. The right pattern for an app is to <b>collect the inputs and hand off</b> to the official calculator, then store the returned PROM. That keeps the number trustworthy.</p>
+      <a class="extlink" href="https://riskcalc.sts.org" target="_blank" rel="noopener">→ Official STS Risk Calculator · riskcalc.sts.org</a>
+      <h4>When a "third opinion" is usually sought</h4>
+      <p>Beyond the standard interventional + surgical Heart Team, additional review is typically pulled in when: the patient is <b>high or prohibitive surgical risk</b> with complex anatomy; there's <b>genuine equipoise</b> after the first discussion; <b>advanced heart failure</b> is in play (transplant / durable MCS evaluation); or the case may do better at a <b>higher-volume complex-revascularization or structural-heart center</b>. The "third opinion" is usually a second surgeon, a heart-failure/transplant cardiologist, or referral to a center with more of the specific expertise the case needs.</p>
+      <div class="callout c-pearl"><span class="lab">Pearl · the cousins</span><p><b>EuroSCORE II</b> is the European counterpart to STS — same job (predict surgical mortality), different population and equation. <b>GRACE</b> and <b>TIMI</b> are different animals entirely: they risk-stratify <i>ACS</i> (how urgently to go invasive), not surgical survivability.</p></div>
+    </div>
+  </div>
+
+  <!-- FREEDOM -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">G6</span><h3>FREEDOM — why diabetes + multivessel leans CABG</h3></div>
+    <div class="concept-body">
+      <p><b>FREEDOM</b> = <i>Future REvascularization Evaluation in patients with Diabetes mellitus: Optimal management of Multivessel disease</i> (NEJM, 2012). It's the trial behind one of the strongest CABG signals on the board.</p>
+      <h4>What it did</h4>
+      <p>It randomized patients with <b>diabetes and multivessel coronary disease</b> to PCI with drug-eluting stents versus CABG, all on good medical therapy.</p>
+      <h4>What it found</h4>
+      <p>CABG <b>won</b>: a significantly lower rate of the composite of death, MI, and stroke, driven by fewer deaths and MIs — durable on long-term follow-up. The trade-off was a higher early stroke rate with surgery. The bottom line that stuck: <b>for diabetics with multivessel disease, bypass generally beats stents for hard outcomes.</b></p>
+      <div class="keyfact">Diabetes <b>+</b> multivessel disease &nbsp;→&nbsp; <b>CABG favored</b> (with acceptable surgical risk)</div>
+      <div class="callout c-fam"><span class="lab">Say it to a family</span><p>"For people with diabetes who have several blocked arteries, large studies show bypass surgery tends to help them live longer and avoid heart attacks better than stents — so we lean that way when surgery is safe for them."</p></div>
+    </div>
+  </div>
+
+  <!-- WASHOUT -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">G9</span><h3>Antithrombotic washout before CABG — brand names &amp; hold times</h3></div>
+    <div class="concept-body">
+      <p>If surgery is the plan, blood thinners on board mean bleeding risk — so each one has a typical pre-CABG hold. These are <b>guideline-informed defaults</b>; renal function, bleeding risk, and urgency all modify them, and an unstable patient may be taken to surgery sooner accepting higher bleeding risk. <b>Always confirm against your institution's protocol</b> and the surgeon's preference — these intervals are a teaching baseline, not a standing order.</p>
+      <div class="table-scroll" style="margin:14px 0">
+        <table class="wash-table">
+          <thead><tr><th>Generic (Brand)</th><th>Class</th><th>Typical hold before CABG</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Aspirin <span class="brand">(Bayer, Ecotrin)</span></td><td>Antiplatelet</td><td><span class="pill badge-cont">USUALLY CONTINUE</span></td><td>Generally maintained perioperatively.</td></tr>
+            <tr><td>Clopidogrel <span class="brand">(Plavix)</span></td><td>P2Y12</td><td><span class="pill badge-stop">~5 days</span></td><td>Irreversible; classic cause of a cancelled OR if missed.</td></tr>
+            <tr><td>Ticagrelor <span class="brand">(Brilinta)</span></td><td>P2Y12</td><td><span class="pill badge-stop">~3 days</span></td><td>Reversible binding → shorter than the others (≥3 d; some centers 5).</td></tr>
+            <tr><td>Prasugrel <span class="brand">(Effient)</span></td><td>P2Y12</td><td><span class="pill badge-stop">~7 days</span></td><td>Most potent / longest washout of the P2Y12s.</td></tr>
+            <tr><td>Cangrelor <span class="brand">(Kengreal)</span></td><td>IV P2Y12</td><td><span class="pill badge-stop">~1–6 hours</span></td><td>Ultra-short half-life; used as a <b>bridge</b> after stopping oral agents.</td></tr>
+            <tr><td>Warfarin <span class="brand">(Coumadin, Jantoven)</span></td><td>Vit-K antagonist</td><td><span class="pill badge-stop">~5 days → INR &lt; 1.5</span></td><td>Bridge with heparin if high thrombotic risk (e.g., mechanical valve).</td></tr>
+            <tr><td>Apixaban <span class="brand">(Eliquis)</span></td><td>DOAC (Xa)</td><td><span class="pill badge-stop">~48 hours</span></td><td>Longer with reduced renal function / high bleed-risk surgery.</td></tr>
+            <tr><td>Rivaroxaban <span class="brand">(Xarelto)</span></td><td>DOAC (Xa)</td><td><span class="pill badge-stop">~48 hours</span></td><td>≥24–48 h by renal function and bleeding risk.</td></tr>
+            <tr><td>Edoxaban <span class="brand">(Savaysa)</span></td><td>DOAC (Xa)</td><td><span class="pill badge-stop">~48 hours</span></td><td>Adjust for renal function.</td></tr>
+            <tr><td>Dabigatran <span class="brand">(Pradaxa)</span></td><td>DOAC (IIa)</td><td><span class="pill badge-stop">~48 h (longer if CKD)</span></td><td>Renally cleared — can need 3–4+ days with low CrCl; idarucizumab reverses.</td></tr>
+            <tr><td>Enoxaparin <span class="brand">(Lovenox)</span></td><td>LMWH</td><td><span class="pill badge-stop">~12–24 hours</span></td><td>Therapeutic dosing held longer than prophylactic.</td></tr>
+            <tr><td>Unfractionated heparin</td><td>IV anticoagulant</td><td><span class="pill badge-stop">~4–6 hours</span></td><td>Short half-life → very manageable; reversible with protamine.</td></tr>
+            <tr><td>Eptifibatide <span class="brand">(Integrilin)</span> · Tirofiban <span class="brand">(Aggrastat)</span></td><td>GP IIb/IIIa</td><td><span class="pill badge-stop">~4 hours</span></td><td>Short-acting IV agents.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout c-flag"><span class="lab">Red flag · the avoidable cancellation</span><p>The single most common preventable OR delay is <b>nobody asking when the last P2Y12 dose was</b>. On any possible-surgical patient, the medication reconciliation should capture agent <i>and</i> last-dose time on arrival.</p></div>
+      <div class="callout c-fam"><span class="lab">Say it to a family</span><p>"Some blood-thinning medicines need a few days to wear off so surgery bleeds less. We weigh that waiting time against how urgently the heart needs to be fixed."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CATH REPORT ================= -->
+<section class="panel" id="cath">
+  <p class="lead-num">DECODING THE REPORT</p>
+  <h2 class="sec-head">Reading the cath report</h2>
+  <p class="sec-sub">The cath report is a map of the coronary arteries — which are narrowed, by how much, how well blood is flowing, and what was done about it. Here's the vocabulary that makes it readable at handoff.</p>
+
+  <!-- TIMI FLOW -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">FLOW</span><h3>TIMI flow grade — how freely blood is moving</h3></div>
+    <div class="concept-body">
+      <p>The <b>TIMI flow grade</b> (from the <i>Thrombolysis In Myocardial Infarction</i> trials) is a simple <b>0–3</b> score the angiographer assigns by watching contrast move down the vessel. It's the number you'll hear most: "we restored TIMI 3 flow."</p>
+      <div class="timi-grid">
+        <div class="timi-card g0">
+          <svg viewBox="0 0 210 80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="14" y1="40" x2="180" y2="40" stroke="#cdbfa6" stroke-width="18" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="24" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="56" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <line x1="14" y1="40" x2="86" y2="40" stroke="#0f6e69" stroke-width="11" stroke-linecap="round"/>
+            <polygon points="88,31 112,31 100,40" fill="#8a7c63"/><polygon points="88,49 112,49 100,40" fill="#8a7c63"/>
+          </svg>
+          <div class="gname">TIMI 0</div><div class="gdesc">No perfusion. No flow past the blockage at all.</div>
+        </div>
+        <div class="timi-card">
+          <svg viewBox="0 0 210 80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="14" y1="40" x2="180" y2="40" stroke="#cdbfa6" stroke-width="18" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="24" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="56" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <line x1="14" y1="40" x2="86" y2="40" stroke="#0f6e69" stroke-width="11" stroke-linecap="round"/>
+            <line x1="100" y1="40" x2="128" y2="40" stroke="#0f6e69" stroke-width="3.5" stroke-linecap="round"/>
+            <polygon points="88,31 112,31 100,40" fill="#8a7c63"/><polygon points="88,49 112,49 100,40" fill="#8a7c63"/>
+          </svg>
+          <div class="gname">TIMI 1</div><div class="gdesc">Penetration without perfusion. Contrast trickles past but never fills the far bed.</div>
+        </div>
+        <div class="timi-card">
+          <svg viewBox="0 0 210 80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="14" y1="40" x2="180" y2="40" stroke="#cdbfa6" stroke-width="18" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="24" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="56" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <g opacity="0.42" stroke="#0f6e69" stroke-linecap="round">
+              <line x1="14" y1="40" x2="180" y2="40" stroke-width="11"/>
+              <line x1="168" y1="40" x2="200" y2="24" stroke-width="9"/>
+              <line x1="168" y1="40" x2="200" y2="56" stroke-width="9"/></g>
+            <line x1="14" y1="40" x2="86" y2="40" stroke="#0f6e69" stroke-width="11" stroke-linecap="round"/>
+            <polygon points="88,31 112,31 100,40" fill="#8a7c63"/><polygon points="88,49 112,49 100,40" fill="#8a7c63"/>
+          </svg>
+          <div class="gname">TIMI 2</div><div class="gdesc">Partial perfusion. The far bed does fill — but slowly (delayed).</div>
+        </div>
+        <div class="timi-card g3">
+          <svg viewBox="0 0 210 80" xmlns="http://www.w3.org/2000/svg">
+            <line x1="14" y1="40" x2="180" y2="40" stroke="#cdbfa6" stroke-width="18" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="24" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="56" stroke="#cdbfa6" stroke-width="11" stroke-linecap="round"/>
+            <line x1="14" y1="40" x2="180" y2="40" stroke="#0f6e69" stroke-width="11" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="24" stroke="#0f6e69" stroke-width="9" stroke-linecap="round"/>
+            <line x1="168" y1="40" x2="200" y2="56" stroke="#0f6e69" stroke-width="9" stroke-linecap="round"/>
+            <polygon points="88,31 112,31 100,40" fill="#8a7c63"/><polygon points="88,49 112,49 100,40" fill="#8a7c63"/>
+          </svg>
+          <div class="gname">TIMI 3</div><div class="gdesc">Complete, normal perfusion. The goal of any reperfusion.</div>
+        </div>
+      </div>
+      <div class="keyfact">Reperfusion goal = <b>TIMI 3</b>. Anything less means flow is still compromised.</div>
+      <h4>Two finer cousins you'll see</h4>
+      <p><b>TIMI frame count</b> (cTFC) — instead of an eyeball 0–3, it counts how many cine frames contrast takes to reach a fixed distal landmark. Lower = faster = better; it's the more objective version of the same idea.</p>
+      <p><b>Myocardial blush grade / TIMI myocardial perfusion grade</b> (0–3) — looks at <i>tissue-level</i> perfusion, not just the big vessel. You can have a wide-open artery (TIMI 3) but poor blush — that's <b>microvascular "no-reflow,"</b> and it matters because the muscle still isn't getting fed.</p>
+      <div class="callout c-fam"><span class="lab">Say it to a family</span><p>"TIMI flow is just a 0-to-3 grade for how freely blood moves through the artery. Zero means blocked; three means normal. After the stent, we restored it to three."</p></div>
+    </div>
+  </div>
+
+  <!-- ANATOMY & SEVERITY -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">MAP</span><h3>The vessels, dominance &amp; how "tight" is tight</h3></div>
+    <div class="concept-body">
+      <h4>Coronary vessels &amp; abbreviations</h4>
+      <div class="table-scroll" style="margin:8px 0 14px"><table class="gloss-table">
+        <tbody>
+          <tr><td>LM / LMCA</td><td>Left main — the trunk that feeds the LAD <i>and</i> LCx. Disease here threatens a huge territory.</td></tr>
+          <tr><td>LAD</td><td>Left anterior descending — front wall + septum. The proximal LAD is the classic "widow-maker." Branches: diagonals (D1, D2), septals.</td></tr>
+          <tr><td>LCx</td><td>Left circumflex — lateral wall. Branches: obtuse marginals (OM1, OM2).</td></tr>
+          <tr><td>RCA</td><td>Right coronary — inferior wall; usually feeds the SA &amp; AV nodes (why inferior MIs cause bradycardia/block).</td></tr>
+          <tr><td>PDA</td><td>Posterior descending artery — the branch that defines "dominance."</td></tr>
+          <tr><td>Ramus</td><td>Ramus intermedius — an extra branch off the left main in some people.</td></tr>
+        </tbody></table></div>
+      <h4>Dominance — who supplies the PDA</h4>
+      <div class="table-scroll" style="margin:8px 0 14px"><table class="gloss-table">
+        <tbody>
+          <tr><td>Right (~85%)</td><td>PDA comes off the RCA. The common pattern.</td></tr>
+          <tr><td>Left (~7%)</td><td>PDA comes off the LCx — the left system feeds more muscle, so left-sided disease carries more weight.</td></tr>
+          <tr><td>Co-dominant (~8%)</td><td>Shared between RCA and LCx.</td></tr>
+        </tbody></table></div>
+      <h4>How tight is the narrowing?</h4>
+      <div class="table-scroll" style="margin:8px 0 4px"><table class="sev-table gloss-table">
+        <tbody>
+          <tr><td>&lt; 50%</td><td>Non-obstructive / mild — usually medical management.</td></tr>
+          <tr><td>50–69%</td><td>Moderate — the gray zone; often needs FFR/iFR to settle (see Key Concepts).</td></tr>
+          <tr><td>70–99%</td><td>Severe / significant — flow-limiting. <i>(Left main counts as significant at ≥50%.)</i></td></tr>
+          <tr><td>100%</td><td>Total occlusion. If chronic (&gt;3 months) it's a <b>CTO</b>.</td></tr>
+        </tbody></table></div>
+    </div>
+  </div>
+
+  <!-- LESION & DEVICE TERMS -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">TERMS</span><h3>Lesion descriptors, devices &amp; the other grades</h3></div>
+    <div class="concept-body">
+      <h4>Lesion descriptors</h4>
+      <div class="table-scroll" style="margin:8px 0 14px"><table class="gloss-table">
+        <tbody>
+          <tr><td>Ostial</td><td>Right at the vessel's origin.</td></tr>
+          <tr><td>Proximal / mid / distal</td><td>Where along the artery the lesion sits (proximal = bigger territory at risk).</td></tr>
+          <tr><td>Bifurcation</td><td>At a branch point — technically harder to stent well.</td></tr>
+          <tr><td>CTO</td><td>Chronic total occlusion — 100% blocked for &gt;3 months.</td></tr>
+          <tr><td>ISR</td><td>In-stent restenosis — renarrowing inside a previously placed stent.</td></tr>
+          <tr><td>Calcified / tortuous</td><td>Hardened / twisty vessel — tougher, riskier PCI; may need calcium-modification.</td></tr>
+          <tr><td>Thrombus / hazy</td><td>Clot or an unclear filling defect on the image.</td></tr>
+          <tr><td>Dissection</td><td>A tear in the vessel wall (can be disease- or procedure-related).</td></tr>
+          <tr><td>Type A / B / C</td><td>ACC/AHA complexity grade — <b>A</b> = simplest/highest success, <b>C</b> = most complex/lower success.</td></tr>
+        </tbody></table></div>
+      <h4>Devices &amp; procedures</h4>
+      <div class="table-scroll" style="margin:8px 0 14px"><table class="gloss-table">
+        <tbody>
+          <tr><td>POBA</td><td>Plain old balloon angioplasty — balloon only, no stent.</td></tr>
+          <tr><td>DES / BMS</td><td>Drug-eluting / bare-metal stent. DES is the modern default.</td></tr>
+          <tr><td>DCB</td><td>Drug-coated balloon — delivers drug without leaving metal.</td></tr>
+          <tr><td>Atherectomy (rotational / orbital)</td><td>Drills/sands away heavy calcium so a stent can expand.</td></tr>
+          <tr><td>IVL</td><td>Intravascular lithotripsy — sound waves crack calcium.</td></tr>
+          <tr><td>IVUS / OCT</td><td>Imaging from <i>inside</i> the vessel (ultrasound / light) to size and check the result.</td></tr>
+          <tr><td>Aspiration thrombectomy</td><td>Suctions out clot.</td></tr>
+          <tr><td>IABP / Impella / VA-ECMO</td><td>Mechanical circulatory support — props up the circulation in shock or high-risk PCI.</td></tr>
+        </tbody></table></div>
+      <h4>Other grades you'll spot</h4>
+      <p><b>TIMI thrombus grade</b> (0–5) — how much clot is present (5 = total occlusive thrombus). <b>Rentrop collateral grade</b> (0–3) — how well <i>other</i> vessels are back-feeding a blocked one (3 = complete collateral filling), which is why some CTOs are surprisingly well tolerated.</p>
+      <div class="callout c-flag"><span class="lab">Don't confuse these two</span><p><b>TIMI flow grade (0–3)</b> = how blood moves on the angiogram. <b>TIMI risk score</b> = a totally separate points score that predicts outcomes in ACS (a cousin of GRACE). Same name, different jobs — flow grade is on the cath report; the risk score is a bedside calculation.</p></div>
+    </div>
+  </div>
+
+  <!-- DECODED EXAMPLE -->
+  <div class="concept">
+    <div class="concept-top"><span class="abbr">EXAMPLE</span><h3>A real-looking report, line by line</h3></div>
+    <div class="concept-body">
+      <div class="table-scroll" style="margin:8px 0 4px"><table class="gloss-table" style="min-width:640px">
+        <thead><tr><th>What the report says</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr><td>Right dominant</td><td>The RCA supplies the bottom/back of the heart.</td></tr>
+          <tr><td>LM: no significant disease</td><td>The left main trunk is clean.</td></tr>
+          <tr><td>LAD: 90% proximal, TIMI 2, Type B2, calcified</td><td>A severe, flow-limiting narrowing near the start of the front-wall artery; flow is slowed (2 of 3); moderately complex and hardened.</td></tr>
+          <tr><td>LCx: 50% mid (non-obstructive)</td><td>A borderline mid-vessel narrowing — not clearly flow-limiting.</td></tr>
+          <tr><td>RCA: 100% mid (CTO), Rentrop 2</td><td>Fully blocked for a while; other vessels are partly back-feeding it.</td></tr>
+          <tr><td>PCI to proximal LAD: 3.0 × 18 mm DES, 0% residual, TIMI 3</td><td>Stented the LAD; no narrowing left; normal flow restored.</td></tr>
+          <tr><td>Radial access</td><td>Done through the wrist (lower bleeding risk than the groin).</td></tr>
+          <tr><td>LV gram: EF 45%, anterior hypokinesis</td><td>Pump function mildly reduced; the front wall moves weakly (matches that LAD lesion).</td></tr>
+        </tbody></table></div>
+      <div class="callout c-pearl"><span class="lab">Pearl · the one-line scan</span><p>Read any report as four questions: <b>which vessels, how tight, how's the flow (TIMI), and what did they do?</b> Those four answers are 90% of what the next shift needs from you.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GATES TABLE ================= -->
+<section class="panel" id="table">
+  <p class="lead-num">QUICK REFERENCE</p>
+  <h2 class="sec-head">All gates at a glance</h2>
+  <p class="sec-sub">The whole framework on one scrollable surface — the question, the data that answers it, and which way each answer points.</p>
+  <div class="table-scroll">
+    <table id="gatesTable"></table>
+  </div>
+</section>
+
+<!-- ================= SCENARIOS ================= -->
+<section class="panel" id="scenarios">
+  <p class="lead-num">WORKED CASES</p>
+  <h2 class="sec-head">Example patient scenarios</h2>
+  <p class="sec-sub">Six teaching cases that walk the gates to each of the six endpoints. Tap to expand the reasoning.</p>
+  <div id="scenarioList"></div>
+</section>
+
+<!-- ================= PEARLS & FAMILY ================= -->
+<section class="panel" id="pearls">
+  <p class="lead-num">BEDSIDE</p>
+  <h2 class="sec-head">Nurse pearls &amp; family-friendly explanations</h2>
+  <p class="sec-sub">The two registers you actually speak in: the sharp clinical shorthand for handoff, and the plain-language version for the person in the bed and their family.</p>
+  <div id="pearlsBox"></div>
+</section>
+
+<!-- ================= RED FLAGS ================= -->
+<section class="panel" id="redflags">
+  <p class="lead-num">ESCALATION</p>
+  <h2 class="sec-head">Red flags that should prompt escalation</h2>
+  <p class="sec-sub">When you see these, the question is no longer "what's the plan" — it's "who do I call, now." These belong in every CVICU and house-supervisor mental checklist.</p>
+  <div id="redflagBox"></div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="panel" id="quiz">
+  <p class="lead-num">SELF-CHECK</p>
+  <h2 class="sec-head">Vignette quiz</h2>
+  <p class="sec-sub">Ten short cases that test the gates, the scores, and the cath-report vocabulary. Pick an answer for instant feedback and the reasoning. Educational only — these are teaching vignettes, not real patients.</p>
+  <div class="quiz-wrap" id="quizBox"></div>
+</section>
+
+<!-- ================= THINK LIKE THE TEAM ================= -->
+<section class="panel" id="think">
+  <p class="lead-num">SYNTHESIS</p>
+  <h2 class="sec-head">How to think like the Heart Team</h2>
+  <p class="sec-sub">Everything above collapses into a handful of habits of mind. This is what separates reciting the gates from reasoning through them.</p>
+  <div id="thinkBox"></div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+  PCI vs CABG — Heart Team Decision Framework · Educational teaching tool, not a clinical instrument.<br>
+  Evidence touchstones referenced for teaching: ISCHEMIA · FAME / FAME-2 (FFR ≤0.80, iFR ≤0.89) · SYNTAX &amp; SYNTAX II · FREEDOM (diabetes + multivessel) · STICH/STICHES (ischemic cardiomyopathy, low EF) · EXCEL / NOBLE (left main) · CULPRIT-SHOCK · 2021 ACC/AHA/SCAI &amp; 2018 ESC/EACTS revascularization guidance. Always defer to current institutional protocol and the treating Heart Team.
+</div></footer>
+
+<script>
+/* ============================ NAV ============================ */
+function go(t){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===t));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('tabbar').addEventListener('click',e=>{
+  if(e.target.classList.contains('tab')) go(e.target.dataset.t);
+});
+
+/* ============================ GATE DATA ============================ */
+const GATES = [
+  {
+    n:1, title:"Is revascularization needed at all?",
+    q:"Does this patient actually need a stent or surgery — or is medicine enough?",
+    why:"Not every blockage needs fixing. ISCHEMIA showed that stable patients with even moderate-to-severe ischemia did just as well starting with optimal medical therapy (OMT) for hard outcomes. Revascularization earns its place for symptom relief despite OMT, or for prognostic anatomy (left main, proximal LAD, multivessel with low EF, large ischemic burden).",
+    data:["Symptoms and whether they persist on guideline-directed OMT","Ischemic burden (stress imaging / functional testing)","Left ventricular EF","An overview of the anatomy (any left main / proximal LAD / multivessel)"],
+    pci:"N/A at this gate — this gate only decides <i>whether</i>, not <i>how</i>.",
+    cabg:"N/A at this gate.",
+    med:"Stable patient, symptoms controlled on OMT, small/no ischemic burden, no high-risk anatomy.",
+    more:"Symptom status or ischemic burden unknown → stress test / functional imaging before committing.",
+    pitfalls:["The <b>oculostenotic reflex</b>: seeing a stenosis on film and assuming it must be fixed.","Forgetting that OMT must be genuinely optimized before calling symptoms 'refractory.'","Treating an incidental lesion with no ischemia behind it."],
+    nurse:"\"First we ask if the blockage is even causing trouble. If meds control it and there's no big area of heart muscle at risk, sometimes the best medicine <i>is</i> medicine.\"",
+    family:"\"Not every narrowing needs a procedure. Sometimes the safest first step is the right combination of medications, and we only move to a stent or surgery if those aren't enough.\""
+  },
+  {
+    n:2, title:"Is the disease physiologically significant?",
+    q:"Is this narrowing actually starving the muscle of blood — or does it just look scary?",
+    why:"A picture of a stenosis doesn't tell you if it limits flow. Physiology does. FFR ≤0.80 or iFR ≤0.89 marks a lesion worth treating (FAME / FAME-2). A pressure pullback shows whether the problem is one focal spot (fixable) or diffuse disease smeared along the vessel (much harder).",
+    data:["FFR (≤0.80 = significant) or iFR (≤0.89 = significant)","FFR pullback pattern — abrupt focal drop vs gradual diffuse gradient","Non-invasive ischemia testing if no invasive physiology"],
+    pci:"Focal, physiologically significant lesion with an abrupt pullback step-up — a clean target.",
+    cabg:"Diffuse physiologic gradient across a long segment in complex multivessel disease.",
+    med:"FFR > 0.80 / iFR > 0.89 and no other indication → defer, treat medically.",
+    more:"Intermediate stenosis with no physiology done (and not an ACS culprit) → measure FFR/iFR.",
+    pitfalls:["Stenting an angiographically 'tight' lesion that is physiologically negative.","Applying FFR where it doesn't belong — a clear ACS culprit or critical left main usually shouldn't be deferred on FFR alone.","Ignoring a diffuse pullback that predicts a poor stent result."],
+    nurse:"\"FFR is a pressure wire — it tells us if the narrowing is really choking off flow. Under 0.80 means it matters; above means we can often leave it alone.\"",
+    family:"\"We measured the pressure across the narrowing. That tells us whether it's truly limiting blood flow or just looks narrow on the picture.\""
+  },
+  {
+    n:3, title:"Is the anatomy simple or complex?",
+    q:"How hard is this disease to fix — and how much of it is there?",
+    why:"Complexity predicts both how durable a stent will be and how much CABG outperforms it. The SYNTAX score captures this: low (0–22) tends to favor PCI, high (≥33) favors CABG, intermediate (23–32) is Heart Team territory. SYNTAX II adds clinical variables to refine that.",
+    data:["Number of diseased vessels (1 / 2 / 3)","Left main involvement and its complexity","Proximal LAD involvement","Bifurcations, chronic total occlusions (CTO), heavy calcification, tortuosity","Focal vs diffuse disease","Anatomical SYNTAX score (and SYNTAX II if available)"],
+    pci:"Low SYNTAX (0–22), focal lesions, one- or two-vessel disease without complex proximal LAD.",
+    cabg:"High SYNTAX (≥33), three-vessel disease, complex left main, diffuse disease, multiple CTOs.",
+    med:"N/A — physiology/indication is settled upstream; this gate sorts PCI vs CABG.",
+    more:"SYNTAX not calculated, or anatomy not fully characterized → complete the angiographic read.",
+    pitfalls:["Treating SYNTAX as exact — it is operator-variable and shouldn't be the only input.","Using anatomical SYNTAX alone and ignoring clinical risk (that's what SYNTAX II is for).","Underestimating diffuse disease because each individual lesion looks modest."],
+    nurse:"\"SYNTAX is a complexity score. Low and focal leans stent; high and diffuse or three-vessel leans surgery; the middle goes to the Heart Team.\"",
+    family:"\"We scored how complex the blockages are. Simple, contained blockages often do well with a stent; widespread, complicated disease usually does better with bypass surgery.\""
+  },
+  {
+    n:4, title:"Is PCI technically feasible and durable?",
+    q:"Can a stent actually fix this completely — and will it last?",
+    why:"Incomplete revascularization predicts worse outcomes. Some anatomy fights PCI: heavy calcium needs vessel prep (atherectomy/lithotripsy), long diffuse disease invites a 'full-metal-jacket,' CTOs may not cross, and restenosis-prone patterns recur. The question is durability, not just whether a wire can pass.",
+    data:["Lesion morphology and calcification burden (need for atherectomy / IVL?)","CTO crossing likelihood","Bifurcation involvement and side-branch risk","Predicted stent length / number","History of prior stents, in-stent restenosis"],
+    pci:"Achievable <b>complete</b> revascularization with favorable morphology and reasonable stent burden.",
+    cabg:"Anatomy that PCI can't fully or durably treat — heavy uncrossable calcium, long diffuse disease, repeated restenosis.",
+    med:"Neither approach offers durable benefit and risk is high → medical therapy / palliation.",
+    more:"Calcification or CTO feasibility unclear → intravascular imaging (IVUS/OCT) or CTO assessment.",
+    pitfalls:["Underestimating calcium — it's the classic reason a 'simple' PCI fails to expand.","Settling for incomplete revascularization to avoid surgery.","Forgetting prior restenosis as a marker of a hostile vessel."],
+    nurse:"\"Even if a stent <i>can</i> go in, we ask if it will fully open the vessel and stay open. Calcified, diffuse, or repeatedly-restenosing vessels argue against PCI.\"",
+    family:"\"We're checking whether a stent can completely and durably open this artery. Some arteries are too hardened or too long-diseased for a stent to hold well.\""
+  },
+  {
+    n:5, title:"Is CABG surgically feasible and beneficial?",
+    q:"Are there good places to sew grafts, and can the patient survive and benefit from surgery?",
+    why:"Bypass needs targets: distal vessels (roughly ≥1.5 mm) that are graftable beyond the disease, plus usable conduit (especially the LIMA to the LAD) and a patient who can survive sternotomy and bypass. STS and EuroSCORE II estimate that surgical risk.",
+    data:["Quality of distal targets beyond the lesions (graftable?)","Conduit availability (LIMA, radial, vein)","STS risk score / EuroSCORE II","Frailty, hostile chest, prior cardiac surgery, severe COPD","Life expectancy and functional status"],
+    pci:"CABG <b>not</b> feasible/beneficial (poor targets, prohibitive risk) → PCI becomes the revascularization option.",
+    cabg:"Good distal targets, acceptable surgical risk, durable LIMA-to-LAD available.",
+    med:"No graftable targets <i>and</i> PCI non-durable, or prohibitive surgical risk with limited life expectancy.",
+    more:"Distal target quality or surgical risk not yet assessed → surgical consult, formal risk scoring.",
+    pitfalls:["Offering surgery without confirming graftable distal targets — diffuse distal disease defeats CABG.","Reading age as a contraindication; <b>frailty</b>, not birthdate, drives surgical risk.","Underweighting the LIMA-LAD survival benefit when the LAD is involved."],
+    nurse:"\"Surgery needs somewhere to sew the graft <i>past</i> the blockage and a patient who can tolerate the OR. No good targets, or too frail — and bypass comes off the table.\"",
+    family:"\"For bypass, the surgeon needs healthy artery beyond the blockage to attach the graft, and the body has to be strong enough for open-heart surgery. We weigh both carefully.\""
+  },
+  {
+    n:6, title:"Do disease features shift preference toward CABG?",
+    q:"Are there specific features where bypass is known to do better?",
+    why:"Several patterns have trial-backed CABG advantages: <b>diabetes + multivessel</b> disease (FREEDOM — lower death/MI with CABG); <b>ischemic cardiomyopathy with low EF</b> (STICH/STICHES — long-term survival benefit); <b>left main with high complexity</b>; and <b>three-vessel disease with high SYNTAX</b>, where CABG's completeness pays off.",
+    data:["Diabetes status alongside multivessel disease","EF (especially <35% with ischemic cardiomyopathy)","Left main disease + its SYNTAX complexity","Three-vessel disease and overall SYNTAX","Proximal LAD involvement"],
+    pci:"None of these CABG-favoring features, and anatomy is low-complexity.",
+    cabg:"Diabetes + multivessel; low EF ischemic CM; complex left main; high-SYNTAX three-vessel.",
+    med:"Not the question at this gate.",
+    more:"Diabetes/EF/SYNTAX status unknown → confirm before leaning.",
+    pitfalls:["Treating a diabetic with multivessel disease as a routine PCI candidate.","Forgetting the EF — low-EF multivessel is a CABG signal, not a footnote.","Calling a complex left main 'PCI-able' without scoring its complexity."],
+    nurse:"\"Four flags push toward surgery: diabetes with multivessel disease, a weak heart (low EF), complex left main, and high-complexity three-vessel disease.\"",
+    family:"\"For certain patterns — diabetes with several blocked arteries, a weakened heart muscle, or disease in the main artery — bypass surgery has been shown to help people live longer than stents.\""
+  },
+  {
+    n:7, title:"Is the patient too high-risk for surgery?",
+    q:"Even if surgery is anatomically 'right,' can this patient survive it?",
+    why:"Anatomy can point to CABG while the patient points away from it. Prohibitive STS/EuroSCORE, severe frailty, hostile chest, end-stage comorbidity, or short life expectancy can shift even complex disease toward PCI (accepting less-durable, possibly incomplete revascularization) or toward medical/palliative care.",
+    data:["STS / EuroSCORE II estimated surgical mortality and morbidity","Frailty assessment (gait speed, dependency, sarcopenia)","Severe COPD, CKD/dialysis, cirrhosis, prior stroke","Realistic life expectancy and goals of care"],
+    pci:"Complex anatomy + prohibitive surgical risk → PCI as the pragmatic revascularization route.",
+    cabg:"Acceptable surgical risk despite complex anatomy → CABG's durability is worth it.",
+    med:"Prohibitive surgical <i>and</i> interventional risk, or limited life expectancy → OMT / palliative focus.",
+    more:"Frailty or surgical risk not assessed → formal scoring + frailty evaluation + goals-of-care talk.",
+    pitfalls:["Equating old age with high risk — assess frailty, not the birth year.","Pushing a prohibitive-risk patient to surgery 'because the anatomy says so.'","Skipping the goals-of-care conversation when life expectancy is short."],
+    nurse:"\"Sometimes the anatomy screams 'surgery' but the patient can't survive the OR. That's when we accept a stent — or step back to comfort-focused care.\"",
+    family:"\"Surgery has to be survivable. If the risks of open-heart surgery are too high for this person's overall health, a stent or medication may be the safer path even if it's not the most durable.\""
+  },
+  {
+    n:8, title:"Is the patient clinically unstable?",
+    q:"Is this an emergency where the clock — not the planning — decides?",
+    why:"Instability rewrites the whole framework. STEMI demands <b>primary PCI</b> within minutes. High-risk NSTEMI gets an early invasive strategy. <b>Cardiogenic shock</b> needs emergent revascularization — usually culprit-only PCI (CULPRIT-SHOCK) plus mechanical support. <b>Mechanical complications</b> (VSD, papillary muscle/free-wall rupture) are emergent <b>surgery</b>.",
+    data:["Presentation: stable angina / NSTEMI / STEMI","Ongoing chest pain, dynamic ECG changes","Hemodynamics — shock, pressor/inotrope or MCS requirement","Suspected mechanical complication (new murmur, sudden decompensation)","GRACE / TIMI risk in ACS"],
+    pci:"STEMI → primary PCI now. Shock → emergent culprit-vessel PCI + mechanical support.",
+    cabg:"Mechanical complication (VSD, papillary muscle rupture, free-wall rupture) → emergent surgery. Failed PCI / unsuitable anatomy in ACS → emergent CABG.",
+    med:"Not applicable while unstable — stabilize first.",
+    more:"Stable presentation with no instability → resume the elective gate sequence.",
+    pitfalls:["Treating a STEMI like an elective planning problem — time is muscle.","In shock, reflexively fixing every vessel rather than the culprit (CULPRIT-SHOCK favored culprit-only).","Missing a mechanical complication behind sudden hemodynamic collapse."],
+    nurse:"\"When the patient is unstable, planning stops and the clock starts. STEMI and shock go to the cath lab now; a new murmur with crash means call surgery now.\"",
+    family:"\"This has become an emergency. We're acting immediately to restore blood flow / repair the damage, because waiting would cost heart muscle or life.\""
+  },
+  {
+    n:9, title:"Is antiplatelet / anticoagulant washout needed?",
+    q:"If surgery is the plan, what's on board that has to wear off first — and can we wait?",
+    why:"Bypass on full antiplatelet/anticoagulant means major bleeding. So timing is a real gate. Typical pre-CABG washout: <b>clopidogrel ~5 days</b>, <b>ticagrelor ~3 days</b>, <b>prasugrel ~7 days</b>. Aspirin is usually continued. Warfarin stops ~5 days (target INR <1.5; bridge if high thrombotic risk). DOACs are held by agent and renal function. Heparin's short half-life makes it manageable.",
+    data:["Agents on board: aspirin, clopidogrel, prasugrel, ticagrelor","Anticoagulants: warfarin (and INR), DOAC (and renal function), heparin","Last dose timing of each","Stability — can the patient safely wait for washout?"],
+    pci:"If ongoing ischemia/instability can't safely wait for washout, PCI may be preferred over delayed surgery.",
+    cabg:"Stable patient who can wait the washout interval → proceed to CABG after the agent clears.",
+    med:"Bridge with OMT during the washout window in a stable patient.",
+    more:"Last-dose timing or renal function unknown → get the medication history and labs before scheduling.",
+    pitfalls:["Forgetting to ask about antiplatelet timing — the classic cause of a cancelled OR.","Operating on full P2Y12 inhibitor in a stable patient who could have waited.","Stopping aspirin unnecessarily, or mishandling DOAC timing in CKD."],
+    nurse:"\"Before bypass we ask what blood thinners are on board and when the last dose was. Plavix needs about 5 days, Brilinta 3, Effient 7 — unless the patient is too unstable to wait.\"",
+    family:"\"Some blood-thinning medicines have to wear off before surgery to lower bleeding risk. We balance that waiting time against how urgently the heart needs treatment.\""
+  },
+  {
+    n:10, title:"What is the final Heart Team recommendation?",
+    q:"Pulling anatomy, physiology, patient, and urgency together — what do we actually recommend?",
+    why:"This is the synthesis. For complex disease, left main, and multivessel disease, a formal multidisciplinary Heart Team discussion is a Class I recommendation (per ACC/AHA/SCAI and ESC/EACTS revascularization guidance) — precisely because no single specialty owns the whole picture. The output is a recommendation <i>and</i> a shared, documented rationale that the patient can weigh in on.",
+    data:["The conclusions of Gates 1–9","Validated scores: SYNTAX / SYNTAX II, STS, EuroSCORE II, GRACE/TIMI","Patient values and informed preference","Local surgical and interventional expertise"],
+    pci:"Simple/durable anatomy or high surgical risk, with informed patient agreement.",
+    cabg:"Complex/multivessel/diabetic/low-EF/left-main disease with acceptable surgical risk and patient agreement.",
+    med:"No indication to revascularize, or both procedures offer poor benefit/risk balance.",
+    more:"Unresolved data or genuine equipoise → convene/return to the Heart Team table.",
+    pitfalls:["Letting whichever specialist saw the patient first own the decision unilaterally.","Skipping the patient's informed preference — it is a real input, not a courtesy.","Documenting the 'what' without the 'why,' which the next team will need."],
+    nurse:"\"The Heart Team is interventional cardiology, surgery, and often heart failure deciding together — because the right answer needs all their lenses, plus what the patient wants.\"",
+    family:"\"A team of heart specialists reviews everything together — not just one doctor — and then we discuss the recommendation with you so the decision is truly shared.\""
+  }
+];
+
+/* render gates accordion */
+const acc = document.getElementById('gatesAccordion');
+GATES.forEach(g=>{
+  const el = document.createElement('div'); el.className='gate';
+  el.innerHTML = `
+    <div class="gate-top" onclick="this.parentNode.classList.toggle('open')">
+      <div class="gate-no">${String(g.n).padStart(2,'0')}</div>
+      <div class="gate-ttl"><h3>${g.title}</h3><p class="gate-q">"${g.q}"</p></div>
+      <div class="gate-caret">+</div>
+    </div>
+    <div class="gate-body">
+      <div class="callout c-why" style="margin-top:8px"><span class="lab">Why this question matters</span><p>${g.why}</p></div>
+      <h4>Data needed</h4>
+      <ul class="datalist">${g.data.map(d=>`<li>${d}</li>`).join('')}</ul>
+      <h4>Which way the answer points</h4>
+      <div class="verdict-grid">
+        <div class="vd vd-pci"><span class="vh">Favors PCI</span>${g.pci}</div>
+        <div class="vd vd-cabg"><span class="vh">Favors CABG</span>${g.cabg}</div>
+        <div class="vd vd-med"><span class="vh">Favors medical therapy</span>${g.med}</div>
+        <div class="vd vd-more"><span class="vh">Needs more evaluation</span>${g.more}</div>
+      </div>
+      <h4>Common pitfalls</h4>
+      <ul class="datalist">${g.pitfalls.map(p=>`<li>${p}</li>`).join('')}</ul>
+      <div class="callout c-pearl"><span class="lab">Say it to a nurse</span><p>${g.nurse}</p></div>
+      <div class="callout c-fam"><span class="lab">Say it to a family</span><p>${g.family}</p></div>
+    </div>`;
+  acc.appendChild(el);
+});
+
+/* render gates table */
+const tbl = document.getElementById('gatesTable');
+tbl.innerHTML = `<thead><tr><th>Gate</th><th>Clinical question</th><th>Key data</th><th>Points toward</th></tr></thead><tbody>` +
+GATES.map(g=>{
+  let pts='';
+  if(g.n<=2) pts=`<span class="pill med">MED</span> <span class="pill more">MORE</span> or advance`;
+  else if(g.n===8) pts=`<span class="pill urg">URGENT</span> overrides`;
+  else if(g.n===9) pts=`<span class="pill cabg">CABG timing</span> / <span class="pill pci">PCI if can't wait</span>`;
+  else if(g.n===10) pts=`<span class="pill" style="background:var(--slate-soft);color:var(--slate)">TEAM</span> synthesis → any`;
+  else if(g.n===6) pts=`<span class="pill cabg">CABG</span> signals`;
+  else if(g.n===7) pts=`<span class="pill pci">PCI</span>/<span class="pill med">MED</span> if high risk`;
+  else pts=`<span class="pill pci">PCI</span> ↔ <span class="pill cabg">CABG</span>`;
+  return `<tr><td><span class="g">G${g.n}</span><br>${g.title.replace(/\?$/,'')}</td>
+    <td>${g.q}</td>
+    <td>${g.data.slice(0,3).join('; ')}</td>
+    <td>${pts}</td></tr>`;
+}).join('') + `</tbody>`;
+
+/* ============================ ALGORITHM ============================ */
+/* The algorithm pathway is now rendered as static HTML in the #algorithm panel. */
+
+/* ============================ GATE WALKER ENGINE ============================ */
+const QUESTIONS = [
+  {id:'urgency', q:'1 · Clinical urgency / presentation', hint:'Gate 8. This is checked first and can override everything.',
+   opts:[['stable','Stable angina'],['nstemi_low','NSTEMI — lower risk'],['nstemi_high','NSTEMI — high risk / ongoing pain'],['stemi','STEMI'],['shock','Cardiogenic shock'],['mech','Mechanical complication'],['unknown','Unknown']], color:'ox'},
+  {id:'symptoms', q:'2 · Symptoms despite optimal medical therapy?', hint:'Gate 1. Are symptoms refractory on guideline-directed OMT?',
+   opts:[['yes','Refractory on OMT'],['no','Controlled on OMT'],['unknown','Unknown']]},
+  {id:'ischemia', q:'3 · Ischemic burden', hint:'Gate 1. How much muscle is at risk?',
+   opts:[['large','Moderate–large'],['small','Small / none'],['unknown','Unknown']]},
+  {id:'physiology', q:'4 · Physiology (FFR / iFR) of intermediate lesions', hint:'Gate 2. FFR ≤0.80 or iFR ≤0.89 = significant.',
+   opts:[['sig','Significant (FFR≤0.80/iFR≤0.89)'],['nonsig','Not significant'],['notdone','Not done'],['na','N/A — clear ACS culprit / critical LM']]},
+  {id:'vessels', q:'5 · Number of diseased vessels', hint:'Gate 3.',
+   opts:[['one','1-vessel'],['two','2-vessel'],['three','3-vessel'],['unknown','Unknown']]},
+  {id:'leftmain', q:'6 · Left main involvement', hint:'Gate 3 / 6.',
+   opts:[['none','No left main'],['lm_low','Left main, low complexity'],['lm_high','Left main, high complexity'],['unknown','Unknown']]},
+  {id:'syntax', q:'7 · Anatomic complexity (SYNTAX)', hint:'Gate 3. Low 0–22 · Intermediate 23–32 · High ≥33.',
+   opts:[['low','Low (0–22)'],['int','Intermediate (23–32)'],['high','High (≥33)'],['unknown','Unknown / not scored']]},
+  {id:'targets', q:'8 · Graftable distal targets', hint:'Gate 5. Can the surgeon sew past the disease?',
+   opts:[['good','Good targets'],['poor','Poor / diffuse distal disease'],['unknown','Unknown']]},
+  {id:'diabetes', q:'9 · Diabetes', hint:'Gate 6. Diabetes + multivessel = FREEDOM signal for CABG.',
+   opts:[['yes','Diabetic'],['no','Non-diabetic'],['unknown','Unknown']]},
+  {id:'ef', q:'10 · Left ventricular EF', hint:'Gate 6. Low-EF ischemic CM = STICH signal for CABG.',
+   opts:[['normal','>50%'],['mid','35–50%'],['low','<35%'],['unknown','Unknown']]},
+  {id:'surgrisk', q:'11 · Surgical risk (STS / EuroSCORE II + frailty)', hint:'Gate 7. Assess frailty, not age.',
+   opts:[['low','Low–acceptable'],['high','High'],['prohibitive','Prohibitive'],['unknown','Unknown']]},
+  {id:'antiplatelet', q:'12 · Antiplatelet / anticoagulant on board', hint:'Gate 9. Drives washout timing if CABG.',
+   opts:[['none','None / aspirin only'],['p2y12','P2Y12 inhibitor on board'],['anticoag','Warfarin / DOAC on board'],['unknown','Unknown']]},
+  {id:'preference', q:'13 · Informed patient preference', hint:'Gate 10. A real input, not a courtesy.',
+   opts:[['pci','Leans PCI'],['cabg','Leans CABG'],['none','No strong preference'],['unknown','Not yet discussed']]}
+];
+
+const state = {};
+function buildWalker(){
+  const f = document.getElementById('walkerForm'); f.innerHTML='';
+  QUESTIONS.forEach(Q=>{
+    const b=document.createElement('div'); b.className='qblock';
+    b.innerHTML=`<h4>${Q.q}</h4><p class="hint">${Q.hint}</p>
+      <div class="opts">${Q.opts.map(o=>`<button class="opt" data-q="${Q.id}" data-v="${o[0]}">${o[1]}</button>`).join('')}</div>`;
+    f.appendChild(b);
+  });
+  f.addEventListener('click',e=>{
+    const o=e.target.closest('.opt'); if(!o) return;
+    const q=o.dataset.q, v=o.dataset.v;
+    state[q]=v;
+    f.querySelectorAll(`.opt[data-q="${q}"]`).forEach(x=>x.classList.remove('sel','tealsel','oxsel'));
+    o.classList.add('sel');
+  });
+}
+buildWalker();
+function resetWalker(){for(const k in state)delete state[k];buildWalker();document.getElementById('result').innerHTML='';}
+
+function flag(cls,label,text){return {cls,label,text};}
+
+function runWalker(){
+  const s=state, F=[], trace=[];
+  let category=null, sub='', icon='';
+
+  /* ---- GATE 8: urgency overrides ---- */
+  if(s.urgency==='stemi'){category='urg';sub='STEMI → primary PCI now. Door-to-balloon ≤90 min. The planning sequence does not apply.';trace.push('G8: STEMI → URGENT (primary PCI)');F.push(flag('red','Time-critical','STEMI: every minute is myocardium. Activate the cath lab.'));}
+  else if(s.urgency==='shock'){category='urg';sub='Cardiogenic shock → emergent culprit-vessel PCI plus mechanical support (CULPRIT-SHOCK favored culprit-only over routine multivessel).';trace.push('G8: shock → URGENT (culprit PCI + MCS)');F.push(flag('red','Hemodynamic instability','Shock: emergent revascularization and circulatory support; treat the culprit first.'));}
+  else if(s.urgency==='mech'){category='urg';sub='Mechanical complication (VSD, papillary muscle or free-wall rupture) → emergent surgery. Call CT surgery now.';trace.push('G8: mechanical complication → EMERGENT surgery');F.push(flag('red','Surgical emergency','Sudden decompensation + new murmur = mechanical complication until proven otherwise.'));}
+  else if(s.urgency==='nstemi_high'){category='urg';sub='High-risk NSTEMI / ongoing pain → early invasive strategy (typically <24 h; immediate if refractory). Anatomy then routes PCI vs CABG.';trace.push('G8: high-risk NSTEMI → early invasive');F.push(flag('amber','Early invasive','High-risk ACS — risk-stratify with GRACE/TIMI and move early.'));}
+
+  if(category==='urg'){return render(category,sub,F,trace);}
+
+  /* ---- GATE 1: need to revascularize at all ---- */
+  if(s.symptoms==='unknown'||s.ischemia==='unknown'){
+    trace.push('G1: symptom/ischemia status unknown → MORE DATA');
+    F.push(flag('amber','Upstream gap','Cannot judge the need to revascularize without symptom status and ischemic burden.'));
+    category='more';sub='Establish whether symptoms are refractory on OMT and quantify ischemic burden (stress imaging / functional testing) before deciding anything about how to revascularize.';
+    return render(category,sub,F,trace);
+  }
+  const prognostic = (s.leftmain==='lm_low'||s.leftmain==='lm_high'||s.vessels==='three'||(s.vessels==='two'&&s.ef==='low'));
+  if(s.symptoms==='no' && s.ischemia==='small' && !prognostic){
+    trace.push('G1: controlled symptoms + small ischemia + no prognostic anatomy → MEDICAL');
+    F.push(flag('green','ISCHEMIA-trial logic','Stable, low-burden disease did as well starting with OMT for hard outcomes.'));
+    category='med';sub='No symptom or prognostic indication to revascularize. Optimize guideline-directed medical therapy and risk factors; reassess if symptoms or ischemia change.';
+    return render(category,sub,F,trace);
+  }
+
+  /* ---- GATE 2: physiology ---- */
+  if(s.physiology==='nonsig' && !prognostic){
+    trace.push('G2: FFR>0.80 / iFR>0.89, no prognostic anatomy → MEDICAL (defer)');
+    F.push(flag('green','Physiology-negative','Lesion does not limit flow — deferral is supported (FAME logic).'));
+    category='med';sub='Physiologically non-significant disease without a prognostic indication. Defer intervention and treat medically.';
+    return render(category,sub,F,trace);
+  }
+  if(s.physiology==='notdone' && s.syntax!=='high' && s.leftmain==='none' && s.urgency==='stable'){
+    trace.push('G2: intermediate lesion, no physiology, stable → MORE DATA');
+    F.push(flag('amber','Physiology missing','Intermediate stenosis in a stable patient — measure FFR/iFR before treating.'));
+    category='more';sub='Obtain invasive physiology (FFR/iFR) or non-invasive ischemia testing on the intermediate lesion before committing to revascularization.';
+    return render(category,sub,F,trace);
+  }
+
+  /* ---- Data sufficiency for HOW ---- */
+  const missing=[];
+  if(s.vessels==='unknown'||!s.vessels) missing.push('vessel count');
+  if(s.syntax==='unknown'||!s.syntax) missing.push('SYNTAX/complexity');
+  if(s.targets==='unknown'||!s.targets) missing.push('graftable targets');
+  if(s.surgrisk==='unknown'||!s.surgrisk) missing.push('surgical risk');
+  if(missing.length>=2){
+    trace.push('G3–7: insufficient data ('+missing.join(', ')+') → MORE DATA');
+    F.push(flag('amber','Insufficient data','Cannot weigh PCI vs CABG without: '+missing.join(', ')+'.'));
+    category='more';sub='Complete the anatomical read and risk assessment ('+missing.join(', ')+') before the team can lean PCI vs CABG.';
+    return render(category,sub,F,trace);
+  }
+
+  /* ---- score PCI vs CABG ---- */
+  let pci=0, cabg=0;
+
+  // CABG-favoring (Gate 6)
+  const multi = (s.vessels==='two'||s.vessels==='three');
+  if(s.diabetes==='yes' && multi){cabg+=2;F.push(flag('red','FREEDOM','Diabetes + multivessel disease → CABG lowered death/MI vs PCI.'));trace.push('G6: diabetes + multivessel → +CABG');}
+  if(s.ef==='low' && multi){cabg+=2;F.push(flag('red','STICH','Low-EF ischemic cardiomyopathy with multivessel disease → long-term survival benefit with CABG.'));trace.push('G6: low EF + multivessel → +CABG');}
+  if(s.leftmain==='lm_high'){cabg+=2;F.push(flag('red','Complex left main','High-complexity left main favors surgical revascularization.'));trace.push('G6: complex left main → +CABG');}
+  if(s.leftmain==='lm_low'){cabg+=1;pci+=1;F.push(flag('blue','Left main, low complexity','Low-complexity left main is genuine equipoise (EXCEL vs NOBLE) — Heart Team territory.'));trace.push('G3/6: low-complexity LM → equipoise');}
+  if(s.vessels==='three' && s.syntax==='high'){cabg+=2;trace.push('G3/6: 3-vessel + high SYNTAX → +CABG');}
+  if(s.syntax==='high'){cabg+=2;F.push(flag('red','High SYNTAX','Anatomic complexity ≥33 favors the completeness of CABG.'));trace.push('G3: high SYNTAX → +CABG');}
+
+  // PCI-favoring (Gates 3,4,7)
+  if(s.syntax==='low'){pci+=2;F.push(flag('green','Low SYNTAX','Low-complexity, often focal disease — durable PCI is reasonable.'));trace.push('G3: low SYNTAX → +PCI');}
+  if(s.vessels==='one'){pci+=2;trace.push('G3: single-vessel → +PCI');}
+  if(s.targets==='poor'){pci+=2;F.push(flag('amber','No surgical targets','Diffuse distal disease leaves the surgeon nowhere to graft — CABG feasibility falls.'));trace.push('G5: poor targets → CABG not feasible → +PCI');}
+
+  // Gate 7: surgical risk
+  if(s.surgrisk==='prohibitive'){pci+=3;F.push(flag('red','Prohibitive surgical risk','Even complex anatomy shifts to PCI (or medical) when surgery is not survivable. Assess frailty, not age.'));trace.push('G7: prohibitive risk → strong +PCI');}
+  else if(s.surgrisk==='high'){pci+=1;F.push(flag('amber','High surgical risk','Raises the bar for choosing surgery; weigh against anatomy.'));trace.push('G7: high risk → +PCI');}
+
+  // preference (Gate 10)
+  if(s.preference==='pci'){pci+=1;trace.push('G10: patient leans PCI → +PCI');}
+  if(s.preference==='cabg'){cabg+=1;trace.push('G10: patient leans CABG → +CABG');}
+
+  // both poor → medical/palliative
+  if(s.targets==='poor' && s.surgrisk==='prohibitive' && (s.syntax==='high'||s.physiology==='notdone')){
+    trace.push('G5/G7: no targets + prohibitive risk → MEDICAL/palliative');
+    category='med';sub='Neither durable PCI nor survivable surgery is available. Focus on intensive medical therapy and a goals-of-care conversation; consider palliative input.';
+    F.push(flag('blue','Both options poor','When surgery is prohibitive and targets are absent, medicine + goals-of-care is the honest answer.'));
+    return render(category,sub,F,trace);
+  }
+
+  /* ---- Gate 9 washout flag (informational) ---- */
+  if(s.antiplatelet==='p2y12'){F.push(flag('blue','Washout (Gate 9)','If CABG: clopidogrel ~5d, ticagrelor ~3d, prasugrel ~7d. Operate sooner only if instability won\'t wait.'));}
+  if(s.antiplatelet==='anticoag'){F.push(flag('blue','Washout (Gate 9)','If CABG: warfarin ~5d to INR<1.5 (bridge if high thrombotic risk); DOAC held by agent + renal function.'));}
+
+  // mandatory Heart Team triggers
+  const teamTrigger = (s.leftmain==='lm_low' || s.syntax==='int' || (multi && s.syntax!=='low'));
+
+  const margin = cabg - pci;
+  if(category===null){
+    if(teamTrigger && Math.abs(margin)<2){
+      category='team';
+      sub='Class I indication for a formal Heart Team discussion: left main and/or multivessel disease with competing factors. The leaning is close — bring it to the table with SYNTAX/SYNTAX II, STS/EuroSCORE II, and the patient\'s informed preference.';
+      F.push(flag('blue','Heart Team — Class I','Left main / multivessel with equipoise is exactly what the multidisciplinary table exists for.'));
+      trace.push('G10: equipoise + LM/multivessel → HEART TEAM');
+    } else if(margin>=2){
+      category='cabg';
+      sub='The weight of features favors surgical revascularization — but for left main / multivessel disease this should still be confirmed at a Heart Team discussion (Class I) with the patient\'s informed agreement.';
+      trace.push('G10: net favors CABG ('+cabg+' vs '+pci+')');
+    } else if(margin<=-2){
+      category='pci';
+      sub='The weight of features favors percutaneous revascularization. Confirm durable, complete PCI is achievable, and document informed patient agreement.';
+      trace.push('G10: net favors PCI ('+pci+' vs '+cabg+')');
+    } else {
+      category='team';
+      sub='Competing factors leave the decision balanced. This is genuine equipoise — convene the Heart Team to weigh anatomy, risk, and the patient\'s preference together.';
+      F.push(flag('blue','Equipoise','No dominant signal either way — the multidisciplinary discussion is the answer.'));
+      trace.push('G10: balanced ('+pci+' PCI vs '+cabg+' CABG) → HEART TEAM');
+    }
+  }
+  render(category,sub,F,trace);
+}
+
+function render(cat,sub,F,trace){
+  const map={
+    pci:['rc-pci','Output category','Likely PCI favored','◆'],
+    cabg:['rc-cabg','Output category','Likely CABG favored','◆'],
+    med:['rc-med','Output category','Medical therapy likely','✚'],
+    team:['rc-team','Output category','Heart Team discussion required','⚖'],
+    more:['rc-more','Output category','Need more data before recommendation','?'],
+    urg:['rc-urg','Output category','Urgent / emergent intervention needed','▲']
+  };
+  const m=map[cat];
+  let html=`<div class="result-card ${m[0]}">
+    <span class="rk">${m[1]}</span>
+    <h3>${m[3]} ${m[2]}</h3>
+    <p>${sub}</p>
+  </div>`;
+  if(F.length){
+    html+=`<div class="flags">`+F.map(f=>`<div class="flag ${f.cls}"><div><span class="ft">${f.label}</span><span class="fi">${f.text}</span></div></div>`).join('')+`</div>`;
+  }
+  if(trace.length){
+    html+=`<div class="gate-trace"><b>Gate trace —</b> ${trace.join('  ·  ')}</div>`;
+  }
+  html+=`<div class="callout c-flag" style="margin-top:16px"><span class="lab">Remember</span><p>This is a teaching simulation of how the team tends to lean — never a clinical order. Validated scoring (SYNTAX, STS, EuroSCORE II, GRACE/TIMI) and the treating Heart Team make the real decision.</p></div>`;
+  const r=document.getElementById('result'); r.innerHTML=html;
+  r.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ============================ SCENARIOS ============================ */
+const SCENARIOS = [
+  {t:'1 · The diabetic with three-vessel disease', stub:'Diabetes + multivessel → CABG favored',
+   kv:{Presentation:'Stable angina despite OMT',Anatomy:'Three-vessel disease, intermediate–high SYNTAX, good distal targets',Patient:'62, type 2 diabetes, EF 45%, acceptable surgical risk'},
+   walk:'Gate 8 stable. Gate 1 refractory symptoms — revascularize. Gate 2 ischemia confirmed. Gate 3 multivessel, not low complexity. Gate 6 fires hard: <b>diabetes + multivessel</b> is the FREEDOM signal. Gate 5 good targets, Gate 7 acceptable risk.',
+   land:'cabg',out:'CABG favored — confirmed at Heart Team (Class I for multivessel).'},
+  {t:'2 · The focal LAD lesion', stub:'Low SYNTAX, single vessel → PCI favored',
+   kv:{Presentation:'Exertional angina, positive stress test',Anatomy:'Single focal mid-LAD lesion, FFR 0.74, low SYNTAX',Patient:'58, no diabetes, EF 60%'},
+   walk:'Gate 8 stable. Gate 1 symptoms + ischemia → treat. Gate 2 FFR 0.74 is significant. Gate 3 low SYNTAX, single vessel. Gate 4 favorable morphology — durable PCI achievable.',
+   land:'pci',out:'PCI favored — clean focal target with positive physiology.'},
+  {t:'3 · The stable patient with a non-significant lesion', stub:'FFR negative → medical therapy',
+   kv:{Presentation:'Atypical chest pain',Anatomy:'Single intermediate RCA lesion, FFR 0.86',Patient:'55, low risk, EF normal'},
+   walk:'Gate 8 stable. Gate 1 mild symptoms. Gate 2 decides it: <b>FFR 0.86 is non-significant</b>, no prognostic anatomy. The lesion doesn\'t limit flow.',
+   land:'med',out:'Medical therapy — defer the lesion, optimize OMT and risk factors.'},
+  {t:'4 · Complex left main, the close call', stub:'Left main + equipoise → Heart Team',
+   kv:{Presentation:'NSTEMI, now stable',Anatomy:'Distal left main bifurcation, intermediate SYNTAX, two-vessel',Patient:'70, EF 50%, moderate surgical risk, undecided preference'},
+   walk:'Gate 8 stabilized. Gates 1–2 indication clear. Gate 3 left main, intermediate complexity. Gate 6 left main is a CABG signal but low-intermediate left main is real equipoise (EXCEL vs NOBLE). Risk and preference don\'t break the tie.',
+   land:'team',out:'Heart Team discussion required — Class I, bring SYNTAX II + STS + patient preference.'},
+  {t:'5 · The STEMI', stub:'ST elevation → urgent primary PCI',
+   kv:{Presentation:'Crushing chest pain, ST elevation V2–V4',Anatomy:'Proximal LAD occlusion (culprit)',Patient:'66, arrives via EMS'},
+   walk:'Gate 8 ends it immediately: <b>STEMI</b>. No elective sequence — primary PCI of the culprit now, door-to-balloon ≤90 min.',
+   land:'urg',out:'Urgent — primary PCI now. Time is muscle.'},
+  {t:'6 · The frail elder with complex anatomy', stub:'Prohibitive surgical risk → PCI / medical',
+   kv:{Presentation:'Stable but limiting angina',Anatomy:'Three-vessel, high SYNTAX, some poor distal targets',Patient:'84, frail, severe COPD, CKD, prohibitive STS/EuroSCORE'},
+   walk:'Anatomy alone screams CABG. But Gate 7 dominates: <b>prohibitive surgical risk + frailty</b>, and Gate 5 flags poor targets. Surgery isn\'t survivable; complete durable PCI is doubtful.',
+   land:'pci',out:'PCI favored for symptom relief (accepting less-complete revascularization) — or medical/palliative if PCI also won\'t durably help. Goals-of-care conversation essential.'}
+];
+const SL=document.getElementById('scenarioList');
+const landPill={pci:'pill pci',cabg:'pill cabg',med:'pill med',team:'pill" style="background:var(--slate-soft);color:var(--slate)',more:'pill more',urg:'pill urg'};
+const landTxt={pci:'PCI',cabg:'CABG',med:'MEDICAL',team:'HEART TEAM',more:'MORE DATA',urg:'URGENT'};
+SCENARIOS.forEach(sc=>{
+  const el=document.createElement('div');el.className='scn';
+  el.innerHTML=`<div class="scn-top" onclick="this.parentNode.classList.toggle('open')">
+      <div><h3>${sc.t}</h3><div class="stub">${sc.stub}</div></div>
+      <span class="${landPill[sc.land]}">${landTxt[sc.land]}</span>
+    </div>
+    <div class="scn-body">
+      <dl class="kv">${Object.entries(sc.kv).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>
+      <div class="callout c-think" style="margin:0 0 12px"><span class="lab">Walking the gates</span><p>${sc.walk}</p></div>
+      <div class="callout c-fam" style="margin:0"><span class="lab">Landing</span><p>${sc.out}</p></div>
+    </div>`;
+  SL.appendChild(el);
+});
+
+/* ============================ PEARLS & FAMILY ============================ */
+document.getElementById('pearlsBox').innerHTML=`
+  <div class="card"><h3>Nurse teaching pearls</h3>
+    <div class="callout c-pearl"><span class="lab">Pearl · the order is the point</span><p>Urgency first, need-to-treat second, how-to-treat third. If someone is arguing "stent vs surgery" before clearing ischemia and symptoms, they've skipped two gates.</p></div>
+    <div class="callout c-pearl"><span class="lab">Pearl · four CABG flags</span><p>Memorize the patterns where surgery wins: <b>D</b>iabetes + multivessel, low <b>E</b>F, complex <b>L</b>eft main, high-complexity <b>3</b>-vessel. "DEL-3." When you hear these, expect a surgical conversation.</p></div>
+    <div class="callout c-pearl"><span class="lab">Pearl · FFR numbers</span><p>FFR <b>≤0.80</b> and iFR <b>≤0.89</b> mean "this matters." Higher means the narrowing probably isn't the problem.</p></div>
+    <div class="callout c-pearl"><span class="lab">Pearl · the washout cheat</span><p>Plavix <b>5</b>, Brilinta <b>3</b>, Effient <b>7</b> (days before CABG). Warfarin ~<b>5</b> to INR <1.5. Aspirin usually <b>stays</b>. The most common avoidable OR cancellation is "nobody asked when the last P2Y12 dose was."</p></div>
+    <div class="callout c-pearl"><span class="lab">Pearl · frailty, not age</span><p>An 84-year-old gardener may sail through CABG; a deconditioned 66-year-old may not survive it. Document gait speed and function — that's what surgical risk actually tracks.</p></div>
+    <div class="callout c-pearl"><span class="lab">Pearl · "consult" can mean "convene"</span><p>For left main and multivessel disease, a Heart Team discussion is a Class I recommendation. When you see those words on the problem list, expect a multidisciplinary meeting, not a single signature.</p></div>
+  </div>
+  <div class="card"><h3>Family-friendly explanations</h3>
+    <div class="callout c-fam"><span class="lab">"Stent or surgery — how do you choose?"</span><p>"It depends on how the blockages are arranged. A few simple, contained blockages often do beautifully with a stent. Widespread or complicated disease — especially with diabetes or a weakened heart — usually does better and lasts longer with bypass surgery."</p></div>
+    <div class="callout c-fam"><span class="lab">"Why are you running more tests instead of fixing it?"</span><p>"We want to be sure the narrowing is actually limiting blood flow and causing the symptoms before we treat it. Treating a blockage that isn't the real problem adds risk without adding benefit."</p></div>
+    <div class="callout c-fam"><span class="lab">"Why can't surgery happen today?"</span><p>"Some blood-thinning medicines need a few days to wear off so surgery is safer. As long as it's safe to wait, that pause protects against serious bleeding."</p></div>
+    <div class="callout c-fam"><span class="lab">"Why so many doctors?"</span><p>"A team — the cardiologist who does stents, the heart surgeon, and sometimes a heart-failure specialist — looks at everything together. No single doctor sees the whole picture alone, and we want the safest plan, then we decide it with you."</p></div>
+  </div>`;
+
+/* ============================ RED FLAGS ============================ */
+const REDFLAGS=[
+  ['Active ST-elevation MI','ST elevation, ongoing chest pain → STEMI pathway. Activate cath lab; do not wait for elective workup.'],
+  ['Hemodynamic instability / shock','New hypotension, rising lactate, cool extremities, pressor/inotrope need → cardiogenic shock. Emergent revascularization + mechanical support.'],
+  ['Sudden decompensation + new murmur','Mechanical complication (VSD, papillary muscle or free-wall rupture) until proven otherwise → emergent surgical eval.'],
+  ['Refractory or recurrent ischemic pain','Ongoing/recurrent chest pain despite therapy = unstable trajectory; escalate to early invasive strategy.'],
+  ['Dynamic ECG changes','New/evolving ST or T-wave changes signal an active, unstable lesion — re-stratify urgency immediately.'],
+  ['Post-PCI/CABG instability','New hypotension, tamponade signs, bleeding, or fresh ischemia after intervention → urgent team notification.'],
+  ['High GRACE / TIMI in ACS','High calculated risk in NSTEMI mandates early invasive timing, not a routine schedule.'],
+  ['Stent thrombosis picture','Abrupt chest pain + ST elevation in a recently-stented patient → treat as emergent re-occlusion.']
+];
+document.getElementById('redflagBox').innerHTML=`<div class="card" style="border-left:5px solid var(--oxblood)">`+
+  REDFLAGS.map(r=>`<div class="callout c-flag" style="margin:0 0 12px"><span class="lab">⚑ ${r[0]}</span><p>${r[1]}</p></div>`).join('')+
+  `<div class="callout c-sys" style="margin:6px 0 0"><span class="lab">Systems</span><p>For house supervisors: each of these changes the resource clock — cath lab activation, perfusion/OR readiness, MCS availability, blood bank, and ICU bed flow. Recognizing the flag early is what buys the system time.</p></div></div>`;
+
+/* ============================ THINK LIKE THE TEAM ============================ */
+document.getElementById('thinkBox').innerHTML=`
+  <div class="card"><h3>1 · Separate "whether" from "how"</h3>
+    <p>The first two gates decide <b>whether</b> to revascularize at all — symptoms on OMT, ischemic burden, physiology. Only after that does the PCI-vs-CABG conversation even begin. Most reasoning errors are gates jumped.</p></div>
+  <div class="card"><h3>2 · Weigh anatomy against the patient</h3>
+    <p>Complexity (SYNTAX) and trial-backed patterns (diabetes, low EF, left main) pull toward CABG; simplicity, frailty, and prohibitive surgical risk pull toward PCI. The decision lives at that intersection, not in either column alone.</p></div>
+  <div class="card"><h3>3 · Let urgency override the algorithm</h3>
+    <p>STEMI, shock, and mechanical complications aren't planning problems — they're clocks. The moment instability appears, the elective sequence is suspended and the question becomes "fastest safe path to flow or repair."</p></div>
+  <div class="card"><h3>4 · Respect durability and completeness</h3>
+    <p>A procedure that <i>can</i> be done isn't the same as one that <i>should</i> be. Ask whether revascularization will be complete and durable — incomplete revascularization quietly worsens outcomes.</p></div>
+  <div class="card"><h3>5 · Score, but don't worship the score</h3>
+    <p>SYNTAX, STS, EuroSCORE II, GRACE, TIMI are anchors, not verdicts. They inform the conversation; they don't end it. Anatomic SYNTAX without clinical context is half a picture (hence SYNTAX II).</p></div>
+  <div class="card"><h3>6 · The patient is a member of the team</h3>
+    <p>Informed preference is a genuine input at Gate 10. The Heart Team's job isn't to hand down a verdict — it's to build a shared, documented recommendation the patient actually agrees to.</p>
+    <div class="callout c-think" style="margin-bottom:0"><span class="lab">The whole framework in one line</span><p><b>Stabilize if unstable → confirm the disease deserves treatment → match anatomy to patient → choose the most durable survivable option → time the medications → decide it together, on the record.</b></p></div>
+  </div>`;
+
+/* ============================ QUIZ ============================ */
+const QUIZ=[
+  {tag:"Gate 2 · Physiology",
+   scenario:"A 55-year-old with atypical chest pain. Angiography shows a single intermediate RCA lesion; FFR is 0.86. No left main disease, EF normal, symptoms controlled on optimal medical therapy.",
+   q:"Most likely landing zone?",
+   options:["PCI favored","CABG favored","Medical therapy","Urgent intervention"],
+   answer:2,
+   explain:"FFR 0.86 is above 0.80 \u2014 the lesion does not limit flow. With no prognostic anatomy and controlled symptoms, Gate 2 defers it: medical therapy (FAME logic)."},
+  {tag:"Gate 6 · FREEDOM",
+   scenario:"A 62-year-old with type 2 diabetes, three-vessel disease, good distal targets, EF 45%, acceptable surgical risk, and intermediate\u2013high SYNTAX.",
+   q:"Which way does the Heart Team most likely lean?",
+   options:["PCI favored","CABG favored","Medical therapy","Need more data"],
+   answer:1,
+   explain:"Diabetes + multivessel disease is the FREEDOM signal \u2014 CABG lowered death/MI versus PCI. With good targets and acceptable risk, the lean is CABG, confirmed at the Heart Team."},
+  {tag:"Gate 8 · Urgency",
+   scenario:"EMS brings a 66-year-old with crushing chest pain and ST elevation in V2\u2013V4. Angiography shows a proximal LAD occlusion.",
+   q:"Next step?",
+   options:["Schedule an elective Heart Team review","Primary PCI now","Start medical therapy, reassess in 24 h","Measure FFR before deciding"],
+   answer:1,
+   explain:"This is a STEMI. Gate 8 overrides everything else \u2014 primary PCI of the culprit, door-to-balloon \u226490 min. Time is muscle."},
+  {tag:"Gate 9 · Washout",
+   scenario:"A stable patient headed for CABG is on ticagrelor (Brilinta).",
+   q:"Typical hold before surgery?",
+   options:["No hold needed","~3 days","~7 days","~14 days"],
+   answer:1,
+   explain:"Ticagrelor binds reversibly, so it washes out faster than the others: about 3 days (clopidogrel ~5, prasugrel ~7). Always confirm local protocol."},
+  {tag:"Gate 7 · Surgical risk",
+   scenario:"An 84-year-old who is frail with severe COPD and CKD has three-vessel, high-SYNTAX disease with some poor distal targets. STS / EuroSCORE is prohibitive.",
+   q:"The anatomy favors CABG \u2014 what most likely happens?",
+   options:["Proceed to CABG anyway","PCI favored (or medical / palliative)","Defer all treatment indefinitely","Emergent surgery"],
+   answer:1,
+   explain:"Gate 7 dominates: prohibitive surgical risk plus frailty (assess frailty, not age) shifts even complex anatomy toward PCI for symptom relief \u2014 or medical / palliative if durable PCI is unlikely. Goals-of-care matters."},
+  {tag:"Cath report · TIMI flow",
+   scenario:"The post-PCI report reads: \u201cPCI to LAD, 0% residual, TIMI 3 flow.\u201d",
+   q:"What does TIMI 3 mean?",
+   options:["No flow past the blockage","Partial, slowed flow","Complete, normal perfusion","A complication occurred"],
+   answer:2,
+   explain:"TIMI flow runs 0\u20133. Grade 3 is complete, normal perfusion \u2014 the goal of any reperfusion. (0 = no flow; 2 = slow / partial.)"},
+  {tag:"Gate 3 · SYNTAX",
+   scenario:"Focal single-vessel disease with a calculated SYNTAX score of 18.",
+   q:"Which band, and what does it favor?",
+   options:["Low (\u226422) \u2014 favors PCI","Intermediate (23\u201332) \u2014 Heart Team","High (\u226533) \u2014 favors CABG","Too low to matter"],
+   answer:0,
+   explain:"SYNTAX \u226422 is the low band \u2014 simple, often focal disease where durable PCI is reasonable and comparable to surgery."},
+  {tag:"Gate 10 · Equipoise",
+   scenario:"NSTEMI, now stable. Distal left main bifurcation, intermediate SYNTAX, two-vessel disease, EF 50%, moderate surgical risk, no patient preference voiced yet.",
+   q:"Best single answer?",
+   options:["PCI favored","CABG favored","Heart Team discussion required","Medical therapy"],
+   answer:2,
+   explain:"Left main of intermediate complexity is genuine equipoise (EXCEL vs NOBLE). With nothing breaking the tie, this is a Class I Heart Team discussion \u2014 bring SYNTAX II, STS, and the patient\u2019s preference."},
+  {tag:"Gate 8 · Shock",
+   scenario:"Acute MI complicated by cardiogenic shock; angiography shows a culprit lesion plus additional non-culprit disease.",
+   q:"Best revascularization approach?",
+   options:["Immediately stent every diseased vessel","Culprit-vessel PCI + mechanical support","Emergent CABG of all vessels","Medical therapy only"],
+   answer:1,
+   explain:"In shock, CULPRIT-SHOCK favored culprit-only PCI over routine multivessel intervention, plus mechanical circulatory support. Treat the culprit, support the circulation."},
+  {tag:"Concepts · who predicts what",
+   scenario:"You\u2019re matching risk scores to their jobs.",
+   q:"Which score predicts surgical (operative) mortality?",
+   options:["GRACE","TIMI","STS / EuroSCORE II","Anatomic SYNTAX"],
+   answer:2,
+   explain:"STS and EuroSCORE II predict surgical mortality / morbidity. GRACE and TIMI risk-stratify ACS (how urgently to go invasive). Anatomic SYNTAX scores complexity, not survival."}
+];
+let qIndex=0,qScore=0,qLocked=false;
+function renderQuiz(){
+  const box=document.getElementById('quizBox');
+  if(qIndex>=QUIZ.length){renderQuizFinal();return;}
+  const item=QUIZ[qIndex];
+  const pct=Math.round((qIndex/QUIZ.length)*100);
+  const opts=item.options.map((o,i)=>`<button class="qopt" id="qopt${i}" onclick="answerQuiz(${i})"><span class="mk">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`).join('');
+  box.innerHTML=`
+    <div class="quiz-head"><span>Question ${qIndex+1} of ${QUIZ.length}</span><span>Score ${qScore}</span></div>
+    <div class="qbar"><i style="width:${pct}%"></i></div>
+    <div class="quiz-card">
+      <span class="quiz-tag">${item.tag}</span>
+      <p class="quiz-scenario">${item.scenario}</p>
+      <p class="quiz-q">${item.q}</p>
+      <div class="quiz-opts">${opts}</div>
+      <div id="quizFeedback"></div>
+    </div>`;
+}
+function answerQuiz(i){
+  if(qLocked)return; qLocked=true;
+  const item=QUIZ[qIndex], correct=item.answer;
+  for(let k=0;k<item.options.length;k++){
+    const el=document.getElementById('qopt'+k);
+    el.classList.add('disabled');
+    if(k===correct)el.classList.add('correct');
+    if(k===i&&i!==correct)el.classList.add('wrong');
+  }
+  const right=(i===correct);
+  if(right)qScore++;
+  const last=(qIndex+1>=QUIZ.length);
+  document.getElementById('quizFeedback').innerHTML=
+    `<div class="callout ${right?'c-why':'c-flag'} quiz-explain"><span class="lab">${right?'Correct':'Not quite'}</span><p>${item.explain}</p></div>
+     <div class="quiz-actions"><button class="btn btn-primary" onclick="nextQuiz()">${last?'See results \u2192':'Next \u2192'}</button></div>`;
+}
+function nextQuiz(){qIndex++;qLocked=false;renderQuiz();document.getElementById('quiz').scrollIntoView({behavior:'smooth',block:'start'});}
+function renderQuizFinal(){
+  const pct=Math.round((qScore/QUIZ.length)*100);
+  let msg;
+  if(pct>=90)msg="Heart Team-ready. You\u2019re reasoning through the gates, not just memorizing them.";
+  else if(pct>=70)msg="Strong work. A couple of gates to revisit \u2014 review the ones you missed.";
+  else if(pct>=50)msg="Good start. Re-read The 10 Gates and Key Concepts, then run it again.";
+  else msg="Worth another pass. Walk the Algorithm tab first \u2014 it clicks fast once the order makes sense.";
+  document.getElementById('quizBox').innerHTML=
+    `<div class="quiz-card quiz-final">
+       <div class="score-ring">${qScore}/${QUIZ.length}</div>
+       <div class="score-sub">${pct}% correct</div>
+       <p style="font-size:17px;max-width:46ch;margin:0 auto 18px">${msg}</p>
+       <button class="btn btn-primary" onclick="restartQuiz()">Restart quiz</button>
+     </div>`;
+}
+function restartQuiz(){qIndex=0;qScore=0;qLocked=false;renderQuiz();}
+renderQuiz();
+</script>
+</body>
+</html>
