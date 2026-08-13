@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temporary Pacemaker Troubleshooting</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #e8eef5;
+    --border: #c8d6e5;
+    --accent: #0066cc;
+    --accent2: #d94f00;
+    --warn: #b45309;
+    --danger: #cc0033;
+    --success: #0a7c59;
+    --text: #0f1923;
+    --muted: #4a5568;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #003580 0%, #0052a3 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #a8d8ff;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .pulse-dot {
+    width: 6px; height: 6px;
+    background: #a8d8ff;
+    border-radius: 50%;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px #a8d8ff; }
+    50% { opacity: 0.4; box-shadow: none; }
+  }
+
+  .header h1 {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .header-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  /* ECG LINE ANIMATION */
+  .ecg-strip {
+    width: 100%;
+    height: 36px;
+    overflow: hidden;
+    position: relative;
+    background: transparent;
+  }
+
+  .ecg-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200%;
+    height: 100%;
+    animation: ecg-scroll 3s linear infinite;
+  }
+
+  @keyframes ecg-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    gap: 4px;
+    padding: 12px 16px;
+    background: #ffffff;
+    border-bottom: 2px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .tab-btn.active {
+    background: #0066cc;
+    border-color: #0066cc;
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .tab-btn:not(.active):hover {
+    border-color: #0066cc;
+    color: #0066cc;
+  }
+
+  /* CONTENT */
+  .content {
+    padding: 16px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .alert-banner.danger {
+    background: #fff0f3;
+    border: 1px solid #ffb3c1;
+    color: #7d0024;
+  }
+
+  .alert-banner.warn {
+    background: #fffbeb;
+    border: 1px solid #f6c946;
+    color: #78400a;
+  }
+
+  .alert-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* PROBLEM CARDS */
+  .problem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .problem-card:hover { border-color: var(--accent); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    cursor: pointer;
+    gap: 12px;
+  }
+
+  .card-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .severity-chip {
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .severity-chip.critical {
+    background: #fff0f3;
+    color: #cc0033;
+    border: 1px solid #ffb3c1;
+  }
+
+  .severity-chip.high {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fdba74;
+  }
+
+  .severity-chip.moderate {
+    background: #fffbeb;
+    color: #78400a;
+    border: 1px solid #f6c946;
+  }
+
+  .card-title {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .card-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+
+  .chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .problem-card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .problem-card.open .card-body { display: block; }
+
+  /* DEFINITION BOX */
+  .definition-box {
+    background: #eef5ff;
+    border-left: 3px solid #0066cc;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 12px 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #1e3a5f;
+  }
+
+  .definition-box strong {
+    color: #0052a3;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* STEP LIST */
+  .step-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 14px 0 8px;
+  }
+
+  .step-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .step-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    background: #0066cc;
+    border: 1px solid #0052a3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #ffffff;
+    margin-top: 1px;
+  }
+
+  .step-num.escalate {
+    background: #cc0033;
+    border-color: #990026;
+    color: #ffffff;
+  }
+
+  /* ESCALATION BOX */
+  .escalation-box {
+    background: #fff0f3;
+    border: 1px solid #ffb3c1;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 14px;
+  }
+
+  .escalation-box .esc-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #cc0033;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .escalation-box p {
+    font-size: 13px;
+    color: #7d0024;
+    line-height: 1.6;
+  }
+
+  /* PARAMETERS TABLE */
+  .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 12px;
+  }
+
+  .param-table th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .param-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(30,45,66,0.5);
+    line-height: 1.5;
+    vertical-align: top;
+  }
+
+  .param-table tr:last-child td { border-bottom: none; }
+
+  .param-table td:first-child {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #0052a3;
+    white-space: nowrap;
+  }
+
+  /* HIGHLIGHT TAG */
+  .highlight {
+    background: #fffbeb;
+    color: #78400a;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 11px;
+    border: 1px solid #f6c946;
+  }
+
+  .highlight.danger {
+    background: #fff0f3;
+    color: #cc0033;
+    border: 1px solid #ffb3c1;
+  }
+
+  .highlight.success {
+    background: #f0fdf4;
+    color: #0a7c59;
+    border: 1px solid #6ee7b7;
+  }
+
+  /* ASYNCHRONOUS MODE SPECIAL */
+  .async-card {
+    background: #fff0f3;
+    border: 2px solid #ffb3c1;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .async-title {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 800;
+    color: #cc0033;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .async-aka {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #7d0024;
+    margin-bottom: 14px;
+  }
+
+  /* QUICK REF GRID */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .quick-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+  }
+
+  .quick-tile-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .quick-tile-val {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 700;
+    color: #0052a3;
+  }
+
+  .quick-tile-unit {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 14px 0;
+  }
+
+  /* FOOTER NOTE */
+  .footer-note {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 11px;
+    color: #374151;
+    line-height: 1.6;
+    margin-top: 16px;
+  }
+
+  .footer-note strong { color: #111827; }
+
+  .attribution-footer {
+    margin: 24px 16px 0;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-top: 3px solid #0066cc;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #374151;
+    line-height: 1.7;
+  }
+
+  .attribution-footer .attr-name {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: #0052a3;
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">
+    <span class="pulse-dot"></span>
+    Clinical Reference · CVICU
+  </div>
+  <h1>Temporary <span>Pacemaker</span><br>Troubleshooting</h1>
+  <p class="header-sub">Transvenous · Epicardial · Transcutaneous</p>
+
+  <!-- ECG STRIP -->
+  <div class="ecg-strip" style="margin-top:10px;">
+    <svg class="ecg-svg" viewBox="0 0 800 36" preserveAspectRatio="none" fill="none">
+      <polyline points="
+        0,18 40,18 50,18 55,4 60,32 65,18 90,18
+        110,18 120,18 125,4 130,32 135,18 160,18
+        180,18 190,18 195,4 200,32 205,18 230,18
+        250,18 260,18 265,4 270,32 275,18 300,18
+        320,18 330,18 335,4 340,32 345,18 370,18
+        390,18 400,18 405,4 410,32 415,18 440,18
+        460,18 470,18 475,4 480,32 485,18 510,18
+        530,18 540,18 545,4 550,32 555,18 580,18
+        600,18 610,18 615,4 620,32 625,18 650,18
+        670,18 680,18 685,4 690,32 695,18 720,18
+        740,18 750,18 755,4 760,32 765,18 800,18
+      " stroke="#7dd3fc" stroke-width="1.5" stroke-opacity="0.7"/>
+    </svg>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab('postop')">Post-Op Use</button>
+  <button class="tab-btn" onclick="showTab('no-capture')">No Capture</button>
+  <button class="tab-btn" onclick="showTab('no-sense')">No Sense</button>
+  <button class="tab-btn" onclick="showTab('no-pace')">No Pace</button>
+  <button class="tab-btn" onclick="showTab('async')">Async Mode</button>
+  <button class="tab-btn" onclick="showTab('parameters')">Parameters</button>
+</div>
+
+<div class="content">
+
+  <!-- OVERVIEW -->
+  <div id="overview" class="section active">
+
+    <div class="alert-banner warn">
+      <span class="alert-icon">⚡</span>
+      <div>This tool covers the <strong>Big 3</strong> pacing problems: Failure to Capture, Failure to Sense, and Failure to Pace. When standard troubleshooting fails — escalate to Asynchronous Mode.</div>
+    </div>
+
+    <div class="quick-grid">
+      <div class="quick-tile">
+        <div class="quick-tile-label">Rate Threshold</div>
+        <div class="quick-tile-val">10–20</div>
+        <div class="quick-tile-unit">bpm above intrinsic</div>
+      </div>
+      <div class="quick-tile">
+        <div class="quick-tile-label">Capture Threshold</div>
+        <div class="quick-tile-val">~2–3×</div>
+        <div class="quick-tile-unit">capture threshold mA</div>
+      </div>
+      <div class="quick-tile">
+        <div class="quick-tile-label">Sensitivity Range</div>
+        <div class="quick-tile-val">1–20</div>
+        <div class="quick-tile-unit">mV (lower = more sensitive)</div>
+      </div>
+      <div class="quick-tile">
+        <div class="quick-tile-label">Output (mA)</div>
+        <div class="quick-tile-val">5–25</div>
+        <div class="quick-tile-unit">typical starting range</div>
+      </div>
+    </div>
+
+    <!-- CARDS: THE 3 PROBLEMS -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Failure to Capture</div>
+            <div class="card-subtitle">Spike present · No QRS follows</div>
+          </div>
+        </div>
+        <span class="severity-chip critical">Critical</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>What you see</strong>
+          Pacer spike fires but <strong>no QRS complex follows</strong>. The myocardium is not responding to the electrical stimulus.
+        </div>
+        <p class="step-label">Immediate Steps</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span><strong>Increase output (mA)</strong> — Start at current setting, titrate up in small increments (e.g. 2 mA steps) while watching monitor for capture. Set final output at 2–3× the capture threshold.</span></li>
+          <li><span class="step-num">2</span><span><strong>Check connections</strong> — Inspect all lead-to-generator cable connections. A loose pin is the most common culprit. Reseat firmly.</span></li>
+          <li><span class="step-num">3</span><span><strong>Reposition patient</strong> — Left lateral decubitus (especially for RV leads). Lead position can shift with movement or during procedures.</span></li>
+          <li><span class="step-num">4</span><span><strong>Check lead polarity</strong> — Try reversing the positive/negative connections at the generator box if no capture achieved.</span></li>
+          <li><span class="step-num">5</span><span><strong>Replace generator battery</strong> — Low battery = inadequate output even at high settings. Swap to a new generator.</span></li>
+          <li><span class="step-num">6</span><span><strong>Check metabolic/electrolytes</strong> — Severe hyperkalemia, acidosis, or antiarrhythmics (Class IC) can raise capture threshold. Correct if possible.</span></li>
+          <li><span class="step-num escalate">7</span><span><strong>Lead dislodgement?</strong> CXR stat. If threshold cannot be achieved → notify physician immediately for repositioning or emergent transcutaneous pacing backup.</span></li>
+        </ul>
+        <div class="escalation-box">
+          <div class="esc-label">⚠ Escalation Flag</div>
+          <p>If patient is pacemaker-dependent and capture is completely lost → initiate <span class="highlight danger">transcutaneous pacing</span> as bridge immediately while calling for help.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Failure to Sense</div>
+            <div class="card-subtitle">Paces when it shouldn't · Competitive pacing</div>
+          </div>
+        </div>
+        <span class="severity-chip high">High</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>What you see</strong>
+          The pacemaker fires <strong>regardless of the patient's intrinsic rhythm</strong>. Spikes appear on top of or near native QRS complexes — risk of <strong>R-on-T phenomenon</strong> and VF.
+        </div>
+        <p class="step-label">Immediate Steps</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span><strong>Decrease sensitivity value (mV)</strong> — Counterintuitive: lowering the mV number makes the generator more sensitive to detecting native signals. Titrate down gradually.</span></li>
+          <li><span class="step-num">2</span><span><strong>Check connections / lead position</strong> — Poor lead contact reduces signal amplitude. Reseat connections firmly.</span></li>
+          <li><span class="step-num">3</span><span><strong>Reduce EMI sources</strong> — Check for sources of electromagnetic interference: heating pads, cautery equipment, improperly grounded devices.</span></li>
+          <li><span class="step-num">4</span><span><strong>Confirm intrinsic rate</strong> — If patient is truly bradycardic with no intrinsic rhythm, asynchronous pacing may be appropriate; this would not be undersensing.</span></li>
+          <li><span class="step-num">5</span><span><strong>If persistent and R-on-T risk is high</strong> → consider switching to <span class="highlight">asynchronous (DOO/AOO) mode</span> as temporary measure while troubleshooting.</span></li>
+        </ul>
+        <div class="escalation-box">
+          <div class="esc-label">⚠ R-on-T Risk</div>
+          <p>Competitive pacing in the setting of underlying intrinsic rhythm is dangerous. Competitive pacing near a T-wave can trigger VF. Do not leave unresolved. Notify physician.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Failure to Pace</div>
+            <div class="card-subtitle">No spike · No output from generator</div>
+          </div>
+        </div>
+        <span class="severity-chip critical">Critical</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>What you see</strong>
+          <strong>No pacemaker spike</strong> at all on the monitor when you expect pacing. The generator is not firing — differentiated from failure to capture, where spikes are visible.
+        </div>
+        <p class="step-label">Immediate Steps</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span><strong>Check ON/OFF switch</strong> — Verify the generator is powered on (sounds obvious; it happens).</span></li>
+          <li><span class="step-num">2</span><span><strong>Check battery</strong> — Dead battery = no output. Replace generator immediately.</span></li>
+          <li><span class="step-num">3</span><span><strong>Inspect all connections</strong> — Lead pins to generator ports. A fully disconnected lead will not fire. Reconnect and secure.</span></li>
+          <li><span class="step-num">4</span><span><strong>Oversensing?</strong> — The generator may be sensing artifact as intrinsic activity and inhibiting itself. Decrease sensitivity (increase mV number) or switch to asynchronous mode to test.</span></li>
+          <li><span class="step-num">5</span><span><strong>Change the generator box</strong> — Generator malfunction is uncommon but real. Swap to a backup unit.</span></li>
+          <li><span class="step-num escalate">6</span><span>If truly pacemaker-dependent and no output achieved → <span class="highlight danger">initiate transcutaneous pacing immediately</span> + call physician.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <strong>Remember:</strong> Always confirm capture on the monitor — a wide QRS following each spike. Mechanical capture (pulse, BP) must be confirmed separately. A pacer spike with a wide QRS ≠ cardiac output.
+    </div>
+  </div>
+
+  <!-- NO CAPTURE DETAIL -->
+  <div id="no-capture" class="section">
+    <div class="alert-banner danger">
+      <span class="alert-icon">🔴</span>
+      <div><strong>Failure to Capture</strong> — Spike present, no QRS follows. Myocardium not responding to stimulus.</div>
+    </div>
+
+    <div class="definition-box" style="margin-bottom:16px;">
+      <strong>Recognition</strong>
+      Pacemaker spikes are visible on the monitor at the programmed rate, but they are <strong>not followed by a QRS complex</strong> (for ventricular pacing) or P wave (for atrial pacing). The heart rate may fall below the paced rate or bradycardia may recur.
+    </div>
+
+    <p class="step-label">Step-by-Step Troubleshooting</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><span><strong>Increase mA (output)</strong> — Turn up the output dial in 2 mA increments watching for capture. A threshold ≥20 mA suggests lead dislodgement or exit block.</span></li>
+      <li><span class="step-num">2</span><span><strong>Inspect connections at the generator</strong> — Pull the cable pins out and firmly reseat each. The most common cause of acute loss of capture is a loose pin connection.</span></li>
+      <li><span class="step-num">3</span><span><strong>Try left lateral position</strong> — Gravity can help a floating lead make better contact with the myocardium. Works best with temporary transvenous leads.</span></li>
+      <li><span class="step-num">4</span><span><strong>Reverse polarity</strong> — Swap positive and negative leads at the generator. Some configurations capture better in one orientation.</span></li>
+      <li><span class="step-num">5</span><span><strong>Replace the generator</strong> — Battery may be depleted, affecting output. Even if the battery indicator looks okay, swap to a new unit and retest.</span></li>
+      <li><span class="step-num">6</span><span><strong>Review medications and labs</strong> — Flecainide, amiodarone, and Class IC drugs raise capture threshold. Hyperkalemia (K+ >6.5 mEq/L) is a common metabolic cause. Correct if possible.</span></li>
+      <li><span class="step-num">7</span><span><strong>Obtain CXR</strong> — Confirm lead position. A coiled, retracted, or displaced lead will not capture at any output.</span></li>
+      <li><span class="step-num escalate">8</span><span><strong>Notify physician</strong> — If output is maxed and capture not achieved, lead repositioning is required. Initiate transcutaneous pacing as a bridge if pacemaker-dependent.</span></li>
+    </ul>
+
+    <hr class="divider">
+    <p class="step-label">Common Causes</p>
+    <table class="param-table">
+      <thead><tr><th>Cause</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Lead displacement</td><td>Most common. Can occur with patient movement, coughing, or after procedures.</td></tr>
+        <tr><td>Loose pin connection</td><td>Easily missed visually. Always pull and reseat physically.</td></tr>
+        <tr><td>Exit block / fibrosis</td><td>Elevated threshold over time at the lead tip. May require lead repositioning or steroid-eluting lead.</td></tr>
+        <tr><td>Hyperkalemia</td><td>K+ >6 mEq/L significantly raises capture threshold. Treat electrolytes.</td></tr>
+        <tr><td>Antiarrhythmics</td><td>Class IC > Class IA/III. Review medication list.</td></tr>
+        <tr><td>Generator battery</td><td>Insufficient output at high mA settings → replace immediately.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NO SENSE DETAIL -->
+  <div id="no-sense" class="section">
+    <div class="alert-banner warn">
+      <span class="alert-icon">⚡</span>
+      <div><strong>Failure to Sense (Undersensing)</strong> — Generator does not detect intrinsic cardiac activity. Risk of competitive pacing and R-on-T.</div>
+    </div>
+
+    <div class="definition-box" style="margin-bottom:16px;">
+      <strong>Recognition</strong>
+      Pacer spikes appear <strong>on or near intrinsic QRS complexes</strong> — it is pacing when it should be inhibited. Look for spikes occurring at a fixed rate despite adequate native rhythm, or fused/pseudofused beats.
+    </div>
+
+    <div class="alert-banner danger" style="margin-bottom:16px;">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>R-on-T Risk:</strong> A pacer spike landing on the T-wave (relative refractory period) can trigger ventricular fibrillation. Undersensing must be treated urgently.</div>
+    </div>
+
+    <p class="step-label">Step-by-Step Troubleshooting</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><span><strong>Decrease sensitivity value (mV)</strong> — Lower number = more sensitive. If set at 10 mV, try 5 mV. The generator needs to detect smaller intrinsic signals. This is the primary intervention.</span></li>
+      <li><span class="step-num">2</span><span><strong>Inspect and reseat connections</strong> — Poor electrical contact reduces the signal amplitude reaching the generator. Firmly reconnect all pins.</span></li>
+      <li><span class="step-num">3</span><span><strong>Check lead position (CXR)</strong> — Lead tip away from endocardium results in small electrogram signal. Lead repositioning may be needed.</span></li>
+      <li><span class="step-num">4</span><span><strong>Reduce EMI</strong> — Remove heating pads, check for grounding issues with other devices. EMI can falsely inhibit or trigger pacing.</span></li>
+      <li><span class="step-num">5</span><span><strong>Consider temporary asynchronous pacing</strong> — If R-on-T risk is high and undersensing is refractory, switching to asynchronous mode eliminates competitive pacing risk while the underlying issue is corrected.</span></li>
+      <li><span class="step-num escalate">6</span><span><strong>Notify physician</strong> if undersensing is not resolved with sensitivity adjustment. May require lead repositioning.</span></li>
+    </ul>
+
+    <hr class="divider">
+    <p class="step-label">Sensitivity: Counterintuitive Logic</p>
+    <div class="definition-box">
+      <strong>Key Concept</strong>
+      The sensitivity mV number represents the <strong>minimum signal amplitude the device will respond to</strong>. A value of 2 mV is MORE sensitive than 10 mV — it can detect smaller signals. To fix undersensing (not detecting intrinsic beats), <strong>decrease the mV number</strong>.
+    </div>
+  </div>
+
+  <!-- NO PACE DETAIL -->
+  <div id="no-pace" class="section">
+    <div class="alert-banner danger">
+      <span class="alert-icon">🔴</span>
+      <div><strong>Failure to Pace</strong> — No pacer spikes visible. Generator is not firing at all.</div>
+    </div>
+
+    <div class="definition-box" style="margin-bottom:16px;">
+      <strong>Recognition</strong>
+      No pacemaker spike artifact is visible on the ECG monitor. Differentiate from failure to capture (spikes present but no QRS) by confirming whether spikes are present at all.
+    </div>
+
+    <p class="step-label">Step-by-Step Troubleshooting</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><span><strong>Confirm pacemaker is ON</strong> — Check on/off switch and display. Confirm programmed rate is set above patient's intrinsic rate.</span></li>
+      <li><span class="step-num">2</span><span><strong>Check and replace battery</strong> — A dead or near-dead battery is the most common mechanical cause. Replace immediately.</span></li>
+      <li><span class="step-num">3</span><span><strong>Inspect all connections</strong> — Disconnect and firmly reconnect lead pins at the generator. A completely unseated pin will prevent firing.</span></li>
+      <li><span class="step-num">4</span><span><strong>Rule out oversensing</strong> — Generator may be detecting noise/artifact as intrinsic activity and inhibiting output. Decrease sensitivity (increase mV) or switch to asynchronous mode to test.</span></li>
+      <li><span class="step-num">5</span><span><strong>Check monitor leads</strong> — Confirm you're watching the right lead on the monitor that would show pacer spikes (pacing artifacts can vary by lead).</span></li>
+      <li><span class="step-num">6</span><span><strong>Replace the generator unit</strong> — Internal circuit failure is rare but possible. Swap to a backup generator.</span></li>
+      <li><span class="step-num escalate">7</span><span><strong>Pacemaker-dependent patient with no pacing output?</strong> → Initiate transcutaneous pacing immediately. Call physician, code team if unresponsive.</span></li>
+    </ul>
+
+    <hr class="divider">
+    <p class="step-label">Oversensing vs. Failure to Pace</p>
+    <div class="definition-box">
+      <strong>Differentiation</strong>
+      If switching to <span class="highlight">asynchronous mode</span> restores pacing, the cause was <strong>oversensing</strong> (generator was inhibiting itself). If asynchronous mode still shows no spikes, the issue is a true generator/lead/connection failure.
+    </div>
+  </div>
+
+  <!-- ASYNC MODE -->
+  <div id="async" class="section">
+
+    <div class="async-card">
+      <div class="async-title">
+        <span>⚡</span>
+        Asynchronous Mode
+      </div>
+      <div class="async-aka">AKA: DOO (ventricular) · AOO (atrial) · "Fuck It Mode"</div>
+      <p style="font-size:13px; color:#7d0024; line-height:1.6;">The pacemaker fires at a <strong>fixed rate regardless of intrinsic rhythm</strong>. No sensing. No inhibition. Pure, unconditional pacing output. This is your escalation tool when standard troubleshooting fails to restore reliable capture or when oversensing is causing failure to pace.</p>
+    </div>
+
+    <p class="step-label">When to Use</p>
+    <ul class="step-list" style="margin-bottom:16px;">
+      <li><span class="step-num">→</span><span><strong>Persistent failure to capture</strong> despite maximum mA when you need to keep the patient alive while troubleshooting continues.</span></li>
+      <li><span class="step-num">→</span><span><strong>Refractory undersensing</strong> with R-on-T risk — asynchronous mode eliminates competitive pacing risk.</span></li>
+      <li><span class="step-num">→</span><span><strong>Oversensing causing inhibition</strong> — the generator keeps inhibiting itself. DOO bypasses sensing entirely.</span></li>
+      <li><span class="step-num">→</span><span><strong>MRI, cautery, or EMI exposure</strong> that is interfering with sensing function.</span></li>
+      <li><span class="step-num">→</span><span><strong>Diagnostic confirmation</strong> — if switching to async restores pacing, oversensing was the cause of failure to pace.</span></li>
+    </ul>
+
+    <div class="alert-banner warn">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>R-on-T Risk in Async Mode:</strong> If the patient has <em>any</em> intrinsic rhythm, asynchronous pacing can deliver a spike on the T-wave and precipitate VF. Use when patient is pacemaker-dependent (minimal or no intrinsic activity), or when the alternative (no pacing) is worse.</div>
+    </div>
+
+    <hr class="divider">
+    <p class="step-label">How to Switch to Async Mode</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><span>Locate the <strong>Mode</strong> selector on the generator box.</span></li>
+      <li><span class="step-num">2</span><span>Change from <span class="highlight">VVI / DDD</span> to <span class="highlight danger">VOO / DOO</span> (ventricular async) or <span class="highlight danger">AOO</span> (atrial async).</span></li>
+      <li><span class="step-num">3</span><span>Confirm the rate is set appropriately (typically 60–80 bpm or per physician order).</span></li>
+      <li><span class="step-num">4</span><span>Observe monitor for consistent spike output at the programmed rate.</span></li>
+      <li><span class="step-num">5</span><span>Watch for capture (QRS following each spike). Adjust mA as needed.</span></li>
+      <li><span class="step-num escalate">6</span><span>Notify physician. Asynchronous mode is a bridge — do not leave patient in DOO/VOO without a plan.</span></li>
+    </ul>
+
+    <hr class="divider">
+    <div class="definition-box">
+      <strong>The Escalation Ladder</strong>
+      VVI pacing not capturing → Increase mA → Adjust connections → <strong>Switch to DOO (Asynchronous)</strong> → Still no capture → Lead dislodged → Transcutaneous pacing + Call physician for emergent lead repositioning
+    </div>
+
+    <div class="escalation-box" style="margin-top:14px;">
+      <div class="esc-label">⚠ If Async Mode Also Fails</div>
+      <p>If DOO/VOO mode still shows no capture despite maximum output → lead is most likely dislodged or broken. This is a <strong>lead problem, not a generator problem</strong>. Initiate transcutaneous pacing immediately and mobilize for emergent lead repositioning.</p>
+    </div>
+  </div>
+
+  <!-- PARAMETERS -->
+  <div id="parameters" class="section">
+
+    <div class="definition-box" style="margin-bottom:16px;">
+      <strong>Quick Reference</strong>
+      Standard settings for a newly placed temporary transvenous pacemaker. Always confirm with physician orders and institution protocol.
+    </div>
+
+    <p class="step-label">Generator Settings</p>
+    <table class="param-table">
+      <thead><tr><th>Parameter</th><th>Typical Starting Range</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Rate</td>
+          <td><span class="highlight success">60–80 bpm</span></td>
+          <td>Set 10–20 bpm above intrinsic rate for demand pacing (VVI/DDD). Higher for backup only.</td>
+        </tr>
+        <tr>
+          <td>Output (mA)</td>
+          <td><span class="highlight">5–10 mA</span> initial<br><span class="highlight warn">2–3× threshold</span> final</td>
+          <td>Find threshold (lowest mA that captures), then set 2–3× above as safety margin. Typical final: 10–20 mA.</td>
+        </tr>
+        <tr>
+          <td>Sensitivity</td>
+          <td><span class="highlight">2–5 mV</span></td>
+          <td>Lower number = more sensitive. Start at 2–5 mV. Test by slowing rate and confirming native rhythm is sensed/inhibits pacing.</td>
+        </tr>
+        <tr>
+          <td>Mode (VVI)</td>
+          <td>V-paces, V-senses, Inhibited</td>
+          <td>Most common for RV temporary pacing. Use DOO/VOO for asynchronous mode.</td>
+        </tr>
+        <tr>
+          <td>A-V Interval (DDD)</td>
+          <td><span class="highlight">150–200 ms</span></td>
+          <td>For dual-chamber pacing. Match to patient's intrinsic conduction where possible.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="divider">
+    <p class="step-label">Capture Threshold Protocol</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><span>Confirm consistent 1:1 capture at current mA setting.</span></li>
+      <li><span class="step-num">2</span><span>Slowly decrease mA until capture is lost (last captured beat = threshold).</span></li>
+      <li><span class="step-num">3</span><span>Increase back to <strong>2–3× that threshold</strong> as the programmed output. Document the threshold.</span></li>
+      <li><span class="step-num">4</span><span>Recheck capture threshold every shift or per protocol.</span></li>
+    </ul>
+
+    <hr class="divider">
+    <p class="step-label">Mode Quick Reference</p>
+    <table class="param-table">
+      <thead><tr><th>Mode</th><th>Behavior</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>VVI</td><td>V-paces, V-senses, inhibited</td><td>Standard RV temporary pacing</td></tr>
+        <tr><td>DDD</td><td>Dual-chamber pace/sense, dual response</td><td>Dual-chamber temp pacer with AV synchrony need</td></tr>
+        <tr><td>AAI</td><td>A-paces, A-senses, inhibited</td><td>Sick sinus syndrome with intact AV conduction</td></tr>
+        <tr><td>VOO / DOO</td><td>Fixed-rate ventricular pacing, NO sensing</td><td>Asynchronous mode: oversensing, EMI, last resort</td></tr>
+        <tr><td>AOO</td><td>Fixed-rate atrial pacing, NO sensing</td><td>Asynchronous atrial pacing</td></tr>
+      </tbody>
+    </table>
+
+    <div class="footer-note" style="margin-top:16px;">
+      <strong>Transcutaneous backup:</strong> Always have transcutaneous pacing pads applied and connected to a defibrillator in any pacemaker-dependent patient with a temporary transvenous pacemaker. This is your safety net during any troubleshooting sequence.
+    </div>
+  </div>
+
+  <!-- POST-OP USE -->
+  <div id="postop" class="section">
+
+    <div class="alert-banner warn">
+      <span class="alert-icon">🫀</span>
+      <div>Epicardial temporary pacemaker wires are routinely placed during cardiac surgery. Understanding <strong>why</strong> they're placed — and when to use them — is as important as troubleshooting them.</div>
+    </div>
+
+    <!-- CARD: Routine Backup -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Routine Surgical Backup</div>
+            <div class="card-subtitle">Standard of care post-cardiac surgery</div>
+          </div>
+        </div>
+        <span class="severity-chip moderate">Prophylactic</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>Why they're placed</strong>
+          Epicardial pacing wires are placed on the right atrium and/or right ventricle as standard practice at the end of most open cardiac surgeries — even when no arrhythmia is present. The heart has been arrested, cooled, manipulated, and reperfused. Postoperative conduction disturbances are common and can emerge hours after chest closure.
+        </div>
+        <p class="step-label">Common Wire Configurations</p>
+        <table class="param-table">
+          <thead><tr><th>Config</th><th>Wires</th><th>Pacing Capability</th></tr></thead>
+          <tbody>
+            <tr><td>Ventricular only</td><td>2 RV wires</td><td>VVI / VOO — ventricular backup pacing</td></tr>
+            <tr><td>Atrial only</td><td>2 RA wires</td><td>AAI / AOO — atrial pacing, rate support with intact AV conduction</td></tr>
+            <tr><td>Dual chamber</td><td>2 RA + 2 RV wires</td><td>DDD / DOO — full AV synchrony capability</td></tr>
+          </tbody>
+        </table>
+        <p class="step-label">Why Backup Matters</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span><strong>Cardioplegia effect</strong> — Potassium-based cardioplegia arrests the heart. Residual conduction suppression can persist into the early postop period, causing sinus bradycardia or AV nodal slowing.</span></li>
+          <li><span class="step-num">→</span><span><strong>Edema and inflammation</strong> near conduction tissue from surgical manipulation, particularly near the AV node in valve repairs, septal procedures, or CABG with extensive dissection.</span></li>
+          <li><span class="step-num">→</span><span><strong>Reperfusion arrhythmias</strong> — As the heart rewarms and reperfuses, ectopy, junctional rhythms, and transient heart block are common in the first 12–24 hours.</span></li>
+          <li><span class="step-num">→</span><span><strong>Drug effects</strong> — Beta-blockers, amiodarone, and other antiarrhythmics used perioperatively can compound conduction slowing postoperatively.</span></li>
+        </ul>
+        <div class="definition-box">
+          <strong>Typical Backup Settings (Inactive / Standby)</strong>
+          Rate: 40–50 bpm (below intrinsic rate — pacer fires only if rate drops below this threshold) · Output: 10–20 mA · Sensitivity: 2–5 mV · Mode: VVI or DDD per physician order
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Bradycardia / Heart Block -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Bradycardia &amp; Heart Block</div>
+            <div class="card-subtitle">Most common active use case post-cardiac surgery</div>
+          </div>
+        </div>
+        <span class="severity-chip high">Active</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>Clinical Picture</strong>
+          Symptomatic bradycardia, junctional rhythm, 2nd-degree (Mobitz I or II), or complete (3rd-degree) heart block causing hemodynamic compromise — hypotension, low CO, altered mental status, or worsening lactate.
+        </div>
+        <p class="step-label">High-Risk Procedures for Conduction Injury</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span><strong>Aortic valve replacement/repair</strong> — AV node and bundle of His are in close proximity to the aortic annulus. Sutures, debridement, or annular calcification manipulation can injure conduction tissue.</span></li>
+          <li><span class="step-num">→</span><span><strong>Mitral valve surgery</strong> — Posterolateral annulus work near the coronary sinus and AV node.</span></li>
+          <li><span class="step-num">→</span><span><strong>Septal myectomy / TAVI</strong> — Direct risk to the bundle of His and left bundle branch.</span></li>
+          <li><span class="step-num">→</span><span><strong>Congenital repairs</strong> — VSD closure and Fontan procedures carry significant conduction injury risk.</span></li>
+        </ul>
+        <p class="step-label">Management Approach</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span>Confirm hemodynamically significant bradycardia — rate, BP, MAP, CO/CI if PA cath in place.</span></li>
+          <li><span class="step-num">2</span><span>Activate epicardial pacing — increase rate 10–20 bpm above intrinsic rate. Mode: VVI for ventricular block, DDD for complete heart block to maintain AV synchrony.</span></li>
+          <li><span class="step-num">3</span><span>Verify capture and confirm hemodynamic improvement — BP, MAP, waveform quality on arterial line.</span></li>
+          <li><span class="step-num">4</span><span>For complete heart block: DDD pacing with appropriate AV delay (150–200 ms) to preserve atrial contribution to CO.</span></li>
+          <li><span class="step-num">5</span><span>Monitor for resolution over 48–72 hours. Persistent complete heart block beyond 5–7 days → evaluation for permanent pacemaker implantation.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CARD: Hemodynamic Optimization / AV Synchrony -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Optimizing Hemodynamics</div>
+            <div class="card-subtitle">AV synchrony · Rate optimization · Low CO states</div>
+          </div>
+        </div>
+        <span class="severity-chip high">Active</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>Core Concept</strong>
+          The temporary pacemaker is not just a safety net — it is an active hemodynamic tool. In the post-cardiac surgery patient, optimizing rate and AV synchrony can meaningfully improve cardiac output without adding a single vasopressor.
+        </div>
+        <p class="step-label">AV Synchrony — Why It Matters</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span><strong>Atrial kick contributes 20–30% of ventricular filling</strong> in a normal heart — and significantly more in a stiff, hypertrophied, or post-bypass ventricle. Losing AV synchrony (junctional rhythm, complete heart block, RV-only pacing) can substantially reduce CO.</span></li>
+          <li><span class="step-num">→</span><span><strong>Pacemaker syndrome</strong> — VVI pacing without atrial contribution can cause retrograde VA conduction, cannon A waves, hypotension, and reduced CO. Switch to DDD if wires allow.</span></li>
+          <li><span class="step-num">→</span><span><strong>AV delay optimization</strong> — Too short (&lt;100 ms): atria contracting against closed valves. Too long (&gt;250 ms): diastolic MR, lost atrial contribution. Target 150–200 ms; titrate to best arterial waveform and BP.</span></li>
+        </ul>
+        <p class="step-label">Rate Optimization Post-Bypass</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span><strong>Target HR post-cardiac surgery: 80–100 bpm.</strong> A faster rate reduces diastolic filling time but also reduces wall tension and oxygen demand in a stunned ventricle. The Starling curve shifts — many post-bypass hearts perform better at higher rates.</span></li>
+          <li><span class="step-num">→</span><span><strong>Bradycardia is poorly tolerated early post-bypass</strong> — CO = HR × SV. In a stiff post-bypass heart with limited SV reserve, a drop in HR directly drops CO. Use pacing to maintain rate 80–90 bpm.</span></li>
+          <li><span class="step-num">→</span><span><strong>Atrial pacing (AAI) preferred when AV conduction is intact</strong> — maintains native AV conduction and ventricular activation sequence, preserving more physiologic LV function than RV pacing.</span></li>
+        </ul>
+        <div class="definition-box">
+          <strong>Clinical Tip</strong>
+          In a low-CO state post-bypass where the patient is in junctional rhythm at 50 bpm with intact RA and RV wires: switch to DDD at 80–90 bpm with AV delay 180 ms. Watch the arterial line waveform in real time. You may see an immediate improvement in pulse pressure and MAP — before you've opened a single drip.
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Tachyarrhythmia Termination / Overdrive -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Overdrive Pacing</div>
+            <div class="card-subtitle">Tachyarrhythmia termination · Atrial flutter</div>
+          </div>
+        </div>
+        <span class="severity-chip high">Active</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>What It Is</strong>
+          Rapid atrial pacing at a rate faster than the tachyarrhythmia to capture and then abruptly terminate it — exploiting the refractory period of the re-entrant circuit. Most commonly used for <strong>atrial flutter</strong> and certain SVTs post-cardiac surgery.
+        </div>
+        <p class="step-label">Indications Post-Cardiac Surgery</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span><strong>Atrial flutter</strong> — Extremely common post-cardiac surgery (up to 30% of patients). Typical flutter rate ~300 bpm with 2:1 block → ventricular rate ~150. Overdrive pacing via RA wires can terminate it.</span></li>
+          <li><span class="step-num">→</span><span><strong>Reentrant SVT</strong> — When pharmacologic rate control is insufficient or cardioversion is being deferred.</span></li>
+          <li><span class="step-num">→</span><span><strong>Post-ablation arrhythmia storms</strong> — Occasional use in electrophysiology-adjacent scenarios.</span></li>
+        </ul>
+        <p class="step-label">Overdrive Pacing Protocol (Atrial Flutter)</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span><strong>Confirm atrial flutter</strong> on 12-lead or rhythm strip — sawtooth flutter waves, regular atrial rate ~300 bpm.</span></li>
+          <li><span class="step-num">2</span><span><strong>Requires functional RA wires</strong> — confirm capture at current mA before attempting overdrive.</span></li>
+          <li><span class="step-num">3</span><span>Set atrial pacing rate to <strong>10–20 bpm above flutter rate</strong> (typically 320–400 bpm). Physician-directed and institution-protocol-dependent.</span></li>
+          <li><span class="step-num">4</span><span>Pace for 15–30 seconds to capture the atrial circuit, then <strong>abruptly drop rate</strong> to 80–90 bpm. The hope is the circuit terminates into sinus rhythm.</span></li>
+          <li><span class="step-num">5</span><span>Monitor closely — may also convert to <span class="highlight danger">atrial fibrillation</span> rather than sinus. Defibrillator must be immediately available.</span></li>
+          <li><span class="step-num escalate">!</span><span><strong>Physician must be at bedside</strong> for overdrive pacing. This is not a solo nurse intervention. Crash cart within arm's reach.</span></li>
+        </ul>
+        <div class="escalation-box">
+          <div class="esc-label">⚠ Contraindications</div>
+          <p>Do NOT attempt overdrive pacing for atrial fibrillation (no organized circuit to capture), VT, or VF. Also contraindicated if RA wires are not reliably capturing.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Code / Arrest Situation -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Code / Arrest Situation</div>
+            <div class="card-subtitle">Asystole · PEA · Post-cardiac surgery arrest</div>
+          </div>
+        </div>
+        <span class="severity-chip critical">Critical</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>Unique Context</strong>
+          Post-cardiac surgery arrest is fundamentally different from a standard in-hospital code. The chest has been open, bypass has been run, and the temporary pacing wires are already in place. The temporary pacemaker is often a first-line intervention — not an afterthought.
+        </div>
+        <p class="step-label">Asystole / Pulseless Bradycardia</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span><strong>Immediately attempt pacing</strong> — Switch to asynchronous mode (DOO/VOO), max output (20–25 mA), rate 80–100 bpm. Do not wait for compressions if pacing wires are functional.</span></li>
+          <li><span class="step-num">2</span><span>Verify capture on monitor — look for wide QRS following each spike.</span></li>
+          <li><span class="step-num">3</span><span>Confirm mechanical capture — palpate pulse, check arterial line waveform. Electrical capture ≠ mechanical capture.</span></li>
+          <li><span class="step-num">4</span><span>If no capture → begin CPR per ACLS. In post-cardiac surgery arrest &lt;10 days post-op: consider emergent resternotomy per institutional protocol.</span></li>
+        </ul>
+        <p class="step-label">PEA with Functioning Pacemaker</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span>If the pacemaker is capturing (spikes + QRS present) but there is no pulse → pacing is not the problem. Search for and treat reversible causes: tamponade, tension pneumothorax, hypovolemia, graft occlusion, massive vasodilation.</span></li>
+          <li><span class="step-num">→</span><span><strong>Tamponade</strong> is the most critical reversible cause in post-cardiac surgery PEA. Classic Beck's triad (hypotension, JVD, muffled heart sounds) may be absent in the intubated ICU patient. Bedside echo or emergent resternotomy if tamponade is suspected and patient is deteriorating.</span></li>
+        </ul>
+        <p class="step-label">VF / Shockable Rhythm</p>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><span><strong>Disconnect pacing generator before defibrillation</strong> — Current can arc through pacing wires and damage the myocardium at the lead tip, cause lead dislodgement, or damage the generator.</span></li>
+          <li><span class="step-num">2</span><span>Defibrillate per ACLS protocol.</span></li>
+          <li><span class="step-num">3</span><span>Reconnect and reassess pacing post-shock. Defibrillation may reset the pacing threshold — recheck capture after reconnection.</span></li>
+        </ul>
+        <div class="escalation-box">
+          <div class="esc-label">⚠ Post-Cardiac Surgery Arrest Protocol</div>
+          <p>Many institutions have a separate cardiac surgery arrest algorithm. External chest compressions may be delayed or avoided in the first 48–72 hours post-sternotomy (risk of sternal disruption, graft injury). Know your institution's protocol before it happens.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: Junctional Rhythm -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Junctional Rhythm</div>
+            <div class="card-subtitle">AV dissociation · Post-bypass AV nodal suppression</div>
+          </div>
+        </div>
+        <span class="severity-chip moderate">Common</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>Why It's So Common Post-Bypass</strong>
+          The AV node is highly sensitive to ischemia, cold, potassium-based cardioplegia, and direct surgical manipulation. Junctional rhythm (narrow complex, rate 40–60, retrograde or absent P waves) is one of the most common immediate post-bypass rhythms and often requires temporary pacing support.
+        </div>
+        <p class="step-label">Management</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span><strong>If hemodynamically stable</strong> and rate adequate (50–60 bpm): observe. Junctional rhythm typically resolves within hours as cardioplegia clears and AV nodal function recovers. Avoid unnecessary pacing.</span></li>
+          <li><span class="step-num">→</span><span><strong>If hemodynamically compromised</strong> (MAP &lt;65, low CO, hypotension): activate atrial pacing (AAI) to restore AV synchrony and increase rate. If AV conduction is intact, atrial pacing at 80–90 bpm will drive the ventricle normally.</span></li>
+          <li><span class="step-num">→</span><span><strong>If AV conduction is not intact</strong>: use DDD pacing to pace both chambers with appropriate AV delay.</span></li>
+          <li><span class="step-num">→</span><span>Avoid aggressive atropine in post-bypass patients — response is variable and tachycardia can worsen ischemia in fresh grafts.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CARD: Wire Removal -->
+    <div class="problem-card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-title-group">
+          <div>
+            <div class="card-title">Wire Removal</div>
+            <div class="card-subtitle">Timing · Risks · When to keep them longer</div>
+          </div>
+        </div>
+        <span class="severity-chip moderate">Procedural</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="definition-box">
+          <strong>General Timing</strong>
+          Epicardial pacing wires are typically removed 3–5 days post-operatively once the patient is pacing-independent and hemodynamically stable, anticoagulation is at a safe level, and no arrhythmias are anticipated.
+        </div>
+        <p class="step-label">Criteria Before Removal</p>
+        <ul class="step-list">
+          <li><span class="step-num">✓</span><span>Patient not pacemaker-dependent — intrinsic rate adequate and stable for ≥24 hours.</span></li>
+          <li><span class="step-num">✓</span><span>No active arrhythmias requiring pacing (complete heart block, recurrent bradycardia).</span></li>
+          <li><span class="step-num">✓</span><span>Anticoagulation within safe parameters per institutional protocol — typically INR &lt;1.5 or heparin held.</span></li>
+          <li><span class="step-num">✓</span><span>No active need for overdrive pacing capability.</span></li>
+        </ul>
+        <p class="step-label">Risks of Removal</p>
+        <ul class="step-list">
+          <li><span class="step-num">→</span><span><strong>Cardiac tamponade</strong> — Most feared complication. Wire removal can tear an epicardial vessel or myocardium. Have emergency resternotomy capability available if removing wires early post-op.</span></li>
+          <li><span class="step-num">→</span><span><strong>Bleeding</strong> — Especially with anticoagulation. Supratherapeutic INR or therapeutic heparin significantly increases hemorrhage risk.</span></li>
+          <li><span class="step-num">→</span><span><strong>Wire breakage</strong> — Retained wire fragments are rarely clinically significant but should be documented. Inform the team.</span></li>
+          <li><span class="step-num">→</span><span><strong>Arrhythmia</strong> — Rare; wire removal can occasionally trigger transient ectopy.</span></li>
+        </ul>
+        <div class="escalation-box">
+          <div class="esc-label">⚠ Post-Removal Monitoring</div>
+          <p>Monitor for 30–60 minutes post-wire removal for signs of tamponade: rising HR, falling BP, narrowing pulse pressure, JVD, equalization of filling pressures. Have echo capability immediately available.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <strong>CVICU Context:</strong> In a cardiovascular ICU, the temporary pacemaker is one of the most versatile tools at the bedside. Knowing not just how to troubleshoot it but when and why to use it — and when to escalate from passive backup to active hemodynamic intervention — is what separates competent from expert post-cardiac surgery nursing care.
+    </div>
+
+  </div><!-- end postop section -->
+
+</div><!-- end content -->
+
+<div class="attribution-footer">
+  ⓘ AI-assisted clinical reference tool developed through the synthesis of CVICU clinical experience. For educational use only — verify against institutional protocol and current guidelines before clinical application.
+  <div class="attr-name">JJ Cruz, BSN, RN</div>
+</div>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleCard(card) {
+    card.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
