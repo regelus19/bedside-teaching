@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CVICU Post-Op Bleeding — One-Page Algorithm</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15202b; --sub:#41505f; --faint:#7c8b99; --line:#d6dee5; --bg:#f4f7f9; --card:#fff;
+    --navy:#1d3a53; --teal:#2f7d83;
+    --surg:#b3261e; --coag:#a06d12; --mix:#5b4a9e; --tamp:#8a1212;
+    --r:#2563a8; --k:#3f8f4e; --plt:#7c54b8; --ly:#c47a17;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:'IBM Plex Sans',system-ui,sans-serif; color:var(--ink); background:#e9eef2; padding:18px;}
+  .disp{font-family:'Fraunces',Georgia,serif;}
+  .page{
+    width:1056px; margin:0 auto; background:var(--card); border-radius:8px;
+    box-shadow:0 6px 28px rgba(20,40,60,.14); padding:14px 16px 12px; position:relative;
+  }
+  /* toolbar (screen only) */
+  .bar{max-width:1056px; margin:0 auto 12px; display:flex; gap:8px; align-items:center; justify-content:space-between;}
+  .bar .t{font-size:12.5px; color:var(--sub);}
+  .btn{font-family:inherit; font-size:13px; font-weight:600; color:#fff; background:var(--navy); border:none; padding:9px 16px; border-radius:8px; cursor:pointer;}
+
+  h1{font-family:'Fraunces',serif; font-size:19px; font-weight:600; line-height:1.05;}
+  .kick{font-size:9px; letter-spacing:1.3px; font-weight:700; color:var(--navy); opacity:.7;}
+  .head{display:flex; align-items:flex-end; justify-content:space-between; border-bottom:2px solid var(--navy); padding-bottom:7px; margin-bottom:9px;}
+  .head .meta{font-size:8.5px; color:var(--faint); text-align:right; line-height:1.4; max-width:300px;}
+
+  .sec-t{font-size:9px; letter-spacing:.8px; font-weight:700; text-transform:uppercase; margin-bottom:5px;}
+
+  /* decision spine */
+  .spine{display:grid; grid-template-columns:118px 150px 1fr; gap:8px; margin-bottom:9px; align-items:stretch;}
+  .gate{background:var(--navy); color:#fff; border-radius:8px; padding:8px 9px; display:flex; flex-direction:column; justify-content:center;}
+  .gate b{font-size:11px; display:block; margin-bottom:3px;}
+  .gate span{font-size:8.7px; opacity:.9; line-height:1.35;}
+  .branches{display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:7px;}
+  .br{border:1px solid var(--line); border-top:3px solid var(--c); border-radius:7px; padding:6px 7px; background:#fff;}
+  .br h4{font-size:10.5px; color:var(--c); margin-bottom:2px;}
+  .br .w{font-size:8.4px; color:var(--sub); line-height:1.32; margin-bottom:4px;}
+  .br .a{font-size:8.6px; color:var(--ink); font-weight:600; line-height:1.32; background:var(--ca); border-radius:5px; padding:4px 5px;}
+
+  /* mid grid */
+  .mid{display:grid; grid-template-columns:300px 1fr; gap:9px; margin-bottom:9px;}
+  .col{display:grid; gap:9px; align-content:start;}
+  .box{border:1px solid var(--line); border-radius:8px; padding:8px 9px; background:#fff;}
+  .box.tint{background:linear-gradient(180deg,rgba(47,125,131,.05),rgba(47,125,131,0));}
+
+  /* fix-first chips */
+  .fix{display:flex; flex-wrap:wrap; gap:5px;}
+  .chip{font-size:8.6px; font-weight:600; color:var(--teal); background:rgba(47,125,131,.1); border:1px solid rgba(47,125,131,.28); border-radius:6px; padding:3px 7px;}
+
+  /* product table */
+  table{width:100%; border-collapse:collapse;}
+  th,td{text-align:left; padding:3px 4px; font-size:8.6px; line-height:1.25; border-bottom:1px solid var(--bg); vertical-align:top;}
+  th{font-size:8px; letter-spacing:.4px; text-transform:uppercase; color:var(--faint); font-weight:700;}
+  td.p{font-weight:700; color:var(--ink); white-space:nowrap;}
+  td.teg{color:var(--teal); font-style:italic;}
+  .dot{display:inline-block; width:7px; height:7px; border-radius:7px; margin-right:4px; vertical-align:middle;}
+
+  /* give map */
+  .give-wrap{display:grid; grid-template-columns:1fr 1fr; gap:9px;}
+  .pblock{border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .pblock .ph{display:flex; align-items:center; gap:6px; padding:5px 8px; background:var(--ph); border-bottom:1px solid var(--line);}
+  .pblock .ph .num{width:17px; height:17px; border-radius:5px; background:var(--pc); color:#fff; font-family:'Fraunces',serif; font-weight:600; font-size:11px; display:flex; align-items:center; justify-content:center;}
+  .pblock .ph b{font-size:10.5px; color:var(--ink);}
+  .pblock .ph span{font-size:8px; color:var(--pc); font-weight:600;}
+  .pbody{padding:6px 8px;}
+  .row{display:flex; align-items:center; flex-wrap:wrap; gap:4px; padding:3px 0; border-bottom:1px dashed var(--bg); font-size:8.7px;}
+  .row:last-child{border-bottom:none;}
+  .cond{color:var(--k); font-weight:600; background:rgba(63,143,78,.1); border:1px solid rgba(63,143,78,.3); border-radius:5px; padding:2px 5px; white-space:nowrap;}
+  .arrow{color:var(--faint); font-weight:700;}
+  .give{color:#fff; background:var(--pc); font-weight:700; border-radius:5px; padding:2px 7px;}
+  .note{font-size:7.9px; color:var(--sub); line-height:1.35; padding:5px 6px; background:var(--pn); border-radius:5px; margin-top:5px;}
+
+  /* escalate strip */
+  .esc{display:grid; grid-template-columns:1.5fr 1fr 1.2fr; gap:8px; margin-bottom:8px;}
+  .esc .e{border:1px solid var(--line); border-left:3px solid var(--c); border-radius:7px; padding:6px 8px;}
+  .esc h4{font-size:9.5px; color:var(--c); margin-bottom:3px;}
+  .esc ul{margin:0; padding-left:13px;}
+  .esc li{font-size:8.5px; color:var(--sub); line-height:1.4;}
+
+  .foot{font-size:7.6px; color:var(--faint); line-height:1.4; border-top:1px solid var(--line); padding-top:6px;}
+
+  @media print{
+    body{background:#fff; padding:0;}
+    .bar{display:none;}
+    .page{width:auto; box-shadow:none; border-radius:0; padding:6mm 7mm;}
+    @page{size:letter landscape; margin:6mm;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <span class="t">One-page bedside algorithm — landscape. Use the button to print or save as PDF for the binder.</span>
+  <button class="btn" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div>
+      <div class="kick">THHBD · CVICU BEDSIDE SERIES</div>
+      <h1>Post-Op Bleeding — Quick Algorithm</h1>
+    </div>
+    <div class="meta">
+      Educational quick reference — not a substitute for institutional policy, blood bank protocol, or surgeon/APP judgment.
+      Thresholds are institution-dependent; defer to your printed protocol & cardiac anesthesia.
+    </div>
+  </div>
+
+  <!-- DECISION SPINE -->
+  <div class="spine">
+    <div class="gate">
+      <b>1 · Risk?</b>
+      <span>Long CPB &gt;150m · redo · root/arch/DHCA · antiplatelets/AC · plt&lt;50k · ↓fibrinogen · renal/liver</span>
+    </div>
+    <div class="gate" style="background:#26506e;">
+      <b>2 · Bleeding?</b>
+      <span>Normal trends DOWN: ~2→1→&lt;0.5 mL/kg/hr by 12h. Investigate sustained &gt;100 mL/hr.</span>
+    </div>
+    <div class="branches">
+      <div class="br" style="--c:var(--surg); --ca:rgba(179,38,30,.08);">
+        <h4>Surgical bleed</h4>
+        <div class="w">Bright red, won't slow; clots then sudden stop; HTN/shiver/agitation; normal coags & TEG.</div>
+        <div class="a">→ Call surgeon early · resuscitate · prep re-exploration</div>
+      </div>
+      <div class="br" style="--c:var(--coag); --ca:rgba(160,109,18,.08);">
+        <h4>Coagulopathy</h4>
+        <div class="w">Diffuse ooze, drainage absent of clot; ↑PT/PTT, ↓fibrinogen/plt; hypothermia, CPB&gt;150m.</div>
+        <div class="a">→ Fix basics · targeted products (give map) · recheck</div>
+      </div>
+      <div class="br" style="--c:var(--mix); --ca:rgba(91,74,158,.08);">
+        <h4>Mixed</h4>
+        <div class="w">High output AND ooze; partial response then re-bleeds.</div>
+        <div class="a">→ Correct coagulopathy + keep surgical suspicion high</div>
+      </div>
+      <div class="br" style="--c:var(--tamp); --ca:rgba(138,18,18,.1);">
+        <h4>Retained / Tamponade ⚠</h4>
+        <div class="w">Sudden drop/STOP in output + ↓BP, ↑CVP, narrow pulse pressure, ↑pressors.</div>
+        <div class="a">→ Call NOW · urgent echo · emergent OR / drainage</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MID: left (fix-first + products) / right (give map) -->
+  <div class="mid">
+    <div class="col">
+      <div class="box tint">
+        <div class="sec-t" style="color:var(--teal);">Fix the basics first</div>
+        <div class="fix">
+          <span class="chip">Warm → normothermia</span>
+          <span class="chip">Correct iCa (Factor IV)</span>
+          <span class="chip">Treat HTN / pain / shiver</span>
+          <span class="chip">Confirm tube patency</span>
+          <span class="chip">Protamine : heparin &lt;1.0</span>
+        </div>
+      </div>
+
+      <div class="box">
+        <div class="sec-t" style="color:var(--navy);">Product story — match product to defect</div>
+        <table>
+          <thead><tr><th>Product</th><th>Fixes</th><th>TEG cue</th></tr></thead>
+          <tbody>
+            <tr><td class="p"><span class="dot" style="background:var(--r)"></span>Protamine</td><td>Residual heparin</td><td class="teg">long R, corrects on heparinase</td></tr>
+            <tr><td class="p"><span class="dot" style="background:var(--k)"></span>Cryo / fibrinogen</td><td>Scaffold (fibrinogen)</td><td class="teg">narrow angle, K&gt;3</td></tr>
+            <tr><td class="p"><span class="dot" style="background:var(--plt)"></span>Platelets (SDP)</td><td>Strength (~80% of clot)</td><td class="teg">low MA</td></tr>
+            <tr><td class="p"><span class="dot" style="background:var(--mix)"></span>FFP / PCC</td><td>Clotting factors</td><td class="teg">long R (heparin excluded)</td></tr>
+            <tr><td class="p"><span class="dot" style="background:#7a3b13"></span>PRBC</td><td>O₂ carrying — not hemostasis</td><td class="teg">—</td></tr>
+            <tr><td class="p"><span class="dot" style="background:var(--ly)"></span>Antifibrinolytic</td><td>Protect clot from lysis</td><td class="teg">high LY30</td></tr>
+            <tr><td class="p"><span class="dot" style="background:var(--teal)"></span>DDAVP</td><td>Adhesion / vWF</td><td class="teg">MA 45–55, PLT&gt;100</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="box" style="background:rgba(160,109,18,.05); border-color:rgba(160,109,18,.3);">
+        <div class="sec-t" style="color:var(--coag);">Guideline notes (2021 STS · 2024 EACTS)</div>
+        <div style="font-size:8.3px; color:var(--sub); line-height:1.45;">
+          VET-guided algorithm is recommended. <b>PCC preferred over FFP</b> for coagulopathic bleeding. Fibrinogen if &lt;150 mg/dL with bleeding (some target ≥200).
+          <b>Antifibrinolytics</b> also prophylactic. No prophylactic FFP/DDAVP/rFVIIa. <b>rFVIIa = rescue only.</b>
+        </div>
+      </div>
+    </div>
+
+    <!-- GIVE MAP -->
+    <div class="box" style="padding:9px 10px;">
+      <div class="sec-t" style="color:var(--navy);">TEG-guided give map — what to expect to give &nbsp;<span style="color:var(--faint); font-weight:600; text-transform:none; letter-spacing:0;">(CK algorithm · defer to unit protocol)</span></div>
+      <div class="give-wrap">
+
+        <!-- col 1: R + LY30 + tail -->
+        <div style="display:grid; gap:9px; align-content:start;">
+          <div class="pblock" style="--pc:var(--r); --ph:rgba(37,99,168,.08); --pn:rgba(37,99,168,.07);">
+            <div class="ph"><span class="num">1</span><b>R — does it START?</b></div>
+            <div class="pbody">
+              <div class="row"><span class="cond">R 9–12</span><span class="cond">Δ&lt;1.2</span><span class="arrow">→</span><span class="give">observe</span></div>
+              <div class="row"><span class="cond">R 9–12</span><span class="cond">Δ&gt;1.2</span><span class="arrow">→</span><span class="give">1 FFP</span></div>
+              <div class="row"><span class="cond">R 12–14</span><span class="cond">Δ&lt;1.2</span><span class="arrow">→</span><span class="give">Protamine 50mg → 2 FFP</span></div>
+              <div class="row"><span class="cond">R 12–14</span><span class="cond">Δ&gt;1.2</span><span class="arrow">→</span><span class="give">2 FFP</span></div>
+              <div class="row"><span class="cond">R &gt;14</span><span class="cond">Δ&lt;1.2</span><span class="arrow">→</span><span class="give">Protamine 50mg → 2 FFP</span></div>
+              <div class="row"><span class="cond">R &gt;14</span><span class="cond">Δ&gt;1.2</span><span class="arrow">→</span><span class="give">2 FFP</span></div>
+              <div class="note">Normal R 4–9. Δ = kaolin vs heparinase (CK vs CKH). Heparinase R normal → heparin → protamine; still long → factors → FFP.</div>
+            </div>
+          </div>
+
+          <div class="pblock" style="--pc:var(--ly); --ph:rgba(196,122,23,.08); --pn:rgba(196,122,23,.07);">
+            <div class="ph"><span class="num">3</span><b>LY30 / EPL — does it HOLD?</b></div>
+            <div class="pbody">
+              <div class="row"><span class="cond">≥7.5%</span><span class="cond">MA 55–74</span><span class="arrow">→</span><span class="give">Amicar 5g + 1g/hr</span></div>
+              <div class="row"><span class="cond">≥7.5%</span><span class="cond">MA &gt;74</span><span class="arrow">→</span><span class="give">2° fibrinolysis/DIC: heparin protocol</span></div>
+              <div class="note">LY30 0–8%, EPL 0–15% normal. Primary → antifibrinolytic; secondary/DIC → treat the driver, components alone feed consumption.</div>
+            </div>
+          </div>
+
+          <div class="pblock" style="--pc:var(--surg); --ph:rgba(179,38,30,.08); --pn:rgba(179,38,30,.07);">
+            <div class="ph"><span class="num" style="background:var(--surg)">!</span><b>Unresponsive</b></div>
+            <div class="pbody">
+              <div class="row"><span class="give" style="background:var(--surg)">Repeat TEG</span><span class="arrow">→</span><span class="give" style="background:var(--surg)">rFVIIa (rescue)</span><span class="arrow">→</span><span class="give" style="background:var(--surg)">Surgically explore</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- col 2: MA -->
+        <div class="pblock" style="--pc:var(--plt); --ph:rgba(124,84,184,.08); --pn:rgba(124,84,184,.07); align-self:start;">
+          <div class="ph"><span class="num">2</span><b>MA — does it get STRONG?</b><span>&nbsp;Normal 55–74</span></div>
+          <div class="pbody">
+            <div class="row"><span class="cond">MA&lt;45</span><span class="cond">PLT&lt;100</span><span class="cond">FBG&lt;150 / K&gt;3</span><span class="arrow">→</span><span class="give">2 Cryo + 2 SDP</span></div>
+            <div class="row"><span class="cond">MA&lt;45</span><span class="cond">PLT&lt;100</span><span class="cond">FBG&gt;150</span><span class="arrow">→</span><span class="give">2 SDP</span></div>
+            <div class="row"><span class="cond">MA&lt;45</span><span class="cond">PLT&gt;100</span><span class="cond">FBG&lt;150</span><span class="arrow">→</span><span class="give">1 Cryo</span></div>
+            <div class="row"><span class="cond">MA 45–55</span><span class="cond">PLT&lt;100</span><span class="cond">FBG&lt;150</span><span class="arrow">→</span><span class="give">1 Cryo + 1 SDP</span></div>
+            <div class="row"><span class="cond">MA 45–55</span><span class="cond">PLT&lt;100</span><span class="cond">FBG&gt;150</span><span class="arrow">→</span><span class="give">1 SDP</span></div>
+            <div class="row"><span class="cond">MA 45–55</span><span class="cond">PLT&gt;100</span><span class="cond">FBG&gt;150 / K&lt;3</span><span class="arrow">→</span><span class="give">DDAVP 0.3 µg/kg</span></div>
+            <div class="row"><span class="cond">MA 45–55</span><span class="cond">PLT&gt;100</span><span class="cond">FBG&lt;150 / K&gt;3</span><span class="arrow">→</span><span class="give">1 Cryo</span></div>
+            <div class="note">SDP = apheresis platelets. Mapping: Net MA = MA × (% inhibited); &gt;50% inhibited → consider +1 SDP. Continued bleeding + K&gt;3 → add 1 Cryo.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCALATION STRIP -->
+  <div class="esc">
+    <div class="e" style="--c:var(--surg);">
+      <h4>Call surgeon / APP NOW</h4>
+      <ul>
+        <li>Won't slow despite warmth, iCa, products · bright red / clots in tubing</li>
+        <li>Sudden drop/stop in output + hemodynamic decline · ↑CVP + ↓BP + ↑pressors</li>
+      </ul>
+    </div>
+    <div class="e" style="--c:var(--coag);">
+      <h4>Post-op ICU bleeding =</h4>
+      <ul>
+        <li>&gt;200 mL/hr × 2 consecutive hr</li>
+        <li>OR Hgb drop ≥ 2 g/dL per hour</li>
+      </ul>
+    </div>
+    <div class="e" style="--c:var(--navy);">
+      <h4>Return-to-OR territory (surgeon call)</h4>
+      <ul>
+        <li>&gt;400 mL/hr · &gt;300 mL/hr × 2–3 hr · &gt;200 mL/hr × 4 hr</li>
+        <li>Hand off: output trend + character · vitals/pressors · CVP · Hgb/plt/fibrinogen/INR-PTT/iCa · temp · TEG</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="foot">
+    TEG storytelling adapted from J. Cruz, "TEG is Easy." Threshold language: Chikwe, <i>Cardiothoracic Surgery</i> (Oxford); White, <i>Fast Facts for Cardiac Surgery</i>.
+    Give-map mirrors the CK algorithm, annotated vs Tibi et al., STS/SCA/AmSECT/SABM PBM Update (Ann Thorac Surg 2021;112:981–1004) and 2024 EACTS/EACTAIC PBM Guidelines (Eur J Cardiothorac Surg 2025;67:ezae352).
+    Educational support only — defer to institutional policy, blood bank protocol, and surgeon/APP judgment.
+  </div>
+
+</div>
+</body>
+</html>
