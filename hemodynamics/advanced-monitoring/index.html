@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eef7f5">
+  <title>Advanced Hemodynamic Monitoring · Bedside Teaching Series</title>
+  <style>
+    :root{--navy:#15334a;--teal:#0b7b73;--teal2:#dff3ef;--blue:#2c69a0;--blue2:#eaf3fb;--amber:#a96800;--amber2:#fff3d8;--red:#a33b3b;--red2:#fff0ef;--ink:#17242d;--muted:#596a74;--line:#cedde1;--paper:#f8fbfb;--white:#fff;--shadow:0 10px 28px rgba(31,62,74,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#eef7f5 0,#f8fbfb 270px);color:var(--ink);font:15px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:1180px;margin:auto;padding:0 20px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:800;color:var(--teal)}
+    header{padding:34px 0 22px}.crumbs{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:22px}.back{color:var(--navy);text-decoration:none;font-weight:700}.status{padding:5px 10px;border:1px solid #9ccbc5;border-radius:999px;background:#f6fffd;color:var(--teal);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}h1{font-size:clamp(2rem,5vw,3.55rem);line-height:1.02;letter-spacing:-.04em;margin:.35rem 0 .8rem;max-width:950px;color:var(--navy)}.lead{max-width:870px;font-size:1.08rem;color:var(--muted)}
+    .safety{display:grid;grid-template-columns:auto 1fr;gap:12px;background:var(--amber2);border:1px solid #e6c67d;border-left:5px solid var(--amber);padding:14px 16px;border-radius:12px;margin-top:20px}.safety strong{color:#734800}.safety p{margin:0}
+    .tabs{position:sticky;top:0;z-index:20;background:rgba(248,251,251,.96);backdrop-filter:blur(8px);border-block:1px solid var(--line)}.tabrow{display:flex;gap:7px;overflow:auto;padding:10px 0;scrollbar-width:thin}.tab{white-space:nowrap;border:1px solid var(--line);background:var(--white);color:var(--navy);padding:9px 13px;border-radius:9px;font-weight:750;cursor:pointer}.tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+    main{padding:24px 0 56px}.panel{display:none}.panel.active{display:block}.hero-grid,.grid2,.grid3{display:grid;gap:14px}.hero-grid{grid-template-columns:1.35fr .65fr}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}.card h2,.card h3,.card h4{color:var(--navy);margin-top:0}.card h2{font-size:1.45rem}.card h3{font-size:1.08rem}.card p:last-child,.card ul:last-child{margin-bottom:0}.muted{color:var(--muted)}
+    .cascade{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:8px;align-items:stretch;margin:16px 0}.stage{position:relative;border:1px solid var(--line);border-top:5px solid var(--teal);background:#fff;border-radius:11px;padding:13px 12px;min-height:145px}.stage:not(:last-child):after{content:"→";position:absolute;right:-15px;top:48%;z-index:2;color:var(--teal);font-weight:900;background:var(--paper);padding:0 2px}.stage small{display:block;color:var(--muted);margin-top:7px}.stage b{color:var(--navy)}.stage:nth-child(2){border-top-color:#3987b7}.stage:nth-child(3){border-top-color:#8f65a8}.stage:nth-child(4){border-top-color:#b57925}.stage:nth-child(5){border-top-color:#ba5656}.stage:nth-child(6){border-top-color:#526371}
+    .gate{border-left:5px solid var(--teal)}.check{list-style:none;padding:0}.check li{position:relative;padding:7px 0 7px 29px;border-bottom:1px dashed #dbe6e8}.check li:last-child{border:0}.check li:before{content:"✓";position:absolute;left:0;color:var(--teal);font-weight:900}.mantra{background:var(--navy);color:#eef8f7;border-radius:13px;padding:18px;text-align:center;font-size:1.05rem;font-weight:800;letter-spacing:.01em}.mantra span{color:#83ddd2}
+    .feature{border-top:6px solid var(--teal)}.feature.hpi{border-top-color:#b64040}.feature.frt{border-top-color:#7a58a0}.feature.afm{border-top-color:#0b7b73}.feature.gdt{border-top-color:#2c69a0}.feature.calc{border-top-color:#9a6508}.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:var(--teal2);color:var(--teal);font-size:.72rem;font-weight:850;text-transform:uppercase;letter-spacing:.07em}.steps{counter-reset:s;list-style:none;padding:0}.steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:9px;margin:10px 0}.steps li:before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800}.when{background:var(--blue2);border:1px solid #bfd5e8;padding:11px 12px;border-radius:9px}.avoid{background:var(--red2);border:1px solid #e7b7b3;padding:11px 12px;border-radius:9px}.tip{background:var(--teal2);border:1px solid #a9d9d3;padding:11px 12px;border-radius:9px}
+    .scenario{border-left:5px solid var(--blue)}.scenario h3{display:flex;justify-content:space-between;gap:8px}.toolchips{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.chip{font-size:.74rem;font-weight:800;padding:4px 8px;border-radius:999px;background:#edf2f4;color:#344b59;border:1px solid #d2dfe3}.signal{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}.signal b{color:var(--navy)}
+    table{width:100%;border-collapse:collapse;background:#fff;font-size:.91rem}th,td{padding:11px 10px;border:1px solid var(--line);vertical-align:top;text-align:left}th{background:#eaf4f3;color:var(--navy)}.table-wrap{overflow:auto;border-radius:12px;box-shadow:var(--shadow)}
+    .ref{padding:14px 0;border-bottom:1px solid var(--line)}.ref a{color:var(--blue);font-weight:750}.ref small{display:block;color:var(--muted)}details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:9px 0}summary{font-weight:800;color:var(--navy);cursor:pointer}.kbd{font-family:ui-monospace,monospace;background:#eef2f3;border:1px solid #cbd8dc;border-bottom-width:2px;border-radius:5px;padding:2px 6px}.callout{border-left:4px solid var(--red);padding:11px 14px;background:var(--red2);border-radius:8px}.footer{padding:22px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem}
+    @media(max-width:900px){.hero-grid,.grid2,.grid3{grid-template-columns:1fr}.cascade{grid-template-columns:repeat(2,1fr)}.stage:nth-child(2n):after{display:none}}@media(max-width:540px){.wrap{padding-inline:14px}.cascade{grid-template-columns:1fr}.stage{min-height:0}.stage:after{display:none}.signal{grid-template-columns:1fr;gap:2px}h1{font-size:2.25rem}}
+    @media print{.tabs,.crumbs,.status{display:none}.panel{display:block!important;break-before:page}.card{box-shadow:none;break-inside:avoid}.wrap{max-width:none}.cascade{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="crumbs"><a class="back" href="../../hemodynamics/">← CVICU Hemodynamics</a><span class="status">Pilot teaching module</span></div>
+    <div class="eyebrow">THHBD · Bedside Teaching Series · Technology-to-Physiology</div>
+    <h1>Advanced Hemodynamic Monitoring: From Signal to Bedside Action</h1>
+    <p class="lead">A practical guide to using HemoSphere Alta advanced features to recognize risk, identify the dominant mechanism, test a hypothesis, track a therapeutic target, and document the physiologic response.</p>
+    <div class="safety"><strong>Scope</strong><p>Education and pilot evaluation only. This guide does not replace the current manufacturer instructions for use, institutional policy, provider orders, waveform review, clinical examination, echocardiography, or invasive confirmation when indicated.</p></div>
+  </header>
+
+  <nav class="tabs" aria-label="Module sections"><div class="wrap tabrow">
+    <button class="tab" aria-selected="true" data-tab="start">Start here</button>
+    <button class="tab" aria-selected="false" data-tab="features">Feature workflows</button>
+    <button class="tab" aria-selected="false" data-tab="scenarios">Clinical scenarios</button>
+    <button class="tab" aria-selected="false" data-tab="crosswalk">Series crosswalk</button>
+    <button class="tab" aria-selected="false" data-tab="pitfalls">Validity & pitfalls</button>
+    <button class="tab" aria-selected="false" data-tab="refs">References</button>
+  </div></nav>
+
+  <main class="wrap">
+    <section class="panel active" id="start">
+      <div class="hero-grid">
+        <article class="card">
+          <div class="eyebrow">The bedside sequence</div><h2>Use the monitor to answer one question at a time</h2>
+          <div class="cascade">
+            <div class="stage"><b>1 · Validate</b><small>Is the signal and clinical setting trustworthy?</small></div>
+            <div class="stage"><b>2 · Detect</b><small>HPI: is hypotension risk rising?</small></div>
+            <div class="stage"><b>3 · Diagnose</b><small>Preload, contractility, or afterload pattern?</small></div>
+            <div class="stage"><b>4 · Test</b><small>FRT: does SV/CO rise with a reversible challenge?</small></div>
+            <div class="stage"><b>5 · Treat & track</b><small>AFM for fluid learning; GDT for time in target.</small></div>
+            <div class="stage"><b>6 · Quantify</b><small>Derived values: delivery, power, work, resistance.</small></div>
+          </div>
+          <div class="mantra"><span>Alarm ≠ diagnosis.</span> Responsiveness ≠ indication. A target ≠ a treatment.</div>
+        </article>
+        <aside class="card gate">
+          <div class="eyebrow">Gate zero</div><h2>Before trusting an algorithm</h2>
+          <ul class="check">
+            <li>Confirm the arterial waveform, pressure bag, leveling, zero, and sensor connection.</li>
+            <li>Confirm rhythm, ventilation, position, and the technology supplying each value.</li>
+            <li>Pause interpretation during flush/ABG draw, repositioning, surgical manipulation, or acute line artifact.</li>
+            <li>Record recent fluid, bleeding, ventilation, vasopressor, inotrope, and vasodilator changes.</li>
+            <li>Prefer a coherent trend across MAP, SVI/CI, SVV/PPV, SVR, oxygen delivery, exam, and echo—not one tile.</li>
+          </ul>
+        </aside>
+      </div>
+      <div class="grid3" style="margin-top:14px">
+        <article class="card"><span class="badge">Preload</span><h3>Is there recruitable stroke volume?</h3><p>Use a reversible test when possible. Static filling pressure alone is not proof that fluid will help.</p></article>
+        <article class="card"><span class="badge">Contractility</span><h3>Is flow low despite an adequate tank?</h3><p>Trend SVI/CI and dP/dt in context. Confirm unexpected or high-risk patterns with echo and/or PAC data.</p></article>
+        <article class="card"><span class="badge">Afterload</span><h3>Is the ventricle pushing against the wrong load?</h3><p>Pair MAP with SVR/SVRI and SVI/CI. A normal pressure can hide low flow behind excessive resistance.</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="features">
+      <div class="grid2">
+        <article class="card feature hpi"><span class="badge">Detect + diagnose</span><h2>Hypotension Predictive Index (HPI)</h2>
+          <div class="when"><b>Best moment:</b> continuous supported monitoring when early recognition could create time to reassess physiology before MAP falls.</div>
+          <ol class="steps"><li>Confirm a valid supported sensor and arterial waveform.</li><li>Open <span class="kbd">Side Panel → Hypotension Predictive Index</span>.</li><li>When HPI rises, verify the trend and current MAP; do not treat the score alone.</li><li>Open the secondary relationship screen and review preload, contractility, and afterload together.</li><li>Check recent events: vasodilation, fluid loss, position, ventilation, pacing/rhythm, inotrope or pressor changes.</li><li>Form a mechanism-first plan and reassess the response.</li></ol>
+          <p class="tip"><b>Manufacturer behavior:</b> HPI is displayed 0–100 and updates every 20 seconds; the manual describes a high alert above 85 after two consecutive readings. A low HPI does not exclude later hypotension.</p>
+          <p class="avoid"><b>Do not:</b> convert HPI ≥85 into an automatic fluid bolus or pressor order. Evidence is strongest in monitored perioperative populations; ICU/post-cardiotomy use still requires clinical validation.</p>
+        </article>
+
+        <article class="card feature frt"><span class="badge">Test</span><h2>Fluid Responsiveness Test (FRT)</h2>
+          <div class="when"><b>Best moment:</b> when a fluid decision is uncertain and a reversible preload challenge is safe.</div>
+          <ol class="steps"><li>Open <span class="kbd">Side Panel → Fluid Responsiveness Test</span>.</li><li>Select <b>Passive Leg Raise</b> or <b>Fluid Bolus</b>, the connected technology, and SV/SVI/CO/CI.</li><li>Choose the test duration supported by the technology.</li><li>Obtain the required stable baseline with the patient still.</li><li>Perform the challenge exactly as selected; for PLR, move from semi-recumbent to supine with legs at 45° promptly.</li><li>Interpret the change in flow with BP, congestion risk, and the clinical reason for giving—or withholding—fluid.</li></ol>
+          <p class="tip"><b>Key distinction:</b> a positive test means flow is preload-responsive; it does not prove that fluid is necessary, safe, or the best treatment.</p>
+          <p class="avoid"><b>Pause or qualify:</b> rapidly changing pressors, unstable rhythm, active manipulation, severe RV failure, altered intrathoracic pressure, or an unreliable flow signal.</p>
+        </article>
+
+        <article class="card feature afm"><span class="badge">Treat + learn</span><h2>Assisted Fluid Management (AFM)</h2>
+          <div class="when"><b>Best moment:</b> a supported radial arterial waveform case with valid dynamic conditions, a defined fluid strategy, and a need to learn from serial bolus responses.</div>
+          <ol class="steps"><li>Zero the Acumen IQ sensor and verify waveform quality.</li><li>Open <span class="kbd">Side Panel → Assisted Fluid Management</span>.</li><li>Select the correct surgery mode and fluid strategy (10%, 15%, or 20%).</li><li>Enter the Maximum Case Volume as a guide, then initialize.</li><li>Review each suggestion; accept or decline based on the full clinical picture.</li><li>If accepted, start User Bolus, give the intended bolus, stop it promptly, and enter the actual volume/time.</li><li>Review the analyzed change in SV/SVV before the next decision.</li></ol>
+          <p class="tip"><b>Strategy meaning:</b> 10% is more liberal and 20% more restrictive; the percentage is the expected SV change normalized to 500 mL, not a mandatory 500 mL bolus.</p>
+          <p class="avoid"><b>Known confounders:</b> inaccurate flow, acute vasoactive change, repositioning, ventilator change, surgery/manipulation, arterial-line interference, concurrent unrecorded fluid, or bleeding at/above the infusion rate.</p>
+        </article>
+
+        <article class="card feature gdt"><span class="badge">Track</span><h2>Goal Directed Therapy (GDT)</h2>
+          <div class="when"><b>Best moment:</b> after the team has selected patient-specific endpoints and wants to measure whether therapy keeps them in range over time.</div>
+          <ol class="steps"><li>Choose the key parameters on the trend screen.</li><li>Open <span class="kbd">Side Panel → Goal Directed Therapy</span>.</li><li>Edit individualized target ranges; avoid copy-pasting generic targets into every lesion or shock state.</li><li>Select the parameters and press Play.</li><li>Use Time-in-Target and the trend shape—not a single green value—to judge stability.</li><li>Annotate interventions and review prior sessions under Events & Intervention.</li></ol>
+          <p class="tip"><b>Useful combinations:</b> MAP + SVI/CI; SVI + SVRI; CI + DO₂I; or lesion-specific endpoints during a defined phase of care.</p>
+          <p class="avoid"><b>Do not:</b> optimize a number while tissue perfusion, congestion, ischemia, rhythm, or the operative problem is worsening.</p>
+        </article>
+
+        <article class="card feature calc"><span class="badge">Quantify + document</span><h2>Derived Value Calculator</h2>
+          <div class="when"><b>Best moment:</b> when the team needs a calculated snapshot to answer a specific question or compare serial phases.</div>
+          <ol class="steps"><li>Open <span class="kbd">Side Panel → Derived Value Calculator</span>.</li><li>Select the desired variable and enter the required source values carefully.</li><li>Confirm units, body-surface indexing, sample timing, and source reliability.</li><li>Interpret the result with its components; do not let a calculated number conceal a bad input.</li><li>Use Log Values to preserve the snapshot under Events & Intervention.</li></ol>
+          <p class="tip"><b>High-value calculations:</b> CPO/CPI, DO₂/DO₂I, VO₂/VO₂I, SVR/SVRI, PVR/PVRI, LVSWI, RVSWI, and indexed stroke volume.</p>
+          <p class="avoid"><b>Remember:</b> the calculator is not a continuous trend unless values are logged serially. Calculated precision cannot exceed input precision.</p>
+        </article>
+
+        <article class="card"><h2>Events & Intervention log</h2><p>This is the connective tissue between the features. Mark fluid, pressor, inotrope, vasodilator, rhythm/pacing, ventilation, position, procedure, and bleeding events so the trend has a clinical story.</p><div class="mantra">A value without <span>time + intervention + response</span> is only a number.</div></article>
+      </div>
+    </section>
+
+    <section class="panel" id="scenarios">
+      <div class="grid2">
+        <article class="card scenario"><h3>Post-CPB vasoplegia <span>low SVR ± preserved flow</span></h3><div class="toolchips"><span class="chip">HPI relationship view</span><span class="chip">GDT</span><span class="chip">SVRI</span><span class="chip">CPO/DO₂I</span></div><div class="signal"><b>Look for</b><span>Falling MAP/SVR with preserved or hyperdynamic SVI/CI; confirm temperature, bleeding, sedation/vasodilation, and pump-related factors.</span></div><div class="signal"><b>Use technology</b><span>HPI for early signal; relationship view for mechanism; GDT to track MAP with flow rather than pressure alone.</span></div><div class="signal"><b>Guardrail</b><span>AFM may suggest fluid independent of MAP. Do not treat vasoplegia as automatic volume depletion.</span></div></article>
+        <article class="card scenario"><h3>Stunned LV / low-output state <span>low SVI/CI</span></h3><div class="toolchips"><span class="chip">HPI</span><span class="chip">FRT</span><span class="chip">GDT</span><span class="chip">CPI/LVSWI</span></div><div class="signal"><b>Look for</b><span>Low SVI/CI, poor oxygen delivery, rising filling pressures or congestion, and an inadequate response despite rhythm/preload optimization.</span></div><div class="signal"><b>Use technology</b><span>FRT if fluid is genuinely uncertain; GDT for SVI/CI and perfusion endpoint; calculator for power/delivery/work.</span></div><div class="signal"><b>Guardrail</b><span>Persistent low output, ischemia, tamponade, graft/valve problem, or deterioration requires echo and escalation—not more algorithm steps.</span></div></article>
+        <article class="card scenario"><h3>Afterload excess / hypertensive low output <span>high SVR, low flow</span></h3><div class="toolchips"><span class="chip">Relationship view</span><span class="chip">GDT MAP + SVI</span><span class="chip">SVRI</span><span class="chip">CPO/DO₂I</span></div><div class="signal"><b>Look for</b><span>Acceptable/high MAP with low SVI/CI, high SVR/SVRI, rising filling pressure, cool patient, or worsening delivery.</span></div><div class="signal"><b>Use technology</b><span>Track whether afterload reduction raises SVI/CI while maintaining coronary/organ perfusion; log vasodilator titration events.</span></div><div class="signal"><b>Guardrail</b><span>Do not stop inotropic support solely because BP is high; first verify that flow is adequate. Exclude pain, agitation, shivering, hypercarbia, and mechanical obstruction.</span></div></article>
+        <article class="card scenario"><h3>Acute RV failure / pulmonary hypertension <span>right-sided limitation</span></h3><div class="toolchips"><span class="chip">PVR/PVRI</span><span class="chip">RVSWI</span><span class="chip">GDT</span><span class="chip">PAC + echo</span></div><div class="signal"><b>Look for</b><span>Rising CVP, falling SVI/CI, RV dilation/dysfunction, elevated PVR, septal shift, hypoxemia/acidosis, and ventricular interdependence.</span></div><div class="signal"><b>Use technology</b><span>Use calculated PVR/RVSWI and serial flow trends as adjuncts; individualize goals around RV perfusion and afterload.</span></div><div class="signal"><b>Guardrail</b><span>SVV/PPV and AFM can be misleading when RV ejection—not volume—is the limiting step. Confirm with echo/PAC.</span></div></article>
+        <article class="card scenario"><h3>Suspected hypovolemia or occult bleeding <span>preload loss</span></h3><div class="toolchips"><span class="chip">HPI</span><span class="chip">FRT</span><span class="chip">Events log</span><span class="chip">GDT</span></div><div class="signal"><b>Look for</b><span>Falling SVI/CI/MAP, increasing dynamic variation in valid conditions, drainage/output trend, hemoglobin/coagulation context, and exam.</span></div><div class="signal"><b>Use technology</b><span>FRT can test recruitable flow if the patient is stable enough; mark bleeding and transfusion events for response review.</span></div><div class="signal"><b>Guardrail</b><span>AFM is confounded by acute hemorrhage and must never delay recognition, blood-component strategy, surgical source control, or massive transfusion workflow.</span></div></article>
+        <article class="card scenario"><h3>Extubation / spontaneous breathing transition <span>work rises</span></h3><div class="toolchips"><span class="chip">Trend view</span><span class="chip">GDT</span><span class="chip">HPI*</span><span class="chip">DO₂I</span></div><div class="signal"><b>Look for</b><span>Change in HR, SVI/CI, MAP, oxygen saturation, venous saturation, work of breathing, and ischemic signs as support is reduced.</span></div><div class="signal"><b>Use technology</b><span>Trend the transition and annotate SBT/extubation; use individualized flow/delivery goals in high-risk patients.</span></div><div class="signal"><b>Guardrail</b><span>SVV/PPV-based fluid logic generally loses validity during spontaneous breathing. Do not carry a ventilated-patient AFM interpretation across extubation.</span></div></article>
+        <article class="card scenario"><h3>Dynamic LVOTO / SAM <span>the wrong “low output” treatment harms</span></h3><div class="toolchips"><span class="chip">FRT cautiously</span><span class="chip">Trend view</span><span class="chip">Echo essential</span></div><div class="signal"><b>Look for</b><span>Hypotension/low flow with small hyperdynamic LV, new murmur, provocation by low preload/low afterload/high contractility.</span></div><div class="signal"><b>Use technology</b><span>Trend response to carefully chosen preload/afterload/rate changes, but use echo to establish the mechanism.</span></div><div class="signal"><b>Guardrail</b><span>HPI and AFM do not diagnose LVOTO. Do not reflexively escalate inotropy from the low CI tile.</span></div></article>
+        <article class="card scenario"><h3>Mixed shock / changing physiology <span>dominant mechanism shifts</span></h3><div class="toolchips"><span class="chip">All-trend view</span><span class="chip">HPI</span><span class="chip">GDT</span><span class="chip">Derived values</span></div><div class="signal"><b>Look for</b><span>Discordant pressure, flow, resistance, congestion, and perfusion signals over time.</span></div><div class="signal"><b>Use technology</b><span>Re-run the physiologic assessment after every meaningful intervention; the correct tool at 08:00 may be wrong at 10:00.</span></div><div class="signal"><b>Guardrail</b><span>Do not force a single-label diagnosis when the patient has simultaneous preload, pump, and vascular problems.</span></div></article>
+      </div>
+    </section>
+
+    <section class="panel" id="crosswalk">
+      <h2>Where the device fits in the existing series</h2><p class="muted">This crosswalk provides the tie-in centrally without turning every module into a manufacturer manual. Each link opens the clinical topic; use the monitoring feature to test or track the question shown.</p>
+      <div class="table-wrap"><table><thead><tr><th>Teaching module</th><th>Bedside question</th><th>Most useful feature(s)</th><th>Important limitation</th></tr></thead><tbody>
+        <tr><td><a href="../../hemodynamic-cadence/">Hemodynamic Cadence of Multi-Drug Support</a></td><td>Did the drug change improve pressure, flow, resistance, or delivery—and when?</td><td>Events log + GDT + SVRI/CPO/DO₂I</td><td>Allow for each drug's PK/PD lag; do not attribute simultaneous changes to one infusion.</td></tr>
+        <tr><td><a href="../../aline-guide/">Arterial Line Accuracy</a></td><td>Can the waveform-derived data be trusted?</td><td>Gate Zero before HPI/AFM/FRT</td><td>Garbage waveform in = confident-looking garbage out.</td></tr>
+        <tr><td><a href="../../valve-goals/">Valve Surgery Goals</a></td><td>Which rate, preload, afterload, and flow targets fit this lesion?</td><td>Individualized GDT + SVI/CI + SVRI</td><td>Generic MAP or SVV targets may conflict with lesion physiology.</td></tr>
+        <tr><td><a href="../../afterload-mismatch/">Post-AVR Afterload Mismatch</a></td><td>Is high pressure masking low flow?</td><td>GDT MAP + SVI/CI; SVRI, CPO, DO₂I</td><td>Do not equate hypertension with adequate cardiac performance.</td></tr>
+        <tr><td><a href="../../type-a-dissection/">Type A Dissection: OR to CVICU</a></td><td>Is hypotension from volume loss, vasoplegia, pump failure, or obstruction?</td><td>HPI relationship view + FRT when safe + GDT</td><td>Do not delay bleeding/tamponade/graft evaluation for algorithm completion.</td></tr>
+        <tr><td><a href="../../postop-bleeding-suite/">Post-Op Bleeding Suite</a></td><td>Is falling flow explained by bleeding and does intervention restore delivery?</td><td>Events log + SVI/CI/DO₂I trends</td><td>AFM can be confounded by ongoing blood loss.</td></tr>
+        <tr><td><a href="../../sam-lvoto/">Hidden SAM / LVOTO</a></td><td>Could dynamic obstruction explain shock?</td><td>Trend response; echo confirmation</td><td>HPI/AFM cannot diagnose LVOTO and low flow does not automatically mean more inotrope.</td></tr>
+        <tr><td><a href="../../extubation/">Cardiac Extubation Readiness</a></td><td>Does the patient tolerate increased work of breathing?</td><td>Events log + GDT/trends</td><td>SVV/PPV logic is unreliable once breathing becomes spontaneous.</td></tr>
+        <tr><td><a href="../../ecmo-board/">ECMO Case Board</a></td><td>How are native flow, device flow, delivery, and vascular tone interacting?</td><td>DO₂I/CPO trends + events</td><td>Mechanical support and altered waveforms require device-specific validation.</td></tr>
+        <tr><td><a href="../../night-on-the-ropes/">A Night on the Ropes</a></td><td>Which “pouch” is failing now?</td><td>Full Detect → Diagnose → Test → Track sequence</td><td>Reassess after every major intervention; physiology evolves.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="panel" id="pitfalls">
+      <div class="grid2">
+        <article class="card"><h2>Dynamic preload measures: validity checklist</h2><ul class="check"><li>Controlled mechanical ventilation and adequate tidal excursion</li><li>Stable rhythm without major beat-to-beat irregularity</li><li>Closed-chest and relatively stable intrathoracic/abdominal pressure conditions</li><li>No major spontaneous respiratory effort</li><li>Reliable arterial waveform and flow calculation</li><li>No concurrent maneuver that changes preload, afterload, or contractility</li></ul><p class="callout"><b>Manufacturer-specific AFM requirement:</b> the supplied manual states accurate SVV for AFM requires mechanical ventilation with tidal volume ≥8 mL/kg. Apply current device instructions and local lung-protective ventilation policy.</p></article>
+        <article class="card"><h2>Common cognitive traps</h2><details open><summary>“HPI is high, so give fluid.”</summary><p>Wrong shortcut. HPI signals risk; the relationship screen and clinical context help determine whether the mechanism is preload, contractility, afterload, or an external event.</p></details><details><summary>“SVV is high, therefore the patient is dry.”</summary><p>SVV can be elevated or uninterpretable from ventilation, rhythm, RV dysfunction, abdominal pressure, open chest, and waveform problems. Even valid responsiveness does not establish net benefit from fluid.</p></details><details><summary>“MAP is normal, so output is fine.”</summary><p>MAP can be preserved by high SVR despite low SVI/CI. Pair pressure with flow and delivery.</p></details><details><summary>“dP/dt is a direct contractility meter.”</summary><p>It is a loading-condition-sensitive arterial waveform trend, not a substitute for ventricular imaging or invasive confirmation.</p></details><details><summary>“The calculated value is objective.”</summary><p>The formula may be objective; the input timing, units, sampling, and measurement quality may not be.</p></details></article>
+      </div>
+      <article class="card" style="margin-top:14px"><h2>Stop and escalate</h2><div class="grid3"><div><b>Signal failure</b><p>New damping, artifact, implausible values, or sensor disagreement.</p></div><div><b>Clinical discordance</b><p>Monitor suggests improvement while exam, perfusion, congestion, lactate, ECG, or echo worsens.</p></div><div><b>Time-critical cause</b><p>Tamponade, bleeding, ischemia, graft/valve failure, PE, tension physiology, or MCS/device complication.</p></div></div></article>
+    </section>
+
+    <section class="panel" id="refs">
+      <article class="card"><h2>Evidence and source hierarchy</h2>
+        <div class="ref"><b>Manufacturer operating instructions</b><small>Edwards Lifesciences. HemoSphere Alta Advanced Monitoring Platform Operator's Manual, software release 1.6. User-supplied edition reviewed for screen paths, feature behavior, supported technologies, workflow steps, and warnings.</small></div>
+        <div class="ref"><a href="https://jamanetwork.com/journals/jama/fullarticle/2761469" target="_blank" rel="noopener">Wijnberge M, et al. HYPE randomized clinical trial. JAMA. 2020;323:1052–1060.</a><small>Preliminary single-center perioperative RCT: HPI plus diagnostic guidance reduced intraoperative hypotension; broader outcome and ICU generalizability remained uncertain.</small></div>
+        <div class="ref"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4239778/" target="_blank" rel="noopener">Cecconi M, et al. Consensus on circulatory shock and hemodynamic monitoring. Intensive Care Med. 2014;40:1795–1815.</a><small>Supports multi-variable assessment, dynamic rather than static predictors when applicable, and careful fluid challenge interpretation.</small></div>
+        <div class="ref"><a href="https://pubmed.ncbi.nlm.nih.gov/38483559/" target="_blank" rel="noopener">Messina A, et al. CODEFIRE consensus. Intensive Care Med. 2024.</a><small>Standardizes fluid-responsiveness study reporting and reinforces the importance of the clinical reason, method, reference variable, and context of the challenge.</small></div>
+        <div class="ref"><a href="https://www.esicm.org/esicm-guideline-circulatory-shock-haemodynamic-monitoring/" target="_blank" rel="noopener">ESICM guideline on circulatory shock and hemodynamic monitoring, 2025.</a><small>Highlights serial tissue-perfusion assessment, targeted fluid, dynamic predictors when valid, cardiac output monitoring in non-responders, and echo as first-line shock phenotyping.</small></div>
+        <div class="ref"><b>Bojar RM. Manual of Perioperative Care in Adult Cardiac Surgery.</b><small>Clinical physiology, low-output evaluation, vasoactive selection, postoperative cardiac surgical management, and escalation principles.</small></div>
+      </article>
+      <article class="card" style="margin-top:14px"><h2>How this module was developed</h2><ol><li>Extracted the device-defined steps, supported technologies, thresholds, warnings, and confounders from the supplied operator manual.</li><li>Separated <b>what the device does</b> from <b>what the clinician should infer</b>.</li><li>Mapped each feature to a physiologic question: risk, mechanism, responsiveness, target tracking, or calculated reserve/delivery.</li><li>Cross-checked interpretation against shock-monitoring and fluid-responsiveness consensus literature.</li><li>Linked the workflow to existing CVICU teaching cases and added explicit stop rules for conditions requiring echo, PAC, surgical evaluation, or urgent source control.</li></ol><p class="callout"><b>Pilot intent:</b> use structured clinician feedback to assess clarity, bedside realism, perceived usefulness, unsafe ambiguity, and cases where the monitor and clinician disagree. This is not yet a validated clinical protocol.</p></article>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="wrap"><b>Bedside Teaching Series · THHBD CVICU</b><br>Educational supplement only. Verify device software version, enabled modules, compatible sensors, institutional policy, and current provider-directed goals.</div></footer>
+  <script>
+    const tabs=[...document.querySelectorAll('.tab')],panels=[...document.querySelectorAll('.panel')];
+    function show(id){tabs.forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===id)));panels.forEach(p=>p.classList.toggle('active',p.id===id));history.replaceState(null,'','#'+id);window.scrollTo({top:document.querySelector('.tabs').offsetTop,behavior:'smooth'})}
+    tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
+    const initial=location.hash.slice(1);if(panels.some(p=>p.id===initial))show(initial);
+  </script>
+</body>
+</html>
